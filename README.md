@@ -28,14 +28,27 @@ Este repositorio contiene el sistema integral de supervisión, telemetría y se�
 
 ---
 
-## 3. Instrucciones de Compilación y Flasheo
-
-### Para compilar y subir el Maestro `FridgeControl`:
+### Para compilar y subir el Maestro `FridgeControl` (Waveshare ESP32-S3 Relay 6CH):
 ```powershell
-pio run -e eletechsup_es32d26 -t upload
+# Frontend React (SPA integrada en memoria Flash mediante WWWData.h)
+cd interface
+npm run build
+cd ..
+
+# Firmware ESP32-S3
+pio run -e waveshare_esp32s3_relay_6ch -t upload --upload-port COM24
 ```
 
-### Para compilar y subir el Esclavo Satélite `FridgeIO`:
+### Para compilar y subir el Esclavo Satélite `FridgeIO` (eletechsup ES32D26):
 ```powershell
-pio run -d FridgeIO -t upload
+pio run -d FridgeIO -t upload --upload-port COM20
 ```
+
+---
+
+## 4. Arquitectura de Software y Servicios Destacados
+
+* 🛡️ **Auditoría de Operaciones (FDA 21 CFR Part 11 / HACCP):** Registro persistente en `/audit/audit.ndjson` (con autorotación a 120 KB) de cambios de setpoint, parámetros de alarma ISA-18.2, altas/bajas de cavas y comandos de prueba de relés con trazabilidad de IP, usuario y marca de tiempo.
+* 🌐 **Sincronización Horaria WiFi NTP:** El sistema no depende de módulos RTC físicos I2C (DS3231); sincroniza la hora local y UTC contra servidores NTP a través de la red WiFi corporativa.
+* 📂 **Explorador de Archivos LittleFS (`/files`):** Navegación visual, descarga y gestión de almacenamiento flash interno.
+* 🖥️ **Modo Kiosk Pantalla Completa:** Botón interactivo de pantalla completa integrado en la barra de navegación para tablets y dispositivos móviles en planta.
