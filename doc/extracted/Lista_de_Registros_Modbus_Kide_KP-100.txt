@@ -1,0 +1,79 @@
+=== FILE: Lista_de_Registros_Modbus_Kide_KP-100.pdf (Pages: 2) ===
+
+--- PAGE 1 ---
+Guía de Registros Modbus - Kide KP-100
+Este documento contiene la recopilación técnica de los registros Modbus y la configuración de comunicación típica
+para el controlador de refrigeración Kide KP-100.
+1. Mapa de Registros Modbus Comunes
+Los controladores de esta gama siguen una estructura predecible para sistemas de refrigeración. A continuación se
+detallan las direcciones más comunes:
+Dirección
+Tipo de
+Datos
+Acceso
+Descripción del Parámetro
+Unidad / Escala
+0001 (o 30001)
+Integer
+Lectura
+Temperatura de Cámara (Sonda de
+ambiente)
+°C / °F (Escala x10)
+0002 (o 30002)
+Integer
+Lectura
+Temperatura de Evaporador (Sonda
+de desescarche)
+°C / °F (Escala x10)
+0101 (o 40101)
+Integer
+Lectura/Escritura
+Setpoint de Temperatura (Consigna
+de la cámara)
+°C / °F (Escala x10)
+0102 (o 40102)
+Integer
+Lectura/Escritura
+Diferencial / Histéresis (Delta de
+arranque)
+°C / °F (Escala x10)
+0201 (o 00001)
+Coil/Digital
+Lectura
+Estado del Compresor
+0 = APAGADO, 1 =
+ENCENDIDO
+0202 (o 00002)
+Coil/Digital
+Lectura
+Estado de Ventiladores (Evaporador)
+0 = APAGADO, 1 =
+ENCENDIDO
+0203 (o 00003)
+Coil/Digital
+Lectura
+Estado del Desescarche
+0 = APAGADO, 1 =
+ENCENDIDO
+0301 (o 40301)
+Coil/Digital
+Lectura/Escritura
+Comando de Desescarche Manual
+Escribir 1 para activar
+2. Configuración de Comunicación por Defecto
+La conexión física serie se realiza habitualmente bajo los siguientes parámetros:
+• Protocolo: Modbus RTU sobre RS-485
+• Velocidad (Baud Rate): 9600 bps (o en su defecto 19200 bps)
+• Bits de Datos: 8
+• Paridad: Ninguna (None) o Par (Even)
+• Bits de Parada (Stop Bits): 1
+
+
+--- PAGE 2 ---
+3. Recomendaciones para Verificación en Campo
+1. Etiqueta lateral del hardware: Compruebe si el controlador posee una referencia OEM cruzada (por ejemplo, de
+fabricantes asociados como Dixell, Eliwell o Schneider Electric) que precise un mapa específico.
+2. Documentación oficial Kide: Contraste el orden de los parámetros del menú en pantalla con la documentación
+técnica descargable desde el portal oficial de Kide para confirmar desvíos en los offsets de los registros.
+
+

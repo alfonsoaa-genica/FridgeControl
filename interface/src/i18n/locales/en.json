@@ -1,0 +1,580 @@
+{
+  "auth": {
+    "sign_in": "Sign In",
+    "username": "Username",
+    "password": "Password",
+    "user_menu": {
+      "admin": "Admin User",
+      "guest": "Guest User",
+      "sign_out": "Sign Out",
+      "change_password": "Change Password",
+      "new_password": "New Password",
+      "confirm_password": "Confirm Password",
+      "password_changed": "Password successfully updated",
+      "password_mismatch": "Passwords do not match",
+      "password_min_len": "Password must be at least 4 characters",
+      "save_password": "Save Password",
+      "cancel": "Cancel"
+    },
+    "roles": {
+      "admin": "Admin",
+      "supervisor": "Supervisor",
+      "operator": "Operator"
+    },
+    "errors": {
+      "invalid_details": "Invalid login details",
+      "unexpected": "Unexpected error, please try again",
+      "unauthorized_redirect": "Please log in to continue"
+    },
+    "logged_in_as": "Logged in as {{username}}",
+    "project_name": "Cold Rooms Telematics Gateway"
+  },
+  "common": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "LOADING": "Loading...",
+    "REFRESH": "Refresh",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "ACTIONS": "Actions",
+    "DONE": "Done",
+    "ADD": "Add",
+    "ADD_ENTITY": "Add {{entity}}",
+    "CONFIRM": "Confirm",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "RETRY": "Retry",
+    "ENABLED": "Enabled",
+    "DISABLED": "Disabled",
+    "open_drawer": "Open drawer",
+    "switch_light_mode": "Switch to Light Mode",
+    "switch_dark_mode": "Switch to Dark Mode",
+    "toggle_password_visibility": "Toggle password visibility",
+    "manual_config": "Manual Configuration",
+    "error": "Error",
+    "unknown": "Unknown",
+    "SELECT_LANGUAGE": "Select Language",
+    "LIGHT_MODE": "Light Mode",
+    "DARK_MODE": "Dark Mode",
+    "SPANISH": "Español (ES)",
+    "ENGLISH": "English (EN)"
+  },
+  "menu": {
+    "demo_project": "LED Control with ESP32/ESP8266"
+  },
+  "demo": {
+    "title": "LED Control",
+    "ws_title": "WebSocket Example",
+    "rest_title": "REST Example",
+    "info_tab": "Information",
+    "rest_tab": "REST Example",
+    "mqtt_tab": "MQTT Settings",
+    "ledstate": "LED State?",
+    "rest_message": "This is an example of how to use REST to control the LED state. Change the LED state using the button below and observe how it updates in real-time via WebSockets.",
+    "ws_message": "This is an example of how to use WebSockets to receive real-time updates of the LED state. Change the LED state using the button below and observe it update here instantly.",
+    "mqtt_message": "This is an example of how to use MQTT to control the LED state. Change the LED state using the button below and observe how it updates in real-time via MQTT.",
+    "paragraphs": [
+      "This simple demo project allows you to control the built-in LED.",
+      "It demonstrates how the framework may be extended for your own IoT project.",
+      "It is recommended that you keep your project interface code under the project directory.",
+      "This serves to isolate your project code from the rest of the user interface, simplifying merges when updating the framework.",
+      "The demo project interface code is stored in 'interface/src/project':"
+    ],
+    "files": [
+      {
+        "name": "ProjectMenu.tsx",
+        "desc": "You can add your project's screens to the side bar here."
+      },
+      {
+        "name": "ProjectRouting.tsx",
+        "desc": "The routing which controls the screens of your project."
+      },
+      {
+        "name": "DemoProject.tsx",
+        "desc": "This screen, with tabs and tab routing."
+      },
+      {
+        "name": "DemoInformation.tsx",
+        "desc": "The demo information page."
+      },
+      {
+        "name": "LightStateRestForm.tsx",
+        "desc": "A form which lets the user control the LED over a REST service."
+      },
+      {
+        "name": "LightStateWebSocketController.tsx",
+        "desc": "A form to control and monitor the LED status over WebSockets."
+      },
+      {
+        "name": "LightMqttSettingsForm.tsx",
+        "desc": "A form to change MQTT settings for MQTT-based LED control."
+      }
+    ],
+    "footer": "See the project <1>README</1> for a full description.",
+    "LED State?": "LED State?",
+    "mqtt_unique_id": "Unique ID",
+    "mqtt_name": "Name",
+    "mqtt_path": "MQTT Path"
+  },
+  "messages": {
+    "success": "Configuration saved successfully",
+    "error": "Error connecting to the device",
+    "load_error": "Problem loading data",
+    "save_success": "Update successful",
+    "save_error": "Problem saving data"
+  },
+  "ap": {
+    "title": "Access Point",
+    "provide access point": "Provide an Access Point...",
+    "status": "Access Point Status",
+    "settings": "Access Point Settings",
+    "ssid": "Access Point Name (SSID)",
+    "password": "Password",
+    "ip_address": "IP Address",
+    "max_clients": "Max Clients",
+    "save_success": "Access Point configuration saved successfully",
+    "save_error": "Error saving Access Point configuration",
+    "subnet": "Subnet Mask",
+    "gateway": "Gateway",
+    "dns": "DNS Server",
+    "channel": "Channel",
+    "hide_ssid": "Hide SSID?",
+    "local_ip": "Local IP",
+    "connected_clients": "Connected Clients",
+    "provisioning": {
+      "MODE_LABEL": "Always",
+      "MODE_DISCONNECTED": "When WiFi Disconnected",
+      "MODE_NEVER": "Never"
+    },
+    "status_list": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "LINGERING": "Lingering until idle",
+      "UNKNOWN": "Unknown"
+    },
+    "ap_status": {
+      "CONNECTED": "Connected",
+      "DISCONNECTED": "Disconnected",
+      "PROVISIONING": "Provisioning"
+    },
+    "mac_address": "MAC Address"
+  },
+  "wifi": {
+    "title": "WiFi Connection",
+    "status": "WiFi Connection Status",
+    "settings_title": "WiFi Connection Settings",
+    "ssid": "SSID",
+    "scan": "Scan WiFi Networks",
+    "password": "Password",
+    "ip_address": "IP Address",
+    "mac_address": "MAC Address",
+    "save_success": "WiFi configuration saved successfully",
+    "save_error": "Error saving WiFi configuration",
+    "subnet": "Subnet Mask",
+    "gateway": "Gateway",
+    "dns": "DNS Server",
+    "static_ip_q": "Use Static IP?",
+    "hostname": "Device Name (Hostname)",
+    "scanner": {
+      "title": "WiFi Network Scanner",
+      "scanning": "Scanning WiFi networks...",
+      "timeout_error": "Timeout scanning WiFi networks",
+      "list_error": "Error listing WiFi networks",
+      "scan_error": "Error starting WiFi network scan",
+      "scan_again": "Scan again"
+    },
+    "security": "Security",
+    "channel": "Channel",
+    "no_networks": "No WiFi networks found",
+    "dns_ip_1": "DNS Server 1",
+    "dns_ip_2": "DNS Server 2",
+    "manual_config": "Manual Configuration",
+    "forget_network": "Forget this Network",
+    "forget_title": "Forget current Wi-Fi network?",
+    "forget_confirm": "The device will disconnect from Wi-Fi and remove stored credentials (SSID: {{ssid}}). You can scan and connect to a different access point.",
+    "forget_action": "Forget and Scan",
+    "forgot_success": "Wi-Fi network forgotten successfully",
+    "forgot_error": "Failed to forget Wi-Fi network",
+    "scan_new": "Scan Networks"
+  },
+  "wifi_status": {
+    "INACTIVE": "Inactive",
+    "IDLE": "Idle",
+    "NO_SSID": "SSID not available",
+    "CONNECTED": "Connected",
+    "CONNECT_FAILED": "Connection failed",
+    "CONNECTION_LOST": "Connection lost",
+    "DISCONNECTED": "Disconnected",
+    "UNKNOWN": "Unknown"
+  },
+  "ntp": {
+    "title": "NTP Client",
+    "status_title": "NTP Status",
+    "tabs": {
+      "status": "NTP Status",
+      "settings": "NTP Settings"
+    },
+    "fields": {
+      "status": "Status",
+      "server": "NTP Server",
+      "local_time": "Local Time",
+      "utc_time": "UTC Time",
+      "uptime": "Uptime",
+      "enable": "Enable NTP?",
+      "tz_label": "Timezone",
+      "tz_format": "Timezone Format",
+      "tz_placeholder": "Timezones"
+    },
+    "settings": {
+      "server": "NTP Server",
+      "time_zone": "Timezone"
+    },
+    "status_list": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "UNKNOWN": "Unknown",
+      "active": "Active",
+      "inactive": "Inactive",
+      "unknown": "Unknown"
+    },
+    "setup": {
+      "dialog_title": "Set Time",
+      "dialog_desc": "Enter the local date and time below to configure the device.",
+      "set_button": "Set Time",
+      "success": "Time configured successfully",
+      "error": "Problem updating time"
+    },
+    "status": "NTP Status",
+    "enable": "Enable NTP?",
+    "dialog": {
+      "title": "Set Time",
+      "description": "Enter the local date and time below to configure the device.",
+      "submit": "Set Time"
+    },
+    "messages": {
+      "time_set_success": "Time configured successfully",
+      "time_set_error": "Problem updating time"
+    },
+    "rtc": {
+      "title": "DS3231 Hardware RTC (ZS-042)",
+      "chip_status": "RTC Module",
+      "chip_detected": "Dallas DS3231 Detected (TCXO ±2ppm)",
+      "chip_not_detected": "Not Detected (Bench Mode)",
+      "temp_tcxo": "TCXO Temperature",
+      "sync_status": "NTP Synchronization",
+      "synced": "Synchronized with NTP",
+      "pending_sync": "Pending Synchronization",
+      "drift_label": "Detected Drift",
+      "drift_exact": "0 sec (Exact)",
+      "last_sync": "Last NTP Sync",
+      "eeprom_title": "AT24C32 EEPROM Memory",
+      "eeprom_detected": "4096 Non-Volatile Bytes Available (0x57)",
+      "eeprom_not_detected": "Not Detected",
+      "sync_button": "Sync RTC Now",
+      "syncing": "Synchronizing...",
+      "sync_success": "DS3231 RTC synchronized and calibrated successfully",
+      "sync_error": "Failed to synchronize with NTP server"
+    }
+  },
+  "mqtt": {
+    "title": "MQTT",
+    "status": "Status",
+    "tabs": {
+      "status": "MQTT Status",
+      "settings": "MQTT Settings"
+    },
+    "fields": {
+      "client_id": "Client ID",
+      "disconnect_reason": "Disconnect reason",
+      "uptime": "Uptime",
+      "server": "MQTT Server",
+      "local_time": "Local Time",
+      "utc_time": "UTC Time",
+      "enabled": "Enable MQTT?",
+      "host": "Host",
+      "port": "Port",
+      "username": "Username",
+      "password": "Password",
+      "client_id_optional": "Client ID (optional)",
+      "keep_alive": "Keep Alive (seconds)",
+      "clean_session": "Clean Session?",
+      "max_topic_length": "Max Topic Length"
+    },
+    "status_list": {
+      "connected": "Connected",
+      "disconnected": "Disconnected",
+      "disabled": "Disabled"
+    },
+    "reasons": {
+      "user_ok": "Disconnected by user",
+      "unacceptable_protocol": "Unacceptable protocol version",
+      "id_rejected": "Identifier rejected",
+      "server_unavailable": "Server unavailable",
+      "malformed_credentials": "Bad username or password",
+      "not_authorized": "Not authorized",
+      "bad_fingerprint": "Invalid TLS fingerprint",
+      "tcp_disconnected": "TCP connection closed",
+      "unknown": "Unknown error"
+    }
+  },
+  "security": {
+    "title": "Security",
+    "tabs": {
+      "users": "Manage Users",
+      "settings": "Security Settings"
+    },
+    "users": {
+      "username": "Username",
+      "role": "Role / Permissions",
+      "add_user": "Add User",
+      "admin": "Administrator",
+      "standard_user": "Standard User",
+      "user_single": "User",
+      "edit_title": "Edit {{item}}"
+    },
+    "fields": {
+      "jwt_secret": "JWT Secret",
+      "username": "Username",
+      "password": "Password",
+      "is_admin": "Is Admin?",
+      "role_assignment": "Role Assignment"
+    },
+    "messages": {
+      "jwt_warning": "The JWT Secret is used to sign authentication tokens. Changing it will log out all users.",
+      "admin_privileges": "Full access to system settings: hardware configuration, networking, and user management.",
+      "supervisor_privileges": "Access to reports and tank status. No critical configuration permissions.",
+      "operator_privileges": "Limited access to the dispatch screen and flow monitoring.",
+      "admin_required": "At least one administrator user must be configured."
+    }
+  },
+  "system": {
+    "title": "System",
+    "tabs": {
+      "status": "System Status",
+      "ota": "OTA Settings",
+      "upload": "Upload Firmware",
+      "uploadfs": " Upload FileSystem",
+      "language": "Language",
+      "filemgr": "File Manager"
+    },
+    "status_fields": {
+      "heap": "Heap Memory (Free / Max Alloc)",
+      "fragmentation": "fragmentation",
+      "device": "Device (Platform / SDK)",
+      "cpu_freq": "CPU Frequency",
+      "psram": "PSRAM (Total / Free)",
+      "sketch": "Sketch (Size / Free)",
+      "flash_chip": "Flash Chip (Size / Speed)",
+      "fs": "File System (Used / Total)",
+      "free": "free"
+    },
+    "actions": {
+      "restart": "Restart",
+      "factory_reset": "Factory Reset"
+    },
+    "dialogs": {
+      "restart_title": "Confirm Restart",
+      "restart_content": "Are you sure you want to restart the device?",
+      "factory_reset_title": "Confirm Factory Reset",
+      "factory_reset_content": "Are you sure you want to reset the device to factory defaults? This action cannot be undone."
+    },
+    "messages": {
+      "restarting": "The device is restarting...",
+      "factory_reset_done": "Device reset. It will restart shortly.",
+      "firmware_updated": "Firmware update successful"
+    },
+    "errors": {
+      "restart_failed": "Error trying to restart the device",
+      "factory_reset_failed": "Error trying to factory reset"
+    },
+    "ota": {
+      "enable_label": "Enable OTA updates?",
+      "port_label": "Port",
+      "password_label": "Update Password"
+    },
+    "upload": {
+      "error_title": "Application Error",
+      "warning": "Upload a new firmware file (.bin) below to replace the existing firmware.",
+      "app_failed": "Failed to set up application, please refresh the page and try again.",
+      "drop_or_click": "Drop file or click here",
+      "uploading": "Uploading...",
+      "uploading_percent": "Uploading: {{percent}}%"
+    },
+    "language": {
+      "title": "Language",
+      "select_label": "Select Language",
+      "helper_text": "Select your preferred language for the interface."
+    },
+    "uploadfs": {
+      "warning": "Upload filesystem image (.bin) to replace the current filesystem. Device will restart automatically."
+    },
+    "features": {
+      "fetch_failed": "Failed to fetch application details."
+    },
+    "restart_monitor": {
+      "message": "Device restarting, please wait...",
+      "error": "Timed out waiting for device to restart."
+    },
+    "file_manager": {
+      "title": "File Manager",
+      "info": "Direct file management for Flash and MicroSD memory",
+      "tab_littlefs": "Internal Memory (LittleFS)",
+      "tab_sd": "Historical MicroSD",
+      "sd_card_title": "Industrial MicroSD Card (Black Box)",
+      "sd_fat_info": "FAT Format • Type: {{card_type}} • Capacity: {{capacity}} GB ({{used}} MB used)",
+      "sd_present_need_format": "Card physically detected in slot, but requires formatting to mount filesystem.",
+      "sd_not_present": "No MicroSD card detected in internal slot.",
+      "chip_sd_ok": "MicroSD ≥ 8GB Operational",
+      "chip_sd_small": "MicroSD < 8GB",
+      "chip_sd_need_format": "Requires Format",
+      "chip_sd_none": "Not Detected",
+      "btn_remount": "Remount",
+      "btn_remounting": "Verifying...",
+      "btn_format": "Format SD",
+      "btn_formatting": "Formatting...",
+      "btn_refresh": "Refresh list",
+      "files_count": "{{count}} file(s) in {{storage}}",
+      "upload_btn": "Upload File",
+      "uploading": "Uploading...",
+      "col_name": "Path / File Name",
+      "col_size": "Size",
+      "col_actions": "Actions",
+      "action_download": "Download file",
+      "action_delete": "Delete file",
+      "empty": "No files stored in this volume.",
+      "dialog_format_title": "Format MicroSD Card",
+      "dialog_format_confirm": "Are you absolutely sure you want to format the MicroSD card?",
+      "dialog_format_warning": "All logs and historical records stored on the MicroSD card will be permanently deleted. This action cannot be undone.",
+      "dialog_format_btn": "Yes, Format SD",
+      "sd_unmounted_warning": "The MicroSD card is not currently mounted. You can insert a card of at least 8GB and press \"Remount\", or press \"Format SD\" to initialize the FAT32 partition.",
+      "toast_format_success": "✅ MicroSD formatting completed successfully.",
+      "toast_format_error": "Failed during formatting.",
+      "toast_remount_success": "✅ MicroSD detected and mounted successfully.",
+      "toast_upload_error": "Failed to upload file.",
+      "toast_delete_confirm": "Are you sure you want to delete file \"{{name}}\"?",
+      "toast_delete_critical": "⚠️ CRITICAL WARNING: Deleting \"{{name}}\" is an essential file for operation or audit.\nDo you wish to continue?"
+    }
+  },
+  "user_menu": {
+    "admin": "Administrator",
+    "guest": "Guest",
+    "sign_out": "Sign Out"
+  },
+  "ntp_settings": {
+    "server": "NTP Server",
+    "time_zone": "Timezone",
+    "time_zone_placeholder": "Select time zone..."
+  },
+  "upload": {
+    "error_title": "Application Error",
+    "warning": "Upload a new binary (.bin) below to replace the existing firmware.",
+    "app_failed": "Failed to configure application, please reload the page to try again.",
+    "drop_or_click": "Drop file here or click to select",
+    "uploading": "Uploading...",
+    "uploading_percent": "Uploading: {{percent}}%",
+    "success": "Upload successful",
+    "aborted": "Upload aborted",
+    "failed": "Upload failed"
+  },
+  "cavas": {
+    "title": "Cold Rooms Supervision",
+    "subtitle": "Cold Rooms Supervision • Real-Time Modbus RTU Monitoring",
+    "liveView": "Live Cold Rooms",
+    "alarmsTitle": "ISA-18.2 Alarms",
+    "diagnostic": "Modbus Diagnostics",
+    "normal": "Normal",
+    "alarm": "Alarm",
+    "offline": "Offline",
+    "noCommunication": "No Communication",
+    "alarmTempHigh": "Alarm: High Temp",
+    "alarmHrLow": "Alarm: Low RH",
+    "alarmHrHigh": "Alarm: High RH",
+    "focusMode": "Mobile Focus Mode",
+    "closeFocus": "Close Focus",
+    "temperature": "TEMPERATURE",
+    "activeHumidity": "ACTIVE HUMIDITY",
+    "relativeHumidity": "ACTIVE RELATIVE HUMIDITY",
+    "currentTemp": "CURRENT ROOM TEMPERATURE",
+    "setpoint": "Setpoint",
+    "setpointShort": "SP",
+    "adjust": "Adjust",
+    "modifySetpoint": "Modify Setpoint ({{variable}})",
+    "modifyPrompt": "Enter desired new setpoint for room {{id}}. This action requires a Maintainer / Admin PIN.",
+    "newSetpoint": "New Setpoint ({{unit}})",
+    "adminPin": "Admin PIN (e.g. 1234)",
+    "saveAndTransmit": "Save & Transmit",
+    "cancel": "Cancel",
+    "invalidNumeric": "Invalid numeric value",
+    "setpointQueued": "Setpoint successfully queued to Modbus bus",
+    "setpointError": "Error applying setpoint",
+    "commError": "Communication error",
+    "cooling": "Cool",
+    "fan": "Fan",
+    "defrost": "Defrost",
+    "steam": "Steam",
+    "active": "Active",
+    "inactive": "Inactive",
+    "rs485Link": "RS-485 Link: {{percent}}% OK • Evap: {{temp}}°C",
+    "slaveModbus": "Modbus Slave ID {{id}} • Type: {{type}}",
+    "thermalTrend": "Last 24 Hours Thermal Trend (RAM Buffer)",
+    "accumulatingSamples": "Still collecting process samples in circular buffer...",
+    "time24hAgo": "24h ago ({{count}} pts)",
+    "timeNow": "Now",
+    "tempPv": "Temp PV (°C)",
+    "noCavasFound": "No cold rooms currently detected on the bus. Go to the Modbus Diagnostics tab to run an automatic RS-485 scan.",
+    "descriptions": {
+      "c1": "Cold Room 1 - Conservation",
+      "c2": "Cold Room 2 - Maturation",
+      "c3": "Cold Room 3 - Maturation",
+      "c4": "Cold Room 4 - Maturation",
+      "c5": "Cold Room 5 - Maturation",
+      "c6": "Cold Room 6 - Conservation",
+      "c6a": "Cold Room 6A - Conservation",
+      "cava_1": "Cold Room 1 - Conservation",
+      "cava_2": "Cold Room 2 - Maturation",
+      "cava_3": "Cold Room 3 - Maturation",
+      "cava_4": "Cold Room 4 - Maturation",
+      "cava_5": "Cold Room 5 - Maturation",
+      "cava_6": "Cold Room 6 - Conservation",
+      "cava_6a": "Cold Room 6A - Conservation"
+    }
+  },
+  "diagnostic": {
+    "title": "Modbus RS-485 Diagnostics & Discovery",
+    "subtitle": "Polling tools, physical link quality and controller detection on the cold rooms bus.",
+    "scanTitle": "Network Scan (Auto-Discovery)",
+    "scanDesc": "Scans configured Modbus address range to automatically detect new KIDE KP-100 and KIDEMATIC-970 controllers.",
+    "idStart": "Start ID",
+    "idEnd": "End ID",
+    "resetList": "Clear previous registry and rediscover from scratch",
+    "startScan": "Start RS-485 Scan",
+    "scanningId": "Scanning ID {{id}}...",
+    "pollingSlave": "Polling slave #{{id}}...",
+    "scanComplete": "Scan complete. {{count}} devices found.",
+    "scanStarting": "Starting scan across RS-485 bus...",
+    "scanError": "Error starting Modbus scan",
+    "pingTitle": "Physical Slave Ping Test",
+    "pingDesc": "Useful during terminal wiring or bench testing with the eletechsup ES32D26 board to verify immediate controller response.",
+    "pingLabel": "Modbus ID to Query",
+    "runPing": "Run Ping",
+    "pingSuccess": "Slave ID {{id}} Responded in {{rtt}} ms!",
+    "pingModel": "Model: {{model}} • Temp PV: {{temp}}°C",
+    "pingFail": "No response from slave ID {{id}} (Timeout or CRC error). Check RS-485 (A/B) wiring and polarity.",
+    "metricsTitle": "RS-485 Link Quality Metrics",
+    "noActiveCavas": "No active cold rooms monitored yet.",
+    "colCava": "Room",
+    "colId": "Modbus ID",
+    "colStatus": "Status",
+    "colTx": "TX Queries",
+    "colRx": "OK Responses",
+    "colTimeouts": "Timeouts",
+    "colCrc": "CRC Errors",
+    "colLastRtt": "Last RTT",
+    "colQuality": "Quality (Q%)",
+    "colModel": "Model",
+    "colTemp": "Temp",
+    "colHr": "RH",
+    "colRtt": "RTT"
+  }
+}

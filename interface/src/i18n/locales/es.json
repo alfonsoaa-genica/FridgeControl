@@ -1,0 +1,580 @@
+{
+  "auth": {
+    "sign_in": "Iniciar Sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "user_menu": {
+      "admin": "Administrador",
+      "guest": "Invitado",
+      "sign_out": "Cerrar Sesión",
+      "change_password": "Cambiar Contraseña",
+      "new_password": "Nueva Contraseña",
+      "confirm_password": "Confirmar Contraseña",
+      "password_changed": "Contraseña actualizada con éxito",
+      "password_mismatch": "Las contraseñas no coinciden",
+      "password_min_len": "La contraseña debe tener al menos 4 caracteres",
+      "save_password": "Guardar Contraseña",
+      "cancel": "Cancelar"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "supervisor": "Supervisor",
+      "operator": "Operador"
+    },
+    "errors": {
+      "invalid_details": "Datos de acceso incorrectos",
+      "unexpected": "Error inesperado, por favor intente de nuevo",
+      "unauthorized_redirect": "Por favor inicie sesión para continuar"
+    },
+    "logged_in_as": "Sesión iniciada como {{username}}",
+    "project_name": "Supervisión de Cavas Frigoríficas"
+  },
+  "common": {
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "LOADING": "Cargando...",
+    "REFRESH": "Actualizar",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "ACTIONS": "Acciones",
+    "DONE": "Confirmar",
+    "ADD": "Añadir",
+    "ADD_ENTITY": "Añadir {{entity}}",
+    "CONFIRM": "Confirmar",
+    "RETRY": "Reintentar",
+    "DISABLED": "Deshabilitado",
+    "ENABLED": "Habilitado",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "retry": "Reintentar",
+    "open_drawer": "Abrir menú",
+    "switch_light_mode": "Cambiar a Modo Claro",
+    "switch_dark_mode": "Cambiar a Modo Oscuro",
+    "toggle_password_visibility": "Alternar visibilidad de contraseña",
+    "manual_config": "Configuración Manual",
+    "error": "Error",
+    "unknown": "Desconocido",
+    "SELECT_LANGUAGE": "Cambiar Idioma",
+    "LIGHT_MODE": "Modo Claro",
+    "DARK_MODE": "Modo Oscuro",
+    "SPANISH": "Español (ES)",
+    "ENGLISH": "English (EN)"
+  },
+  "menu": {
+    "demo_project": "Configurar Sistema"
+  },
+  "user_menu": {
+    "admin": "Administrador",
+    "guest": "Invitado",
+    "sign_out": "Cerrar Sesión"
+  },
+  "demo": {
+    "title": "Configurar Sistema",
+    "ws_title": "Ejemplo de WebSocket",
+    "rest_title": "Ejemplo de REST",
+    "info_tab": "Información",
+    "rest_tab": "Ejemplo REST",
+    "mqtt_tab": "Ajustes MQTT",
+    "ledstate": "¿Estado del LED?",
+    "rest_message": "Este es un ejemplo de cómo usar REST para controlar el estado del LED. Cambie el estado del LED usando el botón de abajo y observe cómo se actualiza en tiempo real a través de WebSockets.",
+    "ws_message": "Este es un ejemplo de cómo usar WebSockets para recibir actualizaciones en tiempo real del estado del LED. Cambie el estado del LED usando el botón de abajo y observe cómo se actualiza aquí instantáneamente.",
+    "mqtt_message": "Este es un ejemplo de cómo usar MQTT para controlar el estado del LED. Cambie el estado del LED usando el botón de abajo y observe cómo se actualiza en tiempo real a través de MQTT.",
+    "paragraphs": [
+      "Este proyecto de demostración permite controlar el LED integrado.",
+      "Demuestra cómo el framework puede extenderse para su propio proyecto IoT.",
+      "Se recomienda mantener el código de la interfaz de su proyecto bajo el directorio 'project'.",
+      "Esto sirve para aislar su código del resto de la interfaz, lo que simplifica las fusiones (merges) al actualizar el framework.",
+      "El código de la interfaz de la demo se encuentra en 'interface/src/project':"
+    ],
+    "files": [
+      {
+        "name": "ProjectMenu.tsx",
+        "desc": "Aquí puede añadir las pantallas de su proyecto a la barra lateral."
+      },
+      {
+        "name": "ProjectRouting.tsx",
+        "desc": "El enrutamiento que controla las pantallas de su proyecto."
+      },
+      {
+        "name": "DemoProject.tsx",
+        "desc": "Esta pantalla, con pestañas y enrutamiento."
+      },
+      {
+        "name": "DemoInformation.tsx",
+        "desc": "La página de información de la demo."
+      },
+      {
+        "name": "LightStateRestForm.tsx",
+        "desc": "Formulario para controlar el LED vía servicio REST."
+      },
+      {
+        "name": "LightStateWebSocketController.tsx",
+        "desc": "Control y monitoreo del LED mediante WebSockets."
+      },
+      {
+        "name": "LightMqttSettingsForm.tsx",
+        "desc": "Ajustes para el control del LED basado en MQTT."
+      }
+    ],
+    "footer": "Consulte el <1>README</1> del proyecto para una descripción completa.",
+    "LED State?": "¿Estado del LED?",
+    "mqtt_unique_id": "ID Único",
+    "mqtt_name": "Nombre",
+    "mqtt_path": "Ruta MQTT"
+  },
+  "messages": {
+    "success": "Configuración guardada con éxito",
+    "error": "Error al conectar con el dispositivo",
+    "load_error": "Problema al cargar los datos",
+    "save_success": "Actualización exitosa",
+    "save_error": "Problema al guardar los datos"
+  },
+  "ap": {
+    "title": "Punto de Acceso",
+    "provide access point": "Proporcionar un Punto de Acceso...",
+    "status": "Estado del Punto de Acceso",
+    "settings": "Configuración del Punto de Acceso",
+    "ssid": "Nombre del Punto de Acceso (SSID)",
+    "password": "Contraseña",
+    "ip_address": "Dirección IP",
+    "max_clients": "Máximo de Clientes",
+    "save_success": "Configuración del Punto de Acceso guardada con éxito",
+    "save_error": "Error al guardar la configuración del Punto de Acceso",
+    "subnet": "Máscara de Subred",
+    "gateway": "Puerta de Enlace",
+    "dns": "Servidor DNS",
+    "channel": "Canal",
+    "hide_ssid": "¿Ocultar SSID?",
+    "local_ip": "IP Local",
+    "connected_clients": "Clientes Conectados",
+    "provisioning": {
+      "MODE_LABEL": "Siempre",
+      "MODE_DISCONNECTED": "Cuando WiFi esté Desconectado",
+      "MODE_NEVER": "Nunca"
+    },
+    "status_list": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo",
+      "LINGERING": "Pendiente hasta estar inactivo",
+      "UNKNOWN": "Desconocido"
+    },
+    "ap_status": {
+      "CONNECTED": "Conectado",
+      "DISCONNECTED": "Desconectado",
+      "PROVISIONING": "En Provisión"
+    },
+    "mac_address": "Dirección MAC"
+  },
+  "wifi": {
+    "title": "Conexión WiFi",
+    "status": "Estado de la Conexión WiFi",
+    "settings_title": "Configuración de la Conexión WiFi",
+    "ssid": "SSID",
+    "scan": "Escanear Redes WiFi",
+    "password": "Contraseña",
+    "ip_address": "Dirección IP",
+    "mac_address": "Dirección MAC",
+    "save_success": "Configuración de WiFi guardada con éxito",
+    "save_error": "Error al guardar la configuración de WiFi",
+    "subnet": "Máscara de Subred",
+    "gateway": "Puerta de Enlace",
+    "dns": "Servidor DNS",
+    "static_ip_q": "¿Usar IP Estática?",
+    "hostname": "Nombre del Dispositivo (Hostname)",
+    "scanner": {
+      "title": "Escáner de Redes WiFi",
+      "scanning": "Escaneando redes WiFi...",
+      "timeout_error": "Tiempo agotado para escanear redes WiFi",
+      "list_error": "Error al listar redes WiFi",
+      "scan_error": "Error al iniciar el escaneo de redes WiFi",
+      "scan_again": "Escanear de nuevo"
+    },
+    "security": "Seguridad",
+    "channel": "Canal",
+    "no_networks": "No se encontraron redes WiFi",
+    "dns_ip_1": "Servidor DNS 1",
+    "dns_ip_2": "Servidor DNS 2",
+    "manual_config": "Configuración Manual",
+    "forget_network": "Olvidar esta Red",
+    "forget_title": "¿Olvidar red Wi-Fi actual?",
+    "forget_confirm": "El módulo se desconectará de la red Wi-Fi y eliminará las credenciales guardadas (SSID: {{ssid}}). Podrás escanear y conectarte a un punto de acceso diferente.",
+    "forget_action": "Olvidar y Escanear",
+    "forgot_success": "Red Wi-Fi olvidada con éxito",
+    "forgot_error": "Error al olvidar la red Wi-Fi",
+    "scan_new": "Escanear Redes"
+  },
+  "wifi_status": {
+    "INACTIVE": "Inactivo",
+    "IDLE": "En espera",
+    "NO_SSID": "SSID no disponible",
+    "CONNECTED": "Conectado",
+    "CONNECT_FAILED": "Error de conexión",
+    "CONNECTION_LOST": "Conexión perdida",
+    "DISCONNECTED": "Desconectado",
+    "UNKNOWN": "Desconocido"
+  },
+  "ntp": {
+    "title": "Cliente NTP",
+    "status_title": "Estado NTP",
+    "tabs": {
+      "status": "Estado NTP",
+      "settings": "Configuración NTP"
+    },
+    "fields": {
+      "status": "Estado",
+      "server": "Servidor NTP",
+      "local_time": "Hora Local",
+      "utc_time": "Hora UTC",
+      "uptime": "Tiempo de Actividad (Uptime)",
+      "enable": "¿Activar NTP?",
+      "tz_label": "Zona horaria",
+      "tz_format": "Formato de Zona horaria",
+      "tz_placeholder": "Zonas Horarias"
+    },
+    "settings": {
+      "server": "Servidor NTP",
+      "time_zone": "Zona Horaria"
+    },
+    "status_list": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo",
+      "UNKNOWN": "Desconocido",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "unknown": "Desconocido"
+    },
+    "setup": {
+      "dialog_title": "Configurar Hora",
+      "dialog_desc": "Ingrese la fecha y hora local a continuación para configurar el dispositivo.",
+      "set_button": "Establecer Hora",
+      "success": "Hora configurada con éxito",
+      "error": "Problema al actualizar la hora"
+    },
+    "status": "Estado NTP",
+    "enable": "¿Activar NTP?",
+    "dialog": {
+      "title": "Configurar Hora",
+      "description": "Ingrese la fecha y hora local a continuación para configurar el dispositivo.",
+      "submit": "Establecer Hora"
+    },
+    "messages": {
+      "time_set_success": "Hora configurada con éxito",
+      "time_set_error": "Problema al actualizar la hora"
+    },
+    "rtc": {
+      "title": "Hardware RTC DS3231 (ZS-042)",
+      "chip_status": "Módulo RTC",
+      "chip_detected": "Dallas DS3231 Detectado (TCXO ±2ppm)",
+      "chip_not_detected": "No Detectado (Modo Banco)",
+      "temp_tcxo": "Temperatura TCXO",
+      "sync_status": "Sincronización NTP",
+      "synced": "Sincronizado con NTP",
+      "pending_sync": "Pendiente de Sincronización",
+      "drift_label": "Desfase Detectado",
+      "drift_exact": "0 seg (Exacto)",
+      "last_sync": "Última Sincronización NTP",
+      "eeprom_title": "Memoria EEPROM AT24C32",
+      "eeprom_detected": "4096 bytes No Volátiles Disponibles (0x57)",
+      "eeprom_not_detected": "No Detectada",
+      "sync_button": "Sincronizar RTC ahora",
+      "syncing": "Sincronizando...",
+      "sync_success": "RTC DS3231 sincronizado y calibrado con éxito",
+      "sync_error": "Fallo al sincronizar con el servidor NTP"
+    }
+  },
+  "mqtt": {
+    "title": "MQTT",
+    "status": "Estado",
+    "tabs": {
+      "status": "Estado MQTT",
+      "settings": "Configuración MQTT"
+    },
+    "fields": {
+      "client_id": "ID de Cliente",
+      "disconnect_reason": "Motivo de desconexión",
+      "uptime": "Tiempo de Actividad (Uptime)",
+      "server": "Servidor MQTT",
+      "local_time": "Hora Local",
+      "utc_time": "Hora UTC",
+      "enabled": "¿Habilitar MQTT?",
+      "host": "Servidor (Host)",
+      "port": "Puerto",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "client_id_optional": "ID de Cliente (opcional)",
+      "keep_alive": "Keep Alive (segundos)",
+      "clean_session": "¿Sesión Limpia?",
+      "max_topic_length": "Longitud Máxima de Tópico"
+    },
+    "status_list": {
+      "connected": "Conectado",
+      "disconnected": "Desconectado",
+      "disabled": "No habilitado"
+    },
+    "reasons": {
+      "user_ok": "Desconectado por el usuario",
+      "unacceptable_protocol": "Versión de protocolo no aceptada",
+      "id_rejected": "ID de cliente rechazado",
+      "server_unavailable": "Servidor no disponible",
+      "malformed_credentials": "Credenciales mal formadas",
+      "not_authorized": "No autorizado",
+      "bad_fingerprint": "Huella TLS inválida",
+      "tcp_disconnected": "Conexión TCP cerrada",
+      "unknown": "Error desconocido"
+    }
+  },
+  "security": {
+    "title": "Seguridad",
+    "tabs": {
+      "users": "Gestionar Usuarios",
+      "settings": "Ajustes de Seguridad"
+    },
+    "users": {
+      "username": "Nombre de Usuario",
+      "role": "Rol / Permisos",
+      "add_user": "Añadir Usuario",
+      "admin": "Administrador",
+      "standard_user": "Usuario Estándar",
+      "user_single": "Usuario",
+      "edit_title": "Editar {{item}}"
+    },
+    "fields": {
+      "jwt_secret": "Secreto JWT",
+      "username": "Nombre de Usuario",
+      "password": "Contraseña",
+      "is_admin": "¿Es Administrador?",
+      "role_assignment": "Asignación de Rol"
+    },
+    "messages": {
+      "jwt_warning": "La clave JWT se utiliza para firmar los tokens de autenticación. Si modifica el Secreto JWT, se cerrará la sesión de todos los usuarios.",
+      "admin_privileges": "Acceso total al sistema: configuración de hardware, red y gestión de usuarios.",
+      "supervisor_privileges": "Acceso a reportes y estado de tanques. Sin permisos de configuración crítica.",
+      "operator_privileges": "Acceso limitado a la pantalla de despacho y monitorización de flujo.",
+      "admin_required": "Se requiere al menos un usuario administrador configurado."
+    }
+  },
+  "system": {
+    "title": "Sistema",
+    "tabs": {
+      "status": "Estado del Sistema",
+      "ota": "Ajustes OTA",
+      "upload": "Cargar Firmware",
+      "uploadfs": "Cargar Sistema de Archivos",
+      "language": "Idioma",
+      "filemgr": "Administrador de Archivos"
+    },
+    "status_fields": {
+      "heap": "Memoria Heap (Libre / Máx)",
+      "fragmentation": "fragmentación",
+      "device": "Dispositivo (Plataforma / SDK)",
+      "cpu_freq": "Frecuencia de CPU",
+      "psram": "PSRAM (Total / Libre)",
+      "sketch": "Programa / Sketch (Tamaño / Libre)",
+      "flash_chip": "Chip Flash (Tamaño / Velocidad)",
+      "fs": "Sistema de Archivos (Uso / Total)",
+      "free": "libres"
+    },
+    "actions": {
+      "restart": "Reiniciar",
+      "factory_reset": "Restaurar Fábrica"
+    },
+    "dialogs": {
+      "restart_title": "Confirmar Reinicio",
+      "restart_content": "¿Está seguro de que desea reiniciar el dispositivo?",
+      "factory_reset_title": "Confirmar Restauración de Fábrica",
+      "factory_reset_content": "¿Está seguro de que desea restablecer el dispositivo a sus valores de fábrica? Esta acción no se puede deshacer."
+    },
+    "messages": {
+      "restarting": "El dispositivo se está reiniciando...",
+      "factory_reset_done": "Dispositivo restaurado. Se reiniciará en breve.",
+      "firmware_updated": "Actualización de firmware exitosa"
+    },
+    "errors": {
+      "restart_failed": "Error al intentar reiniciar el dispositivo",
+      "factory_reset_failed": "Error al intentar restaurar de fábrica"
+    },
+    "ota": {
+      "enable_label": "¿Habilitar actualizaciones OTA?",
+      "port_label": "Puerto",
+      "password_label": "Contraseña de actualización"
+    },
+    "upload": {
+      "error_title": "Error de Aplicación",
+      "warning": "Suba un nuevo archivo de firmware (.bin) a continuación para reemplazar el firmware existente.",
+      "app_failed": "Fallo al configurar la aplicación, por favor actualice la página para intentarlo de nuevo.",
+      "drop_or_click": "Arrastre el archivo o haga clic aquí",
+      "uploading": "Subiendo...",
+      "uploading_percent": "Subiendo: {{percent}}%"
+    },
+    "language": {
+      "title": "Idioma",
+      "select_label": "Seleccionar Idioma",
+      "helper_text": "Selecciona tu idioma preferido para la interfaz."
+    },
+    "uploadfs": {
+      "warning": "Cargar imagen del filesystem (.bin) para reemplazar el sistema de archivos. El dispositivo reiniciará automáticamente."
+    },
+    "features": {
+      "fetch_failed": "Error al obtener detalles de la aplicación."
+    },
+    "restart_monitor": {
+      "message": "El dispositivo se está reiniciando, por favor espere...",
+      "error": "Tiempo de espera agotado esperando el reinicio del dispositivo."
+    },
+    "file_manager": {
+      "title": "Explorador de Archivos",
+      "info": "Gestión directa de archivos en memoria Flash y MicroSD",
+      "tab_littlefs": "Memoria Interna (LittleFS)",
+      "tab_sd": "MicroSD Histórica",
+      "sd_card_title": "Tarjeta MicroSD Industrial (Caja Negra)",
+      "sd_fat_info": "Formato FAT • Tipo: {{card_type}} • Capacidad: {{capacity}} GB ({{used}} MB usados)",
+      "sd_present_need_format": "Tarjeta detectada físicamente en zócalo, pero requiere formateo para montar sistema de archivos.",
+      "sd_not_present": "No se detecta ninguna tarjeta MicroSD en el zócalo interno.",
+      "chip_sd_ok": "MicroSD ≥ 8GB Operativa",
+      "chip_sd_small": "MicroSD < 8GB",
+      "chip_sd_need_format": "Requiere Formato",
+      "chip_sd_none": "No Detectada",
+      "btn_remount": "Remontar",
+      "btn_remounting": "Verificando...",
+      "btn_format": "Formatear SD",
+      "btn_formatting": "Formateando...",
+      "btn_refresh": "Refrescar lista",
+      "files_count": "{{count}} archivo(s) en {{storage}}",
+      "upload_btn": "Subir Archivo",
+      "uploading": "Subiendo...",
+      "col_name": "Ruta / Nombre del Archivo",
+      "col_size": "Tamaño",
+      "col_actions": "Acciones",
+      "action_download": "Descargar archivo",
+      "action_delete": "Eliminar archivo",
+      "empty": "No hay archivos almacenados en este volumen.",
+      "dialog_format_title": "Formatear Tarjeta MicroSD",
+      "dialog_format_confirm": "¿Está absolutamente seguro de que desea formatear la tarjeta MicroSD?",
+      "dialog_format_warning": "Todos los registros y bitácoras históricas almacenadas en la tarjeta MicroSD serán eliminados permanentemente. Esta acción no se puede deshacer.",
+      "dialog_format_btn": "Sí, Formatear SD",
+      "sd_unmounted_warning": "La tarjeta MicroSD no se encuentra montada actualmente. Puede insertar una tarjeta de al menos 8GB y presionar \"Remontar\", o presionar \"Formatear SD\" para inicializar la partición FAT32.",
+      "toast_format_success": "✅ Formateo de MicroSD completado con éxito.",
+      "toast_format_error": "Fallo durante el formateo.",
+      "toast_remount_success": "✅ MicroSD detectada y montada exitosamente.",
+      "toast_upload_error": "Fallo al subir el archivo.",
+      "toast_delete_confirm": "¿Está seguro de eliminar el archivo \"{{name}}\"?",
+      "toast_delete_critical": "⚠️ ADVERTENCIA CRÍTICA: Borrar \"{{name}}\" es un archivo esencial para el funcionamiento o auditoría.\n¿Desea continuar?"
+    }
+  },
+  "ntp_settings": {
+    "server": "Servidor NTP",
+    "time_zone": "Zona Horaria",
+    "time_zone_placeholder": "Seleccione zona horaria..."
+  },
+  "upload": {
+    "error_title": "Error de Aplicación",
+    "warning": "Suba un nuevo archivo (.bin) a continuación para reemplazar el firmware existente.",
+    "app_failed": "Fallo al configurar la aplicación, por favor actualice la página para intentarlo de nuevo.",
+    "drop_or_click": "Arrastre el archivo o haga clic aquí",
+    "uploading": "Subiendo...",
+    "uploading_percent": "Subiendo: {{percent}}%",
+    "success": "Carga exitosa",
+    "aborted": "Carga cancelada",
+    "failed": "Fallo al subir el archivo"
+  },
+  "cavas": {
+    "title": "Supervisión de Cavas Frigoríficas",
+    "subtitle": "Supervisión de Cavas • Monitoreo Modbus RTU en Tiempo Real",
+    "liveView": "Cavas en Vivo",
+    "alarmsTitle": "Alarmas ISA-18.2",
+    "diagnostic": "Diagnóstico Modbus",
+    "normal": "Normal",
+    "alarm": "Alarma",
+    "offline": "Fuera de línea",
+    "noCommunication": "Sin Comunicación",
+    "alarmTempHigh": "Alarma: Temp Alta",
+    "alarmHrLow": "Alarma: HR Baja",
+    "alarmHrHigh": "Alarma: HR Alta",
+    "focusMode": "Modo Enfoque para Móvil",
+    "closeFocus": "Cerrar Enfoque",
+    "temperature": "TEMPERATURA",
+    "activeHumidity": "HUMEDAD ACTIVA",
+    "relativeHumidity": "HUMEDAD RELATIVA ACTIVA",
+    "currentTemp": "TEMPERATURA ACTUAL DE CÁMARA",
+    "setpoint": "Consigna",
+    "setpointShort": "SP",
+    "adjust": "Ajustar",
+    "modifySetpoint": "Modificar Consigna ({{variable}})",
+    "modifyPrompt": "Introduzca la nueva consigna deseada para la cámara {{id}}. Esta acción requiere PIN de Mantenedor / Administrador.",
+    "newSetpoint": "Nueva Consigna ({{unit}})",
+    "adminPin": "PIN de Administrador (ej. 1234)",
+    "saveAndTransmit": "Guardar y Transmitir",
+    "cancel": "Cancelar",
+    "invalidNumeric": "Valor numérico inválido",
+    "setpointQueued": "Consigna encolada con éxito hacia el bus Modbus",
+    "setpointError": "Error al aplicar consigna",
+    "commError": "Error de comunicación",
+    "cooling": "Frío",
+    "fan": "Fan",
+    "defrost": "Defrost",
+    "steam": "Vapor",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "rs485Link": "Enlace RS-485: {{percent}}% OK • Evap: {{temp}}°C",
+    "slaveModbus": "Esclavo Modbus ID {{id}} • Tipo: {{type}}",
+    "thermalTrend": "Tendencia Térmica de las Últimas 24 Horas (Buffer RAM)",
+    "accumulatingSamples": "Aún acumulando muestras de proceso en el búfer circular...",
+    "time24hAgo": "Hace 24h ({{count}} pts)",
+    "timeNow": "Ahora",
+    "tempPv": "Temp PV (°C)",
+    "noCavasFound": "No hay cavas detectadas actualmente en el bus. Ve a la pestaña de Diagnóstico Modbus para ejecutar un barrido automático de la red RS-485.",
+    "descriptions": {
+      "c1": "Cava 1 - Conservación",
+      "c2": "Cava 2 - Maduración",
+      "c3": "Cava 3 - Maduración",
+      "c4": "Cava 4 - Maduración",
+      "c5": "Cava 5 - Maduración",
+      "c6": "Cava 6 - Conservación",
+      "c6a": "Cava 6A - Conservación",
+      "cava_1": "Cava 1 - Conservación",
+      "cava_2": "Cava 2 - Maduración",
+      "cava_3": "Cava 3 - Maduración",
+      "cava_4": "Cava 4 - Maduración",
+      "cava_5": "Cava 5 - Maduración",
+      "cava_6": "Cava 6 - Conservación",
+      "cava_6a": "Cava 6A - Conservación"
+    }
+  },
+  "diagnostic": {
+    "title": "Diagnóstico y Descubrimiento Modbus RS-485",
+    "subtitle": "Herramientas de sondeo, calidad de enlace físico y detección de controladores en el bus de cavas.",
+    "scanTitle": "Barrido de Red (Auto-Discovery)",
+    "scanDesc": "Explora el rango de direcciones Modbus configurado para detectar automáticamente nuevos controladores KIDE KP-100 y KIDEMATIC-970.",
+    "idStart": "ID Inicio",
+    "idEnd": "ID Fin",
+    "resetList": "Limpiar registro previo y redescubrir desde cero",
+    "startScan": "Iniciar Barrido RS-485",
+    "scanningId": "Escaneando ID {{id}}...",
+    "pollingSlave": "Sondeando esclavo #{{id}}...",
+    "scanComplete": "Barrido completado. {{count}} dispositivos encontrados.",
+    "scanStarting": "Iniciando exploración por el bus RS-485...",
+    "scanError": "Error al iniciar el barrido Modbus",
+    "pingTitle": "Prueba de Ping a Esclavo Físico",
+    "pingDesc": "Útil durante el cableado en bornera o pruebas de laboratorio con la tarjeta eletechsup ES32D26 para comprobar la respuesta inmediata de un controlador.",
+    "pingLabel": "ID Modbus a Consultar",
+    "runPing": "Ejecutar Ping",
+    "pingSuccess": "¡Esclavo ID {{id}} Respondió en {{rtt}} ms!",
+    "pingModel": "Modelo: {{model}} • Temp PV: {{temp}}°C",
+    "pingFail": "Sin respuesta del esclavo ID {{id}} (Timeout o error de CRC). Verifique el cableado RS-485 (A/B) y la polaridad.",
+    "metricsTitle": "Métricas de Calidad de Enlace RS-485",
+    "noActiveCavas": "No hay cavas activas monitoreadas aún.",
+    "colCava": "Cava",
+    "colId": "ID Modbus",
+    "colStatus": "Estado",
+    "colTx": "Consultas TX",
+    "colRx": "Respuestas OK",
+    "colTimeouts": "Timeouts",
+    "colCrc": "Errores CRC",
+    "colLastRtt": "Último RTT",
+    "colQuality": "Calidad (Q%)",
+    "colModel": "Modelo",
+    "colTemp": "Temp",
+    "colHr": "HR",
+    "colRtt": "RTT"
+  }
+}

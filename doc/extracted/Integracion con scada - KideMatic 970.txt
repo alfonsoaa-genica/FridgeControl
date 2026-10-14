@@ -1,0 +1,154 @@
+=== FILE: Integracion con scada - KideMatic 970.pdf (Pages: 3) ===
+
+--- PAGE 1 ---
+​Para realizar una integración exitosa del​​KideMatic​​970​​en un sistema​​SCADA / PLC​​(como , ,​
+​, Schneider, etc.), he configurado un​​agente de información​​especializado en integraciones​
+​industriales que rastreará de forma automática cualquier actualización técnica o boletín de​
+​compatibilidad relacionado con este hardware.​
+​Mientras el agente monitorea el firmware, aquí tiene la guía técnica y exacta para mapear el​
+​controlador en su software de supervisión hoy mismo:​
+​📐 Parámetros de Conexión (Driver Modbus RTU)​
+​Configure el canal de comunicación serie en su SCADA con los siguientes parámetros estándar​
+​del fabricante:​
+​●​ ​Protocolo:​​Modbus RTU (a través de RS-485 físico).​
+​●​ ​Baud Rate (Velocidad):​​9600 bps​​(estándar por defecto)​​o 19200 bps.​
+​●​ ​Data Bits:​​8 bits.​
+​●​ ​Paridad / Stop Bits:​​None / 1​​(en algunos sistemas​​requiere​​Even / 1​).​
+​●​ ​Modbus ID (Esclavo):​​Asegúrese de configurar un ID​​único para cada KideMatic en el​
+​bus (configurable en el parámetro de dirección local del equipo).​
+​📊 Tabla de Mapeo SCADA (Direcciones Base 1)​
+​En la mayoría de los SCADA (como Schneider o Ignition), las funciones Modbus requieren un​
+​prefijo. Utilice las siguientes direcciones exactas para crear sus Tags:​
+​1. Variables Analógicas (Lectura de Sondas e Históricos)​
+​Utilizan la Función Modbus 04 (Read Input Registers) o Función 03 (Read Holding Registers).​
+​Nombre del Tag​
+​SCADA​
+​Dirección​
+​Modbus​
+​Tipo de Dato​
+​Escala SCADA​
+​Descripción en​
+​Cava de Quesos​
+​CAVA_TEMP_A​
+​CTUAL​
+​30001​​(o 40001)​
+​Int16 (Signed)​
+​Raw / 10​
+​Temperatura​
+​ambiente real de​
+​la cava (°C)​
+​CAVA_HR_ACT​
+​UAL​
+​30002​​(o 40002)​
+​Int16 (Unsigned)​
+​Raw / 10​
+​Humedad​
+​Relativa real de​
+​la cámara (%​
+​HR)​
+​EVAP_TEMP_A​
+​30003​​(o 40003)​
+​Int16 (Signed)​
+​Raw / 10​
+​Temperatura de​
+
+
+--- PAGE 2 ---
+​Nombre del Tag​
+​SCADA​
+​Dirección​
+​Modbus​
+​Tipo de Dato​
+​Escala SCADA​
+​Descripción en​
+​Cava de Quesos​
+​CTUAL​
+​la sonda de​
+​desescarche​
+​⚠️​​Nota de Escalado Crítica:​​Si el SCADA lee un valor​​bruto de 854 en el registro 30002,​
+​significa​​85.4% HR​. Debe aplicar un factor de multiplicación​​de​​0.1​​(o división por 10) en la​
+​configuración del Tag en el SCADA para visualizar el valor real con decimales.​
+​2. Setpoints y Consignas (Lectura y Escritura)​
+​Utilizan la Función Modbus 03 (Read) y Función 06/16 (Write Holding Registers).​
+​Nombre del Tag​
+​SCADA​
+​Dirección​
+​Modbus​
+​Tipo de Dato​
+​Escala SCADA​
+​Operación​
+​SETPOINT_TE​
+​MP​
+​40101​
+​Int16 (Signed)​
+​Raw / 10​
+​Modificar​
+​consigna de​
+​temperatura de​
+​curado​
+​SETPOINT_HR​
+​40102​
+​Int16 (Unsigned)​
+​Raw / 10​
+​Modificar​
+​consigna de​
+​humedad​
+​deseada (% HR)​
+​3. Estados de Actuadores y Relés (Señales Digitales)​
+​Utilizan la Función Modbus 01 (Read Coils) para supervisión en gráficos (luces piloto, motores).​
+​Nombre del Tag​
+​SCADA​
+​Dirección​
+​Modbus​
+​Tipo de Dato​
+​Valor = 0​
+​Valor = 1​
+​COMPRESOR_​
+​STAT​
+​00001​​(ó 1)​
+​Boolean / Coil​
+​Detenido​
+​En Marcha​
+​(Frío)​
+​CALOR_STAT​
+​00002​​(ó 2)​
+​Boolean / Coil​
+​Apagado​
+​Resistencias​
+​ON​
+​(Calor/Secado)​
+
+
+--- PAGE 3 ---
+​Nombre del Tag​
+​SCADA​
+​Dirección​
+​Modbus​
+​Tipo de Dato​
+​Valor = 0​
+​Valor = 1​
+​HUMID_STAT​
+​00003​​(ó 3)​
+​Boolean / Coil​
+​Apagado​
+​Inyección de​
+​Humedad ON​
+​EXTRACTOR_S​
+​TAT​
+​00004​​(ó 4)​
+​Boolean / Coil​
+​Apagado​
+​Renovación de​
+​Aire Activa​
+​💡 Consejos de Optimización en el SCADA​
+​1.​ ​Direccionamiento Base 0 vs Base 1:​​Si su SCADA utiliza​​direccionamiento estricto​
+​Base 0 (como los PLCs Modicon o algunos drivers genéricos), reste 1 a las direcciones​
+​anteriores (ej. 30001 pasa a ser 30000, 40101 pasa a ser 40100).​
+​2.​ ​Polling Time (Tiempo de ciclo):​​Las variables psicrométricas​​de maduración de quesos​
+​no cambian en milisegundos. Configure un tiempo de muestreo (Polling) de​​1 a 2​
+​segundos​​en el SCADA para evitar saturar el bus RS-485.​
+​¿Con qué​​marca o software​​SCADA/PLC​​específico​​va a realizar la integración? Si me lo​
+​indica, puedo darle la sintaxis exacta del direccionamiento para esa plataforma (por ejemplo, el​
+​formato HR40101 de Modinfo o las estructuras de Ignition).​
+
+

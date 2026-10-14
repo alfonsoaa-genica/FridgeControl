@@ -1,0 +1,134 @@
+=== FILE: Manual_Registros_Modbus_Kide_KP100_Secmatic970.pdf (Pages: 2) ===
+
+--- PAGE 1 ---
+Guía de Registros Modbus - Controladores Kide
+Este documento técnico recopila la información y mapas de registros Modbus estimados para los controladores Kide
+KP-100 y Secmatic-970 (KideMatic), utilizados en refrigeración general y cavas de maduración de quesos
+respectivamente.
+1. Controlador Kide KP-100 (Refrigeración General)
+Utilizado típicamente en cámaras frigoríficas estándar de conservación o congelación. Trabaja principalmente sobre
+variables de temperatura y desescarche.
+Dirección
+Tipo
+Acceso
+Parámetro / Descripción
+Escala / Unidad
+30001
+Integer
+R
+Temperatura de Cámara (Sonda ambiente)
+°C / °F (x10)
+30002
+Integer
+R
+Temperatura de Evaporador (Desescarche)
+°C / °F (x10)
+40101
+Integer
+R/W
+Set Point de Temperatura (Consigna)
+°C / °F (x10)
+40102
+Integer
+R/W
+Diferencial / Histéresis
+°C / °F (x10)
+00001
+Coil
+R
+Estado del Compresor
+0=OFF, 1=ON
+00002
+Coil
+R
+Estado de Ventiladores
+0=OFF, 1=ON
+00003
+Coil
+R
+Estado de Desescarche
+0=OFF, 1=ON
+40301
+Integer/Co
+il
+R/W
+Comando Desescarche Manual
+Escribir 1 para activar
+2. Controlador Secmatic-970 / KideMatic (Maduración de Quesos)
+Diseñado para secaderos y cavas de maduración. Este modelo cuenta con control psicrométrico integral gestionando
+temperatura, humedad relativa, aportes de calor y ventilación controlada.
+Dirección
+Tipo
+Acceso
+Variable de Maduración
+Escala / Unidad
+30001
+Integer
+R
+Temperatura de la Cava (Ambiente)
+°C (x10)
+30002
+Integer
+R
+Humedad Relativa Activa
+% HR (x10)
+30003
+Integer
+R
+Temperatura del Evaporador
+°C (x10)
+40101
+Integer
+R/W
+Set Point de Temperatura
+°C (x10)
+40102
+Integer
+R/W
+Set Point de Humedad Relativa
+% HR (Ej: 850 = 85%)
+40103
+Integer
+R/W
+Diferencial de Temperatura
+°C (x10)
+40104
+Integer
+R/W
+Diferencial de Humedad Relativa
+% HR
+00001
+Coil
+R
+Estado del Compresor (Frío)
+0=OFF, 1=ON
+
+
+--- PAGE 2 ---
+00002
+Coil
+R
+Estado de Resistencias (Calor)
+0=OFF, 1=ON
+00003
+Coil
+R
+Estado del Humidificador
+0=OFF, 1=ON
+00004
+Coil
+R
+Estado del Extractor / Renovación
+0=OFF, 1=ON
+00005
+Coil
+R
+Estado de Ventiladores Internos
+0=OFF, 1=ON
+3. Configuración de Comunicación Serie (Por Defecto)
+• Protocolo: Modbus RTU sobre capa física RS-485
+• Velocidad (Baud Rate): 9600 bps (o 19200 bps según la revisión del firmware)
+• Bits de Datos: 8 | Bits de Parada: 1
+• Paridad: Ninguna (None) o Par (Even)
+
+

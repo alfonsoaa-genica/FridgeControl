@@ -1,0 +1,1808 @@
+=== FILE: 570651281-COLD-PAK-100.pdf (Pages: 32) ===
+
+--- PAGE 1 ---
+ 
+COLD PAK 100 
+ 
+ 
+ 
+ 
+INTRODUCTION MANUAL TO THE CP-100 
+ 
+Manual version 1.0   (31-March-2004) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+C/ ZUAZNABAR 36 
+POLIGONO UGALDETXO 
+20180 OIARTZUN - GUIPUZCOA - ESPAÑA 
+ +34 943 492 642    ¬ +34 943 490 305 
+Web: http://www.efcsa.com
+E-mail: efc@efcsa.com
+ 
+ 
+ 
+ 
+INDICE 
+ (Ver 1.0) 
+Página 1 de 32 
+
+
+--- PAGE 2 ---
+ 
+ 
+ 
+ 
+INDICE 
+ (Ver 1.0) 
+Página 2 de 32 
+
+
+--- PAGE 3 ---
+ 
+ 
+ 
+ 
+INDICE 
+ (Ver 1.0) 
+Página 3 de 32 
+ 
+1. DESCRIPTION OF THE COLD-PAK-100 REMOTE CONTROL FRONT PART 5 
+2. USER’S EDITION __________________________________________ 7
+2.1. 
+DESCRITPION OF THE USER’S EDITION ______________________________ 7
+3. USER’S CONFIGURATION OF THE COLD-PAK 100 REMOTE CONTROL 8 
+3.1. 
+STRUCTURE OF THE USER’S CONFIGURATION__________________________ 8 
+3.2. DESCRIPTION OF THE USER’S CONFIGURATION ________________________ 9 
+4. EFC CONFIGURATION OF THE COLD-PAK 100 REMOTE CONTROL __10 
+4.1. 
+REMARKS ABOUT THE USE OF THE KEYS DURING THE EDITIONS __________ 10 
+4.2. ACCESS TO THE CONFIGURATION ____________________________________ 
+4.3. STRUCTURE OF THE EFC CONFIGURATION. _____________________________ 
+4.3.1. 
+ACCESS TO THE CONFIGURATION:_____________________________12 
+4.3.2. CONFIGURATION OF THE REMOTE CONTROL :____________________13 
+4.3.3. CONFIGURATION OF THE CONTROLS : __________________________14 
+4.3.4. MAINTENANCE OF THE CONTROLS :____________________________15 
+4.4. DESCRIPTION OF THE EFC CONFIGURATION __________________________16
+5. CONNECTIONS OF THE CP-100 REMOTE CONTROL ______________ 
+ADVISES FOR THE WIRE SYSTEM: _______________________________________19 
+6. CONNECTIONS OF COLD-PACK 100 CONTROL __________________20 
+ADVISES FOR THE WIRE SYSTEM: _______________________________________21 
+CONNECTIONS SKETCH OF THE CP-100 CONTROL __________________________ 22 
+7. CONFIGURATION OF THE COMMUNICATION BETWEEN THE REMOTE 
+CONTROL AND THE CONTROL _______________________________ 23 
+8. ERRORS, FAILURES AND WARNINGS _________________________26 
+ERRORS, FAILURES AND WARNINGS CHART ______________________________ 27 
+ 
+ 
+
+
+--- PAGE 4 ---
+ 
+ 
+ 
+ 
+Página 4 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 5 ---
+1. DESCRIPTION OF THE COLD-PAK 100 REMOTE CONTROL 
+FRONT PART 
+COLD - PAK 100
+S e t  = - 2 0 . 0 º C
+1        T e m p = - 2 0 . 5 º C 
+F
+ 
+1) THE LCD DISPLAY  
+The LCD Display consists of 2 lines and each one has 16 characters of good visibility. This display 
+indicates the real Temperature and Relative Humidity figures (if there is humidification control) and 
+their respective set-points. It also shows the situation of some events, such as errors, and gives 
+different messages during the configuration. 
+2) KEY ‘FOR ALL’ 
+ 
+This key is located in the “Configuration Menu”. It allows to save the modified figures, just in one 
+Control or in all Controls at the same time. The same function can be carried out with the Key ‘ON/OFF’. 
+If we press this key for one second, it can also start / stop the scanner of the Controls, which are 
+installed in its communication net. If we press this key shortly, it shows the output relays figures, 
+situation of the machine, temperature, and other data of another Control. 
+The time of the Control’s display is by default of 10 seconds. This time can be modified by the 
+user. When the Key ‘FOR ALL’ is activated (Led num. 8 illuminated), the COLD-PAK 100 REMOTE 
+CONTROL will select the Control, which is indicated on the display. Once the time, which has been 
+configured by the user, is over, another Control will be displayed. 
+ 
+3) KEY ‘ON/OFF’ 
+ 
+This Key allows to start / stop the Controls. If the Key ‘FOR ALL’ is not activated, the only 
+control that should start / stop, would be the one which is displayed by the remote control. If the Key 
+‘FOR ALL’ is activated and press the Key 
+, all the Controls can start / stop. 
+The Controls will not start / stop, if there is the following indication: ‘Modifications = Not 
+Allowed.’ 
+4) KEY ‘FUNCTION’ F
+ 
+This key allows to display the temperature figures or the  humidity ones. If we press it for 2 
+seconds, it ask for the access password to go into the configurations menu of the COLD-PAK 100 
+ 
+ 
+ 
+ 
+Página 5 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 6 ---
+REMOTE CONTROL or the Controls. If we press it for 7 seconds, it allows to go into the 
+configurations / maintenances menu, but modifications are not allowed. 
+5) KEY ‘INPUT’ 
+ 
+This key is used to edit and validate (saved in memory) the temperature set-point, the humidity 
+set-point and all configuration parameters. If we press it for 2 seconds, it allows to start / stop the  
+defrosting of the Control, that is displayed at that moment. 
+The defrosting can not start / stop, if there is the following indication: ‘Modifications = Not Allowed’. 
+6) KEY ‘GO DOWN’ 
+ 
+This key allows us to move down along the different configuration menus and also to decrease the 
+edited figures. 
+7) KEY ‘GO UP’ 
+ 
+This key allows us to move up along the different configuration menus and also to increase the 
+edited figures. 
+8) LED ‘FOR ALL’ 
+- 
+If the Led is illuminated= the Key ‘For All’ is activated. It also means, that the remote control 
+is scanning the Controls. 
+- 
+If the Led is not illuminated= the Key ‘For All’ is not activated 
+- 
+If the Led blinks= the key ‘For All’ is activated, but all the Controls have not the same set-
+points or they have not the same ON/OFF situations.  
+9) LED ‘START /STOP’ 
+It indicates that the Control, which is being displayed, is in ‘start/stop’ situation.  
+10) LED ‘COOLING ACTION IS WORKING’  
+The cooling action takes place when the VSL relay or AIX1 relay (depending on the configuration 
+parameters) are activated. 
+11) LED ‘FAN IS WORKING’. 
+This led indicates that the evaporator fan is working. 
+12) LED ‘DEFROSTING ACTION IS WORKING’ 
+This led has got an intermittent light, when the defrosting of the displayed Control is ready to 
+start the defrosting action, but there is already one Control, which has started its defrosting. 
+13) LED ‘AUXILIARY ACTION  IS WORKING’ 
+This led is on, when there is an auxiliary action. It takes place, when there is a cooling control 
+output or humidity control output (depending on the settled configuration).  
+14) LED ‘FAILURE’ 
+The led is illuminated, when there is a serious failure, that activates the alarm (the ‘OK’ relay is 
+not activated).  
+The led’s light will be intermittent, when there is a failure, but this one has not activated the 
+alarm ( the ‘OK’ relay is not activated). 
+If the led has an intermittent light, but the LCD does not show any failure /warning message, that 
+means that the failure /warning has taken place in another Control. In this case, we will press the key 
+, 
+until we will be able to see the message of failure/warning of the damaged Control.  
+ 
+ 
+ 
+ 
+Página 6 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 7 ---
+ 
+ 
+ 
+2. USER’S EDITION 
+2.1. 
+DESCRIPTION OF THE USER’S EDITION 
+When we are in the initial situation of the display, if we press shortly the key 
+, we will go into 
+the set-point’s edition menu. The set-point’s signal will be intermittent. 
+If there is this symbol (*) beside the Control number, that means, that the value of the set-point 
+that is being edited, is not the same in all the Controls. 
+The keys 
+ or 
+ allow to modify  the set-point’s value. We press the key 
+, in order to save 
+the new value. 
+Modifications will not be possible, when there is the following indication: ‘Modifications: Not 
+Allowed”. 
+ 
+Edition of the temperature set-point:  
+Only EFC is allowed to settle and modify the maximum and minimum set-points. The user can 
+configure 
+the 
+values 
+inside 
+the 
+max 
+and 
+min. 
+set-points. 
+(‘LIM.MIN.CONSIGNA’ 
+and 
+‘LIM.MAX.CONSIGNA’) (see page 11). 
+ 
+Edition of the humity set-point: 
+Its values go from 0.0% to 100.0%. 
+ 
+ 
+ 
+ 
+Página 7 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 8 ---
+ 
+3. USER’S CONFIGURATION OF THE COLD-PAK 100 REMOTE 
+CONTROL 
+3.1. 
+STRUCTURE OF USER’S CONFIGURATION  
+ 
+1
+3
+5
+2
+4
+ durante 2 sg
+Pulsando la tecla 
+ se entra en la edición del 
+mostrándose éste de forma intermitente.
+Con las teclas de 
+ y 
+ se modifica el valor
+Para guardarlo habrá que pulsar la tecla 
+ , momento en el que dejará de parpadear.
+ 
+ 
+VALOR, 
+ 
+ 
+Para salir de la configuración en cualquier momento y no guardar el valor modificado pulsar la tecla 
+ , 
+ o 
+ 
+ 
+ 
+F
+NUEVA CLAVE USR.
+1
+TEMP. = - 5.2 ºC
+Si contraseña incorrecta
+ON
+VALOR
+VALOR
+VALOR
+VALOR
+VALOR
+IDIOMA
+F
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+ 
+If we press the key¿?, we go into the VALUE’S edition. The value’s signal will be intermittent. The keys ¿? 
+And ¿? Allows us to modify the value. 
+Press key to save the modified value. At that moment, the value’s signal blinks no more. 
+Press keys... to leave the configuration menu at any time, without saving the modified value. 
+ 
+ 
+ 
+ 
+ 
+ 
+Página 8 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 9 ---
+ 
+ 
+ 
+3.2. 
+DESCRIPTION OF THE USER’S CONFIGURATION  
+In the main screen, if we press for 2 seconds the key 
+F , we enter in the first configuration 
+screen: 
+1) ACCESS CODE: Access code to the configurations menu 
+The keys 
+ and 
+ allow to introduce the value of the access code.  
+Once the value has been introduced, we should press the key 
+ to confirm it. If the value of the 
+introduced code is not correct, the unit will leave the configurations and return to the main screen. 
+2) MODIF.PERMIT 
+This parameter can have 2 values: ‘Yes’ or ‘No’. It is used to avoid that other users can make 
+possible values’ modifications.  
+If we select the value ‘No’: 
+. The set-points can not be modified, 
+. The manual start / stop defrosting can not be made 
+. The situation of the key ON/OFF can not be changed 
+. The order for outside cold inlet will be ignored.  
+3) TIME FOR SCANNING 
+In the main screen, when the key 
+ is activated, this parameter indicates the time that the 
+Cold-Pak 100 takes in order to go through each Control’s display. The values are situated between 0 and 
+15 seconds. Please, bear in mind that if only one Control is connected to the remote control, there will not 
+be any scan and this parameter will be ignored by the Cold-Pak 100. 
+4) LANGUAGE 
+This parameter indicates the language of the display. 
+5) NEW USER’S CODE. : New user’s access code 
+The value of the new access code is introduced. 
+ 
+ 
+Modifications permit 
+Yes 
+Time for scanning 
+10 seconds 
+Language 
+English 
+User’s configuration code 
+235 
+ 
+ 
+ 
+ 
+Página 9 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 10 ---
+ 
+4. EFC CONFIGURATION OF COLD-PAK 100 REMOTE CONTROL 
+4.1. 
+REMARKS ABOUT THE USE OF THE KEYS DURING THE EDITIONS 
+The user can move himself through the configuration menu with the following keys: 
+ o 
+  in order to move inside the same level or to modify a value 
+ 
+ 
+  in order to go to a deeper level or to edit a value and confirm it 
+ 
+F
+  in order to go up the following higher level or to escape without saving the value,  
+                   that has being edited. 
+ to go to another Control or to activate or not activate the option ‘For all’, if we 
+press the key for 1 second. 
+      
+   in order to leave definitely the configuration 
+ 
+Once we are situated in one specific parameter of the screen, if we press the key 
+ we go into 
+the edition of a value. The value’s signal should blink. The value can be modified if we press the keys 
+ 
+or 
+. In order to validate it and save it, press again the key 
+.  
+If the display shows the symbol (*) beside the number of the control, that means that the value is 
+being edited, is not the same in all the Controls. 
+ 
+4.2. 
+ACCESS TO CONFIGURATION MENU 
+ 
+Please follow the following instructions in order to access to the configuration menu: in the main 
+screen, press keys F
+ + 
+ for 4 seconds. In the access code screen, in the left lower part of the 
+display will be shown a value in brackets. This value can have up to three figures: X Y Z. The user should 
+communicate those figures to EFC. Then EFC will calculate the access code value, which is valid for this 
+precise moment. 
+ 
+There is also the possibility of making a direct configuration without access code. In this 
+situation, the user can see whatever he wants, except the access codes. There is not possible to make any 
+modification. To go into in this possibility, press the key ‘F’ for 7 seconds. 
+ 
+ 
+ 
+ 
+Página 10 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 11 ---
+ 
+4.3. 
+STURCTURE OF EFC CONFIGURATION 
+5 - NUEVA CLAVE
+4 - USUARIO
+2.1 - COMUNICACION PC
+2.2 - COMUN.CONTROLES
+2.3 - MANTENIM. MANDO
+2.1.1 - DIRECCION PC
+2.2.1 - NUMERO CONTROLES
+2.3.1 - VER-CHEC: MASTER
+2.1.2 - VELOCIDAD PC
+2.2.2 - VELOCIDAD CONTR.
+2.3.2 - VER-CHEC: SLAVE
+2.3.3 - PULSAR TECLAS
+2.3.4 - VER LEDS TECLADO
+2.3.5 - RST.HARD.-MAX.SP
+2.3.6 - 24C16-CORTE RED
+2.3.7 - CARGA DEFECTO
+3.1 - CTRL. TEMPERATURA
+3.2 - CTRL. HUMEDAD
+3.3 - DESESCARCHE
+3.4 - VENTILADOR
+3.5 - SENSORES
+3.6 - MANTENIMIENTO
+3.1.1 - LIM. MIN. CONSIGNA
+3.3.1 - TIPO DESESCARCHE
+3.5.1.1 - TIPO TEMP. AMB.
+3.5.2.1 - TIPO HUM. AMB.
+3.5.3.1 - TIPO TEMP. ASPIR.
+3.5.4.1 - TIPO TEMP. DESC.
+3.5.5.1 - TIPO PRES. ASP.
+3.5.6.1 - TIPO PRES. DESC.
+3.2.1 - SELECC. HUM. REG.
+3.1.2 - LIM. MAX. CONSIGNA
+3.3.2 - DESES. AUTOMATICO
+3.4.2 - TEMP. FRIO-V ARR.
+3.5.1.2 - AJUSTE TEMP. AMB.
+3.5.2.2 - AJUSTE HUM. AMB.
+3.5.3.2 - AJUSTE TEMP. ASP.
+3.5.4.2 - AJUSTE TEMP. DES.
+3.5.5.2 - RANGO BAJO P. ASP.
+3.5.6.2 - RANGO BAJO P. DES
+3.5.5.3 - RANGO ALTO P. ASP.
+3.5.6.3 - RANGO ALTO P. DES
+3.5.5.4 - AJUSTE PRES. ASP.
+3.5.6.4 - AJUSTE PRES. DESC
+3.2.2 - TIPO CTRL. HUMED.
+3.1.3 - SELECC. TEMP. REG
+3.3.3 - T. ENTRE DESESC.
+3.4.3 - T. CICLI. V MARCHA
+3.5.3 - TEMP. ASPIRACION
+3.2.3 - HISTER. CONS. HUM
+3.1.4 - HISTE. CONS. TEMP.
+3.3.4 - TEMP. FINAL DESES
+3.4.4 - T. CICLI. V PARADA
+3.5.4 - TEMP. DESCARGA
+3.5.5 - PRES. ASPIRACION
+3.5.6 - PRES. DESCARGA
+3.1.5 - HISTER. TEMP. ALTA
+3.3.5 - T. MAX. DESESCARC.
+3.1.6 - TEMP. CAMB. BITEMP
+3.3.6 - T. ESCURRIDO DES.
+3.1.7 - T. MIN. ARR. FRIO
+3.1.8 - REPARTO USO FRIO
+3.1.9 - T. LIMI. SEGU. FRIO
+3.5.1 - TEMP. AMBIENTE
+3.5.2 - HUMEDAD AMBIENTE
+3.6.2.1 - E-AVERIAS y LED
+3.6.3.1 - S-VSL y LED
+3.6.4.1 - E-TEMP. AMBIENTE
+3.6.4.2 - E-HUM. AMBIENTE
+3.6.4.4 - E-HUM. LOCAL
+3.6.4.5 - E-TEMP. ASP. LOCAL
+3.6.4.6 - E-TEMP. DES. LOCAL
+3.6.4.7 - E-PRES. ASP. LOCAL
+3.6.4.8 - E-PRES. DES. LOCAL
+3.6.3.2 - S-VENTIL. y LED
+3.6.3.3 - S-DESESC. y LED
+3.6.3.4 - S-OK y LED
+3.6.3.5 - S-AUX1  y LED
+3.6.2.2 - E-KLIXON y LED
+3.6.2.3 - E-REMOTO y LED
+3.6.3 - S-DIGITALES
+3.6.4 - E-ANALOGICAS
+3.6.5 - VER LED TEST
+3.6.6 - SW1:    1     2     3     4
+3.6.7 - PONER/QUITAR J2
+3.6.8 - RST.REPARTO FRIO
+3.6.9 - CONT. HORAS FRIO
+3.6.10 - RST.HARD.-MAX.SP
+3.6.11 - 2416  -  CORTE RED
+3.6.12 - CARGA DEFECTO
+3.6.1 - VER-CHEC:CONTROL
+3.6.2 - E-DIGITALES
+F
+F
+F
+-
+-
+4.3 - IDIOMA
+4.4 - NUEVA CLAVE USR.
+ 
+ 
+ 
+ 
+Página 11 de 32 
+CP-100 
+(Ver 1.0) 
+
+
+--- PAGE 12 ---
+4.3.1. ACCESS TO THE CONFIGURATION: 
+ 
+3.X
+2.X
+4.X
+1
+3
+5
+2
+4
+ durante 2 sg
+NUEVA CLAVE
+1
+TEMP. = - 5.2 ºC
+Si contraseña incorrecta
+ON
+VALOR
+VALOR
+USUARIO
+F
++
+Configuración del MANDO
+Configuración de los CONTROLES
+Configuración de USUARIO
+Edición (
+ intermitente)
+VALOR
+ 
+ 
+ 
+ 
+ 
+CP-100 
+(Ver 1.0) 
+Página 12 de 32 
+
+
+--- PAGE 13 ---
+4.3.2. REMOTE CONTROL’S CONFIGURATION : 
+2.1
+2.2
+2.3
+2.1.1
+2.2.1
+2.3.3.1
+2.3.1
+2.1.2
+2.2.2
+2.3.2
+2.3.3
+2.3.4
+2.3.5
+2.3.6
+2.3.7
+VALOR
+VALOR
+INTRO
+VALOR
+VALOR
+COMUNICACION PC
+COMUN.CONTROLES
+MANTENIM. MANDO
+DIRECCION PC
+NUMERO CONTROLES
+VER-CHEC: MASTER
+VELOCIDAD PC
+VELOCIDAD CONTR.
+VER-CHEC: SLAVE
+PULSAR TECLAS
+PULSAR TECLAS
+VER LEDS TECLADO
+RST.HARD.-MAX.SP
+24C16-CORTE RED
+CARGA DEFECTO
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+NO SI
+ / 
+Edición (
+ / 
+ intermitente)
+NO SI
+X.X  -  XXXX
+X.X  -  XXXX
+No
+X    XXH   XX
+OK
+No
+ 
+ 
+ 
+ 
+CP-100 
+(Ver 1.0) 
+Página 13 de 32 
+
+
+--- PAGE 14 ---
+4.3.3. CONTROLS’ CONFIGURATION : 
+3.1
+3.2
+3.3
+3.4
+3.5
+3.6
+CTRL. TEMPERATURA
+CTRL. HUMEDAD
+DESESCARCHE
+VENTILADOR
+SENSORES
+MANTENIMIENTO
+MANTENIMIENTO CONTROLES
+3.1.1   LIM. MIN. CONSIGNA
+3.3.1   TIPO DESESCARCHE
+3.5.1.1   TIPO TEMP. AMB.
+3.5.2.1   TIPO HUM. AMB.
+3.5.3.1   TIPO TEMP. ASPIR.
+3.5.4.1   TIPO TEMP. DESC.
+3.5.5.1   TIPO PRES. ASP.
+3.5.6.1   TIPO PRES. DESC.
+3.2.1   SELECC. HUM. REG.
+3.1.2   LIM. MAX. CONSIGNA
+3.3.2   DESES. AUTOMATICO
+3.4.2   TEMP. FRIO-V ARR.
+3.5.1.2   AJUSTE TEMP. AMB.
+3.5.2.2   AJUSTE HUM. AMB.
+3.5.3.2   AJUSTE TEMP. ASP.
+3.5.4.2   AJUSTE TEMP. DES.
+3.5.5.2   RANGO BAJO P. ASP.
+3.5.6.2   RANGO BAJO P. DES
+3.5.5.3   RANGO ALTO P. ASP.
+3.5.6.3   RANGO ALTO P. DES
+3.5.5.4   AJUSTE PRES. ASP.
+3.5.6.4   AJUSTE PRES. DESC
+3.2.2   TIPO CTRL. HUMED.
+3.1.3   SELECC. TEMP. REG
+3.3.3   T. ENTRE DESESC.
+3.4.3   T. CICLI. V MARCHA
+TEMP. ASPIRACION
+3.2.3   HISTER. CONS. HUM
+3.1.4   HISTE. CONS. TEMP.
+3.3.4   TEMP. FINAL DESES
+3.4.4   T. CICLI. V PARADA
+TEMP. DESCARGA
+PRES. ASPIRACION
+PRES. DESCARGA
+3.1.5   HISTER. TEMP. ALTA
+3.3.5   T. MAX. DESESCARC.
+3.1.6   TEMP. CAMB. BITEMP
+3.3.6   T. ESCURRIDO DES.
+3.1.7   T. MIN. ARR. FRIO
+3.1.8   REPARTO USO FRIO
+3.1.9   T. LIMI. SEGU. FRIO
+3.5.1
+3.5.2
+3.5.3
+3.5.4
+3.5.5
+3.5.6
+3.6.X
+TEMP. AMBIENTE
+HUMEDAD AMBIENTE
+Edición (
+ intermitente)
+VALOR
+Edición (
+ intermitente)
+VALOR
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+ 
+ 
+ 
+ 
+CP-100 
+(Ver 1.0) 
+Página 14 de 32 
+
+
+--- PAGE 15 ---
+4.3.4. CONTROLS’ MAINTENANCE : 
+  
+ 
+ 
+15 
+3.6.2.1   E-AVERIAS y LED
+3.6.3.1   S-VSL y LED
+3.6.4.1   E-TEMP. AMBIENTE
+3.6.4.2   E-HUM. AMBIENTE
+3.6.4.4   E-HUM. LOCAL
+3.6.4.5   E-TEMP. ASP. LOCAL
+3.6.4.6   E-TEMP. DES. LOCAL
+3.6.4.7   E-PRES. ASP. LOCAL
+3.6.4.8   E-PRES. DES. LOCAL
+3.6.3.2   S-VENTIL. y LED
+3.6.3.3   S-DESESC. y LED
+3.6.3.4   S-OK y LED
+3.6.3.5   S-AUX1  y LED
+3.6.2.2   E-KLIXON y LED
+3.6.2.3   E-REMOTO y LED
+S-DIGITALES
+E-ANALOGICAS
+VER LED TEST
+SW1:    1     2     3     4
+PONER/QUITAR J2
+RST.REPARTO FRIO
+Edición (
+ /  intermitente)
+NO SI
+Edición (
+ /  intermitente)
+No Si
+Edición (
+ intermitente)
+NO SI
+ / 
+CONT. HORAS FRIO
+CARGA DEFECTO
+Si   No   No   No
+No
+No
+XXXX'
+XXXX'
+No
+3.6.1
+3.6.10
+3.6.2
+3.6.3
+3.6.4
+3.6.5
+3.6.6
+3.6.7
+3.6.8
+3.6.9
+VER-CHEC:CONTROL
+X.X  -  XXXX
+E-DIGITALES
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+ 
+
+
+--- PAGE 16 ---
+4.4. 
+DESCRIPTION OF EFC CONFIGURATION 
+ 
+In the main screen, if we press for 2 seconds the keys F
+ and 
+, we go into the first 
+configuration screen: 
+1) REMOTE CONTROL:  
+Remote Control’s values by default: 
+2.1.1 
+DIRECCION PC 
+ PC’s address 
+255 [1...255] 
+2.1.2 
+   PC SPEED 
+Communication’s speed with PC 
+9600 bps 
+2.2.1 
+NUMBER 
+OF 
+CONTROLS 
+Number of controls 
+4 [1...4] 
+2.2.2 
+CONTROL SPEED 
+Communication’s speed with Controls 
+9600 bps 
+ 
+ 
+2) CONTROL:  
+ 
+Control’s values by default: 
+ 
+Contol’s State 
+ON 
+Temperature Set-point 
+-10.0 ºC 
+Humidity Set-point 
+75.0 % 
+ 
+  
+ 
+ 
+16 
+
+
+--- PAGE 17 ---
+  
+ 
+ 
+17 
+ 
+3.1.1 
+LIM.MIN.CONSIGNA 
+Minimum limit of temperature set-point’s edition 
+-25 ºC [-45...20] 
+3.1.2 
+LIM.MAX.CONSIGNA 
+Maximum limit of temperature set-point’s edition 
+0 ºC [-45...20] 
+3.1.3 
+SELECC.TEMP.REG 
+Temperature selection 
+control nº1 Æ Main ...[Remote...Local] 
+rest of controls Æ   Remote 
+3.1.4 
+HISTE.CONS.TEMP 
+Temperature set-point’s hysteresis 
+2.0 ºC [0,1...10] 
+3.1.5 
+HISTER.TEMP.ALTA 
+High temperature hysteresis 
+5 ºC [2...20] 
+3.1.6 
+TEMP.CAMB.BITEMP 
+Temperature for changing into multi-temperature 
+-50 ºC [-50...-1] 
+3.1.7 
+T.MIN.ARR.FRIO 
+Minimum time between cool starts 
+20 seconds [2...120] 
+3.1.8 
+REPARTO USO FRIO 
+Distribution of the compressors’ wear 
+Sí 
+3.1.9 
+T.LIMI.SEGU.FRIO 
+Security limit time between cool starts 
+15 minutes [5...120] 
+3.2.1 
+SELECC.HUM.REG. 
+Humidity selection 
+Local...[Main...Remote] 
+3.2.2 
+TIPO CTRL..HUM 
+Humidity control type 
+Humidified...[Do not exist...Dried] 
+3.2.3 
+HISTER.CONS.HUM 
+Humidity set-point’s hysteresis 
+4.0 % [1...10] 
+3.3.1 
+TIPO DESESCARCHE 
+Defrosting type 
+Gas...[Do not exist...Air...Electric] 
+3.3.2 
+DESES.AUTOMATICO Automatic defrosting 
+Yes 
+3.3.3 
+T.ENTRE DESESCARC 
+Time between defrostings 
+6 hours [1...24] 
+3.3.4 
+TEMP.FINAL DESES 
+Final defrosting temperature 
+20 ºC [0...40] 
+3.3.5 
+T.MAX.DESESCARC 
+Maximum defrosting time 
+30 minutes [1...60] 
+3.3.6 
+T.ESCURRIDO DES. 
+Drained defrosting time 
+60 seconds [0...240] 
+3.4.1 
+TEMP.FRIO-V PAR. 
+Temporize time between VSL-stop and V-stop  
+10 seconds [2...60] 
+3.4.2 
+TEMP.FRIO-V ARR. 
+Temporize time between VSL-start and V-start  
+10 seconds [2...60] 
+3.4.3 
+T.CICL.V MARCHA 
+Cyclic Temporize time of working fan 
+0 seconds [0...240] 
+3.4.4 
+T.CICL.V PARADA 
+Cyclic Temporize time of stopped fan 
+10 minutes [0...30] 
+3.5.1.1 
+TIPO TEMP.AMB 
+Ambient temperature sensor type 
+control nº1 Æ      PT-100...[Do not exist] 
+rest of controls Æ   Do not exist 
+3.5.1.2 
+AJUSTE TEMP.AMB 
+Ambient temperature adjustment 
+0.0 [-10...+10] 
+3.5.2.1 
+TIPO HUM.AMB 
+Ambient humidity sensor type 
+Do not exist...[PT-100] 
+3.5.2.2 AJUSTE HUM.AMB 
+Ambient humidity adjustment 
+0.0 [-10...+10] 
+3.5.3.1 
+TIPO TEMP.ASPIR 
+Suction temperature sensor type 
+PT-100...[Do not exist] 
+3.5.3.2 AJUSTE TEMP.ASP 
+Suction temperature adjustment 
+0.0 [-10...+10] 
+3.5.4.1 
+TIPO TEMP.DESC. 
+Discharge temperature sensor type 
+Do not exist...[PT-100] 
+3.5.4.2 AJUSTE TEMP.DES. 
+Discharge temperature adjustment 
+0.0 [-10...+10] 
+3.5.5.1 
+TIPO PRES.ASP. 
+Suction pressure sensor type 
+Do not exist...[4-20mA] 
+3.5.5.2 RANGO BAJO P.ASP. 
+Low rank of suction pressure 
+0.0 [-1...30] 
+3.5.5.3 RANGO ALTO P.ASP 
+High rank of suction pressure 
+30.0 [-1...30] 
+3.5.5.4 AJUSTE PRES.ASP 
+Suction pressure adjustment 
+0.0 [-10...+10] 
+3.5.6.1 
+TIPO PRES.DESC. 
+Discharge pressure sensor type 
+Do not exist...[4-20mA] 
+3.5.6.2 RANGO BAJO P.DES. 
+Low rank of discharge pressure 
+0.0 [-1...30] 
+3.5.6.3 RANGO ALTO P.DES 
+High rank discharge pressure 
+30.0 [-1...30] 
+3.5.6.4 AJUSTE PRES.DESC 
+Discharge pressure adjustment 
+0.0 [-10...+10] 
+3.6.8 
+RST.REPARTO FRIO 
+Minutes timer of cool use distribution 
+0 minutes 
+3.6.9 
+CONT.HORAS FRIO 
+Cool hours timer 
+0 hours 
+
+
+--- PAGE 18 ---
+ 
+ 
+5. CONNECTIONS OF THE CP-100 REMOTE CONTROL  
+ 
+The connections are made by extractable connectors, that are inserted according to the 
+‘Connections sketch’ of page num 19. 
+CONNECTOR B3 (T-486-1) (POWER LINES): 
+ 
+Terminals 1 and 2:  220 V.A.C. 50/60 Hz. 
+ 
+CONNECTOR B4 (T-486-1) (COMMUNICATION LINES): 
+ 
+Terminals 27 and 28: If there is a jumper between pins num. 1 and 2 of J4: RS485 Signal, to 
+establish a serial communication with the PC. 
+ 
+ 
+If there is a jumper between pins num. 2 and 3 of J4: RS422 TX Signal, to 
+establish a serial communication with the PC. 
+ 
+Terminals 29 and 30: If there is a jumper between pins num. 2  and  3 of  J4 :  RS422  RX Signal, 
+to establish a serial communication with the PC. 
+ 
+Terminals 25 and 26: RS485 Signal, to establish a serial communication with the controls. 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+18 
+
+
+--- PAGE 19 ---
+ADVICES FOR THE WIRE SYSTEM: 
+ 
+Signal and communication lines pipes should be independent from the power lines ones. There also 
+should be the maximum separation between both pipes throughout all the power lines laying, in order to 
+avoid interferences and electrical noises. 
+ 
+ 
+COLD PACK 100 REMOTE CONTROL’S CONNECTIONS SKETCH: 
+ 
+ 
+T486-1
+J4
+B3
+B4
+Tx-PC
+Rx-PC
+27
+28
+29
+30
+25
+26
+1
+2
+1
+3
+Tr+
+Tr-
+TX+
+TX-
+RX+
+RX-
+Tr+
+Tr-
+RS485 - PC
+Unir 1-2 de J4
+RS422 - PC
+Unir 2-3 de J4
+RS485
+CONTROLES
+ALIMENTACION
+220 V.C.A. 50/60 Hz
+422
+485
+ 
+ 
+  
+ 
+ 
+19 
+
+
+--- PAGE 20 ---
+ 
+ 
+ 
+6. COLD-PACK 100 CONTROL’S CONNECTIONS 
+ 
+The connections are made by extractable connectors, that are inserted according to the 
+‘Connections sketch’ of page num. 22. 
+. 
+ 
+CONNECTOR B1 (T-490-0) (POWER LINES): 
+ 
+Terminals 1 y 2: 220 V.A.C. 50/60 Hz. 
+Terminal 3: Output’s common supply. Unido a una de las fases. 
+Terminal 4: VSL output. Relay 220 V.A.C / 5 Amp. 
+Terminal 5: Fan output. Relay 220 V.A.C / 5 Amp. 
+Terminal 6: Defrosting output. Relay 220 V.A.C. / 5 Amp. 
+Terminal 7: OK output. Relay 220 V.A.C / 5 Amp. 
+Terminal 8: Auxiliary output 1. Relay 220 V.A.C. / 5 Amp. 
+CONNECTOR B2 (T-490-0) (POWER LINES): 
+ 
+Terminal 9: Digital input’s common supply. 
+Terminal 10: Failure input. 
+Terminal 11: End-of-Defrosting Klixon input . 
+Borna 12: Input of remote cool order. 
+  
+ 
+ 
+20 
+
+
+--- PAGE 21 ---
+  
+ 
+ 
+21 
+CONNECTOR B3(T-490-0) (SIGNAL LINES): 
+ 
+Terminals 13, 14 and 15:  PT100 input with three wires (Suction Temperature).  
+ 
+Terminals 16, 17 and 18:  PT100 input with three wires (Ambient Temperature). 
+ 
+Terminals 19, 20 and 21:  PT100 input with three wires (Ambient humidity or Discharge 
+Temperature). 
+CONNECTOR B4 (T-490-0) (SIGNAL LINES): 
+ 
+Terminal 22: Común de la entrada de mA (activ, > +12 V ). 
+ 
+Terminal 23: mA input. (Suction pressure) 
+ 
+Terminal 24: mA input. (Discharge pressure) 
+CONNECTOR B5 (T-490-0) (COMMUNICATIONS LINES): 
+ 
+Terminals 25 and 26: RS485 Signal for serial communication. 
+ 
+ 
+ADVICES FOR THE WIRE SYSTEM: 
+ 
+Signal and communication lines pipes should be independent from the power lines ones. There also 
+should be the maximum separation between both pipes throughout all the power lines laying, in order to 
+avoid interferences and electrical noises. 
+. 
+
+
+--- PAGE 22 ---
+ 
+CP-100 CONTROL’S CONNECTIONS SKETCH 
+ 
+ 
+ 
+ 
+T490-0
+1
+2
+3
+4
+ON
+SW1
+Tx
+TEST
+Rx
+1
+2
+21
+20
+19
+18
+17
+16
+15
+14
+13
+24
+23
+26
+22
+25
+9
+10
+11
+12
+3
+4
+5
+6
+7
+8
+J1
+B1
+B2
+B3
+B4
+B5
+DEFAULT (carga por defecto)
+VSL
+VENTIL
+DESES
+AVE
+ALA OK
+KLI
+AUX1
+REMOTO
+Tr+
+Tr-
+RS485
+ALIMENTACION
+220 V.C.A. 50/60 Hz
+Pt 1
+Tª ASP.
+Tª AMB.
+HR% AMB.
+o
+Tª DESC.
+Pt 2
+Pt 3
+> +12V
+P.ASP.
+P.DES.
+VSL
+VENTIL.
+DESESC.
+ALARMA  OK
+AUX.1
+COMUN
+KLIXON
+AVERIA
+FRIO REMOTO
+220V
+220V
+ 
+ 
+  
+ 
+ 
+22 
+
+
+--- PAGE 23 ---
+ 
+7. CONFIGURATION OF THE COMMUNICATION 
+BETWEEN THE REMOTE CONTROL AND THE 
+CONTROL 
+ 
+Switch 1 - SW1 
+Switch 2 - SW1 
+DIRECTION / Nº 
+CONTROL 
+OFF 
+OFF 
+1 
+OFF 
+ON 
+2 
+ON 
+OFF 
+3 
+ON 
+ON 
+4 
+1
+2
+3
+4
+ON
+SW1
+ 
+Micro-switches installed in each control’s plate. 
+ 
+EXAMPLE OF INSTALLATION: 
+ 
+ 
+ 
+PC
+Conversor RS232/RS485
+o
+Conversor RS232/RS422
+MANDO
+MANDO
+MANDO
+MANDO
+MANDO
+MANDO
+MANDO
+CONTROL
+CONTROL
+CONTROL
+CONTROL
+CONTROL
+CONTROL
+CONTROL
+CONTROL
+.....
+.....
+Repetidor
+Hasta 32 mandos o esclavos
+Hasta 4 controles de un mando
+RS485
+ 
+ 
+  
+ 
+ 
+23 
+
+
+--- PAGE 24 ---
+UNIFILAR SKETCH 
+The evaporating unit wire of compact units is always connected at workshop. 
+Please, find below the sketch of a the split version. 
+CABLEADO EQUIPOS SPLIT SYSTEM
+CÂBLAGE UNITES SPLIT SYSTEM  (BI-BLOCK)
+SPLIT SYSTEM UNITS WIRING 
+DESESCARCHE  ELECTRICO
+DEGIVRAGE  ELECTRIQUE
+ELECTRIC  DEFROST 
+CABLEADO
+CÂBLAGE
+WIRING 
+BOX
+Ø
+DESESCARCHE GAS 
+DEGIVRAGE GAZ
+GAZ DEFROST
+CABLEADO
+CÂBLAGE
+WIRING 
+Ø
+(*) Según potencia de 
+desescarche. Ver esquema 
+eléctrico del equipo.
+(**) No en equipos CPA .
+(***)Solo en equipos que 
+lleven las VSL en 
+Evaporador.
+El cableado 1, 2, 3, 4 irá 
+realizado desde fábrica en 
+equipos compactos.
+1. Alimentación y klixon de 
+los ventiladores  
+2. Alimentación resistencias 
+desescarche
+3. Klixon fin desescarche, 
+klixon seguridad, 
+resistencias 
+4. VSL1, VSL2.
+5. Sonda de Tª de cámara.
+(*)  Selon puissance de 
+dégivrage.Voir schéma 
+électrique de l'unité.
+(**)  Pas dans les unités  
+CPA.
+(***)Uniquement pour les 
+Cold-pak
+qui ont une VSL dans 
+l´evaporateur.
+Les modèles compactes 
+seront fournis avec le 
+câblage 1, 2, 3, 4 installé.
+1. Alimentation klixon des 
+ventilateurs
+2. Alimentation résistances 
+de dégivrage
+3. Klixon fin dégivrage, klixon 
+securité, résistances. 
+4. VSL1,VSL2.
+5. Sonde de chambre.
+(*)  According to defrost 
+power. Check the electric 
+scheme of the unit.
+(**) Not included with CPA 
+units.
+(***)Exists only in cold paks 
+that have VSL in 
+evaporators.
+In the compact models the 
+wirings1, 2, 3, 4 and 5 are 
+already installed in the 
+factory.
+1 Fans klixon´s power 
+supply.
+2. Defrost heaters' power 
+supply
+3. Defrost klixon, security 
+klixon, heaters.
+4. VSL1,VSL2.
+5. Room temperature probe.
+  
+ 
+ 
+24 
+
+
+--- PAGE 25 ---
+COMMUNICATIONS TO THE PC 
+ 
+  
+ 
+ 
+25 
+ 
+
+
+--- PAGE 26 ---
+  
+ 
+ 
+26 
+
+
+--- PAGE 27 ---
+8. ERRORS, FAILURES AND WARNINGS 
+ 
+ 
+ 
+ 
+Whenever there is an error, failure or warning, the display will indicate the failure type. The ‘OK’ output will be disconnected, 
+depending on the seriousness of the failure. When the ‘OK’ output is disconnected, the failure led of the remote control will light up. 
+The light will be intermittent, if the failure is not so important as to disconnect the ‘OK’ output. 
+ 
+As long as there is the error, failure or warning, the lower line of the display’s message will be shown alternately with the 
+normal display of each screen.  A failure will be solved, as soon as its cause disappears. 
+ 
+The light of the Led ‘TEST’, which is situated in the control card, will blink each time that the control detects an error, a 
+failure or a warning 
+ 
+It is possible to have several failures at the same time, but the display screen  will only show the most serious one. In that 
+case, once the biggest problem has been solved, the display screen will show a less important warning. La prioridad en los mensajes 
+seguirá el mismo orden que la descripción de cada aviso que se realiza a continuación. 
+  
+ 
+ 
+27 
+
+
+--- PAGE 28 ---
+ERRORS, FAILURES AND WARNINGS CHART 
+The chart below shows the errors from the most to the less important ones. 
+DISPLAY’S MESSAGE  DESCRIPTION
+ACTIONS IN THE REMOTE 
+CONTROL/CONTROL
+POSSIBLE CAUSE
+POSSIBLE SOLUTION
+‘ERROR RANGE 1234’ 
+The temperature set-point is out of the 
+limits (max or min) in one or several 
+Controls. 
+The display shows the number(s) of he 
+control(s) that has or have caused the 
+error. 
+Press any key, to delete the warning message. 
+ 
+- The edited temperature set-
+point  is out of the limits, 
+therefore his writing has been 
+rejected. 
+- To check the configuration of 
+the temperature set-point 
+limits : 
+LIM. MIN. CONSIGNA 
+LIM. MAX. CONSIGNA 
+‘ERROR WRITE 1234’ 
+A parameter or set-point has been wrong 
+edited in one or several Controls. This 
+error can also be found in one or several 
+Controls, when the ON/OFF order or the 
+Defrosting order is being executed. 
+This failure takes place, once we have 
+tried the edition for three times in one 
+Control. 
+The Display shows the number(s) of he 
+control(s) that has or have caused the 
+error. 
+Press any key, to delete the warning message. 
+ 
+ 
+- Intermittent communication 
+failures. 
+- To edit again. 
+- To check the connection and 
+the configuration of 
+communication between the 
+Remote Control and the Control. 
+‘ERROR COM. SLAVE’ 
+Internal communication failure among the 
+Remote Control’s microprocessors: Master 
+/ Slave. 
+The communication with the PC wil not work. 
+The leds do not light. If the microcontroller  
+Slave Works, but there is not any 
+communication between Slave and Master, all 
+the leds will have a quick intermittent light. 
+The message will disappear as soon as the 
+communication is re-established. 
+- Failure of the Remote’s Control 
+Slave microprocessor 
+- To switch off and then to 
+switch on. 
+- To replace the Remote Control 
+ 
+  
+ 
+ 
+28 
+
+
+--- PAGE 29 ---
+DISPLAY’S MESSAGE  
+DESCRIPTION
+ACTIONS IN THE REMOTE 
+CONTROL/CONTROL
+POSSIBLE CAUSE
+POSSIBLE SOLUTION
+‘ERR.COMUNICACION’ 
+There is a communication failure with the 
+control, that is displayed at that moment. 
+ 
+ 
+The light of the leds will be intermittent. 
+The message will disappear as soon as the 
+communication is re-established. 
+If the communication between the controls is 
+not correct, the main probe can not distribute 
+the temperature and R.H. measures to the 
+remote probes and the following elements will 
+not work properly: the use of the compressors, 
+time between defrostings and sequential starts. 
+ If the communication error is only between a 
+specific number of controls, the remote control 
+will work as if there were less number of 
+controls in the room. 
+If the control receives  remote measurements, 
+it will regulate for at least 20 seconds with the 
+last received measure. Once the 20 seconds are 
+over, it will stop the regulation. The Alarm 
+output will be activated (the ‘OK’ out put will go 
+down). Defrostings and cycling times will work 
+correctly. 
+If the temperature / humidity probe is 
+configured as “a main probe”, then it will go on 
+regulating the temperature /humidity. In this 
+case the probe will go on working with its own 
+temperature set-point’s hysteresis value. 
+ 
+- There is an error in the 
+configuration of the controls’ 
+communication.  
+- There is a failure in the 
+hardware’s communication. 
+ 
+ 
+- To check the connection and 
+the configuration of the 
+communication between the 
+Remote Control and the Control. 
+ 
+- To check in the Control, that 
+the switches have the correct 
+Control address. 
+ 
+- To switch off and then to 
+switch on the remote control 
+and/or the control. 
+ 
+- To observe the led ‘TEST’ and 
+the communications in the 
+control card, in order to know, 
+if they are still working. 
+  
+ 
+ 
+29 
+
+
+--- PAGE 30 ---
+DISPLAY’S MESSAGE 
+DESCRIPTION
+ACTIONS IN THE REMOTE 
+CONTROL/CONTROL
+POSSIBLE CAUSE
+POSSIBLE SOLUTION
+‘ERR.TEMP. PRINC’ or ‘ERR. HUM. PRINC.’ 
+There is more than one Control, that have 
+been configured with a principal 
+temperature or humidity probe. 
+ 
+The Display will show this message, each time 
+that a Control is displayed. 
+The remote control will not distribute the 
+measurements of the main probe. 
+The controls that have been configured with a 
+remote probe, will also have remote temp/hum 
+error. 
+ 
+- There is an error in the 
+configuration of the Principal 
+probe selection (local or remote). 
+ 
+- To check the configuration of 
+the Controls. 
+‘ERR.TEMP. REMOTA’ or ‘ERR. HUM. 
+REMOTA’ 
+The temperature or humidity remote 
+measure does not exist. 
+This error will take place, when the 
+control is being configured with a remote 
+probe and: 
+- It does not receive, in at least 20 
+seconds,  the measure value. 
+- If we receive the following message = 
+‘does not exist’.  It is the case, when: 
+* the remote control detects that  there 
+is no Control that has a main probe 
+*or, if there is more that one control with 
+main probe 
+*or,  if the main probe’s control has been 
+configured as “does not exist”. 
+ 
+ 
+The control will follow the same process as for 
+the failures ‘AVER.TEMP.REGUL.’ or ‘AVER. 
+HUM.REGUL.’  
+ 
+ 
+-There is an error in the internal 
+configuration. It can be that: 
+*There isn’t any unit that has 
+been configured as “main unit”.  
+*Or, the main unit hasn’t got any 
+probe or has not been configured 
+with a probe. 
+ 
+ 
+ 
+- To check the configuration of 
+the controls. 
+ 
+ 
+  
+ 
+ 
+30 
+
+
+--- PAGE 31 ---
+DISPLAY’S MESSAGE 
+DESCRIPTION
+ACTIONS IN THE REMOTE CONTROL / 
+CONTROL
+POSSIBLE CAUSE
+POSSIBLE SOLUTION
+‘AVER.ENT.EXTERNA’ 
+When the failure external input has got 
+“0 Volt”. 
+ 
+The control will activate the alarm output 
+(automatically, the OK output will go down) and 
+the rest of the outp  uts will also go down. 
+The External cool order is not allowed 
+ 
+ 
+- To check the securities line inside 
+the control panel. 
+‘AVER.TEMP.REGUL.’ 
+There is a failure of the ambient 
+temperature probe, that regulates the 
+room temperature (the local or the 
+remote probe).  
+ 
+The control will activate the alarm output 
+(automatically, the OK output will go down). The 
+humidity/dry output will also go down. The 
+defrostings will work as usual. The cycling times 
+will not work. 
+ 
+ 
+- Probe’s breaking. 
+- Communication’s failure. 
+ 
+-To check the probe and its 
+connection or to configure another 
+control, which has got a main 
+temperature regulation probe . 
+- To check that the communication 
+between the remote control and the 
+controls is correct. To check the 
+connection and the configuration of 
+the CP-100.  
+‘AVER. HUM.REGUL.’ 
+There is a failure of the ambient humidity 
+probe, which regulates room humidity. 
+(the local or the remote probe). 
+ 
+ 
+The humidity regulation does not work. 
+ 
+- Probe’s breaking. 
+- Communication’s failure. 
+ 
+- To check the probe and its 
+connection or to configure another 
+control, which has got a main 
+temperature regulation probe. 
+- To check that the communication 
+between the remote control and the 
+controls is correct. To check the 
+connection and the configuration of 
+the CP-100. 
+‘AVER. TEMP. ASP.’ 
+There is a failure of the suction 
+temperature probe. 
+All the elements will work correctly, except if 
+the control is configured with defrosting by hot 
+gas. If it is the case, the defrosting will end 
+when the “max. defrosting time” is over. 
+- Probe’s breaking. 
+- To check the probe and its 
+connection or to configure the probe 
+as “It does not exist”. 
+  
+ 
+ 
+31 
+
+
+--- PAGE 32 ---
+ 
+ 
+ 
+ 
+ERRORES, AVERIAS Y AVISOS  
+ (Ver 1.0) 
+Página 32 de 32
+DISPLAY’S MESSAGE 
+DESCRIPTION
+ACTIONS IN THE REMOTE CONTROL / 
+CONTROL
+POSSIBLE CAUSE
+POSSIBLE SOLUTION
+‘TEMPERATURA ALTA’ 
+High temperature warning. 
+The temperature has gone over the set-
+point temperature + the hysteresis of the 
+high temperature warning. 
+ 
+ 
+ 
+- To wait until the temperature 
+has gone down. 
+- To check the refrigerating 
+system’s operation. 
+‘AVER. TEMP.DESC.’ 
+Failure of the discharge temperature 
+probe. 
+‘AVER. PRES. ASP.’ 
+Failure of the suction pressure probe. 
+‘AVER. PRES.DESC.’ 
+Failure of the discharge pressure probe. 
+‘AVER.TEMP. LOCAL’ 
+Failure of the local ambient temperature 
+probe.  
+‘AVER. HUM.LOCAL.’ 
+Failure of the local ambient humidity 
+probe. 
+ 
+ 
+- Probe’s breaking. 
+- If the pressure probe (4/20 
+mA) is under 2 mA or over 22 
+mA. 
+- If the pressure probe has been 
+wrong configured. That means, 
+that the values of the maximum 
+and minimum limits have been 
+changed between them. 
+ 
+- To check the probe and its 
+connection or to configure the 
+probe as “It does not exist” 
+- To check the configuration. 
+ 
+ 
+H:\JAVI\Proyectos\CP-100\Manuales 
+
+

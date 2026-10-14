@@ -1,0 +1,30 @@
+export enum MqttDisconnectReason {
+  USER_OK = 0,
+  MQTT_UNACCEPTABLE_PROTOCOL_VERSION = 1,
+  MQTT_IDENTIFIER_REJECTED = 2,
+  MQTT_SERVER_UNAVAILABLE = 3,
+  MQTT_MALFORMED_CREDENTIALS = 4,
+  MQTT_NOT_AUTHORIZED = 5,
+  TLS_BAD_FINGERPRINT = 6,
+  TCP_DISCONNECTED = 7
+}
+
+export interface MqttStatus {
+  enabled: boolean;
+  connected: boolean;
+  client_id: string;
+  disconnect_reason: MqttDisconnectReason;
+}
+
+export interface MqttSettings {
+  enabled: boolean;
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  client_id: string;
+  base_topic?: string;
+  keep_alive: number;
+  clean_session: boolean;
+  max_topic_length: number;
+}

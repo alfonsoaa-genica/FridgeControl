@@ -1,0 +1,7 @@
+.pio
+.vscode/
+interface/node_modules/
+interface/dist/
+*.tmp
+.DS_Store
+Thumbs.db

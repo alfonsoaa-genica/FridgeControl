@@ -1,0 +1,30 @@
+{
+  "jwt_secret": "genica-fridgecontrol-2026-secret-jwt",
+  "users": [
+    {
+      "username": "admin",
+      "password": "admin",
+      "admin": true
+    },
+    {
+      "username": "presidencia",
+      "password": "genica2026",
+      "admin": false
+    },
+    {
+      "username": "calidad",
+      "password": "calidad2026",
+      "admin": false
+    },
+    {
+      "username": "mantenimiento",
+      "password": "frio2026",
+      "admin": false
+    },
+    {
+      "username": "guest",
+      "password": "guest",
+      "admin": false
+    }
+  ]
+}

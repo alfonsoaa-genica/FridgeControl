@@ -1,0 +1,4370 @@
+=== FILE: SECMATIC-970 CONTROLLER - Klima-Therm.pdf (Pages: 71) ===
+
+--- PAGE 1 ---
+ 
+ 
+ 
+ 
+ 
+ 
+MI 970 0700 
+ 
+ 
+Cod. 0814819 
+EN 
+SECMATIC-970 CONTROLLER 
+ 
+ 
+ 
+Self-contained and centralized Dryers and Thawing units. 
+ 
+INSTALLATION AND USER'S MANUAL 
+ 
+
+
+--- PAGE 2 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+2 out of 71 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ GENERAL TABLE OF 
+CONTENTS 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+1st. Part: Recommendations on wiring 
+ 
+2nd. Part: Control 
+ 
+3rd. Part: Miscellaneous 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 3 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+3 out of 71 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 1st. PART 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+RECOMMENDATIONS ON WIRING 
+
+
+--- PAGE 4 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+4 out of 71 
+ 
+SECMATIC –  970 
+ 
+GENERAL RECOMMENDATIONS ON 
+WIRING 
+ 
+Wiring is to be classified in three different levels. 
+ 
+Level 1: Low level analogical and digital signals.  
+ 
+- 
+Analogical inputs: ambient probes,  
+- 
+Analogical outputs: 0-10 volt. 
+- 
+Digital inputs: thermal relay safeties, pressure switches,  
+- 
+Computer network communications.  
+ 
+Level 2: Alternating current supply and operation.  
+ 
+- 
+Digital outputs: command of contactors, solenoids, servomotors, relays ... 
+- 
+Controller supply. 
+ 
+Level 3: Large power motor and equipment supply.  
+ 
+Cables of the same level can be assembled in trunkings or conduits, except for 
+controller supply that is to be laid separately in another conduit.  
+ 
+Controller supply will be as much straight as possible from general supply, from a 
+star distribution by means of either a separate hose per machine (parallel supply of 
+several machines is to be avoided) or from three terminals specially prepared for that 
+purpose in electric panel of each dryer.  
+ 
+Minimum gap between trunkings will be 20 cm. If this is not possible, cables 
+should be laid in a common trunking with three compartments which have to be 
+separated by means of a grounded metal barrier.  
+ 
+Conduits enclosing level 1 cables must not be laid parallel to conduits with level 3 
+cables at a distance smaller than 1.5 m. 
+ 
+If cables of different levels have to intersect, keep them at 90-degrees angles.  
+ 
+When these recommendations are difficult to be met, parallel runs must not be 
+longer than 1.5 m. 
+ 
+All level 1 cables (low level) should be shielded.  
+
+
+--- PAGE 5 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+5 out of 71 
+ 
+WIRING IN CONTROLLER 
+ 
+Level 1 cables (low level) and level 2 cables reach the controller. These cables have 
+to arrive separately in three trunkings or compartments.  
+ 
+All cables of probes, safeties, analogical outputs and communications (level 1) will 
+reach the controller in the same conduit. Controller supply hose (level 2) will be laid in 
+another conduit and digital outputs hose (level 2) in a different one.  
+ 
+Supply hose (three wires: L1, L2/N, Ground) will get into the cabinet through the 
+first packing gland on the left. Within cabinet and fixed to available fastenings on side 
+wall, it will be taken up to supply connector. Ground wire of this hose will be the only 
+grounding entering controller and its only point of attachment will be the supply 
+connector. The cabinet can be grounded through anchor fastening screws. Controller 
+box is fitted with a screw with ground symbol (right side wall) that will not be used to 
+ground but to connect all shields of level 1 cables. 
+ 
+Controller supply must have a ferrite, B64290-K82-X830 (Siemens), 7 to 8 turns or 
+spirals (on the 3 wires); this ferrite can be located in its trunking or in the corner near 
+the packing gland through which the hose gets inside, taking into account that the nearer 
+the control the more efficient the performance.  
+ 
+Digital outputs hose will enter the cabinet through the second packing gland on the 
+left. 
+ 
+All level 1 cables will arrive in different shielded hoses depending on their 
+provenance: ambient probes, distribution box probes, safeties, analogical outputs and 
+communications. All these hoses will distribute their entry into the cabinet through the 
+three packing glands located more towards the right.  
+ 
+Shields of level 1 cable hoses will be connected to controller metal cabinet at 
+ground terminal (screw showing the ground symbol on right side wall). Length of cable 
+to be left without shield should be minimized. Shield junction should be the best and 
+shortest possible. The other end of shield (in distribution box, etc.) must not be 
+connected to ground or to any frame.  
+ 
+Inside cabinet, length of cables up to their connectors should be minimized to avoid 
+cable in excess within cabinet and to prevent level 1 cables from getting near or joining 
+level 2 cables. If it is considered necessary to leave cable in excess, this should be kept 
+in its own trunking.  
+ 
+ 
+
+
+--- PAGE 6 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+6 out of 71 
+ 
+ 
+WIRING BETWEEN CONTROLLER AND 
+DISTRIBUTION BOX, ELECTRIC PANEL AND 
+AMBIENT PROBE BOX  
+ 
+All the aforementioned recommendations have to be taken into account too 
+when making this wiring, always avoiding joining or mixing cables of different level or 
+controller supply.  
+ 
+Two separate hoses leave ambient humidity and temperature probe box: one of 
+them shielded, with ambient humidity and temperature probes, towards controller, the 
+other with two wires of maximum and minimum safety thermostats to electric panel. 
+Path in common of these two hoses should be minimized and, if possible, these hoses 
+should be kept separated from probe box itself.  
+ 
+ 
+Shields of hoses leaving distribution box towards controller have to be insulated 
+in this end as they are grounded in controller. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 7 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+7 out of 71 
+ 
+ 
+BORNE  DEL ARMARIO AL QUE SE DEBEN
+DE CONECTAR LAS PANTALLAS DE LAS 
+MANGUERAS. 
+EL OTRO EXTREMO DE LA PANTALLA NO SE 
+CONECTARA A NINGUN PUNTO.
+NO DEJAR NADA DE CABLE SOBRANTE EN
+EL INTERIOR DEL ARMARIO. 
+DEJAR LO MINIMO EN SU RESPECTIVA CANALETA
+ENTRADAS DIGITALES (manguera apantallada)
+BORNAS  29 ...... 40
+BORNAS  72 ...... 77  y  84.....89
+BORNAS  4 ...... 23  y  41.....60
+BORNAS  0. 1. 2
+BORNAS  66 ...... 71  y  78.....83
+BORNAS  61.....65
+BORNAS  24 ...... 28
+ENTRADAS 0/10 VOLTIOS Y 4/20 mA. (manguera apantallada)
+SALIDAS DIGITALES (manguera)
+ALIMENTACION 220V (manguera)
+ENTRADAS PT100 (manguera apantallada)
+COMUNICACIONES (manguera apantallada)
+SALIDAS ANALOGICAS (manguera apantallada)
+EL CABLE DE ALIMENTACION SUJETARLO
+CON BRIDAS EN LA SUJECCIONES
+DISPONIBLES EN LA PARED LATERAL
+DEL ARMARIO
+CANALETA 1 (NIVEL 2)
+CANALETA 2 (NIVEL 2)
+CANALETA 3 (NIVEL 1)
+SEPARAR LO MAS POSIBLE
+ CADA MANGUERA SOLO LLEVARA UN SOLO TIPO DE SEÑAL
+                IMPORTANTE
+ NO MEZCLAR CABLES DE LA CANALETA 3 (NIVEL 1)
+ CON CABLES DE OTRAS CANALETAS (NIVEL 2)
+NO CABLE LENGTH IN EXCESS TO BE LEFT IN 
+CABINET. THE SHORTEST ONE TO BE IN ITS TRUNKING. 
+IMPORTANT. 
+ NOT TO MIX CABLES IN TRUNKING 3 
+(LEVEL 1) WITH CABLES OF OTHER 
+TRUNKINGS (LEVEL 2). 
+TERMINAL OF CABINET WHERE 
+TO CONNECT HOSE SHIELDS.  
+THE OTHER END OF SHIELD 
+MUST NOT BE CONNECTED TO 
+ANY POINT. 
+TO BE KEPT APART AS MUCH AS POSSIBLE 
+
+
+--- PAGE 8 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+8 out of 71 
+ 
+WIRING IN DRYER (DISTRIBUTION BOX) 
+ 
+Use the distribution box only for low level signals (level 1). Therefore, the two-
+wire hose of maximum and minimum safety thermostats must not be taken to this box 
+but directly to electric panel. If this hose is to share a trunking with ambient humidity 
+and temperature probes, it would be advisable to add a ferrite in these two wires just 
+outside the electric panel, to avoid any interferences of this line being induced on probe 
+cables (Siemens B64290-K82-X830 ferrite with at least 7 or 8 turns or spirals). 
+ 
+Shields of hoses coming from probes of compressor discharge and suction 
+temperature, of suction and discharge pressure switches and of contacts of micro relays 
+should be attached at unit frame directly at distribution box inlet with the best and 
+shortest possible junction. Under no circumstances can the other end of shield be in 
+contact with frame or ground.   
+There must not be a connection with a ground cable between the electric panel and 
+distribution box. This connection already exists through frame.  
+. 
+ 
+ 
+ 
+WIRING IN DRYER (ELECTRIC PANEL) 
+ 
+Install RC filters in all coils of contactors, relays and micro relays. These filters 
+are to be those recommended by manufacturer of each actuator. Otherwise, a filter with 
+the following characteristics is to be used:  
+RC : Condenser 220nF X type. 
+Winded resistance, 3W, 47 to 220 ohm. Other type of resistance could be pierced and 
+this would eliminate filter efficiency.  
+Filters must be installed in micro relays also, although usually they are not in operation, 
+nevertheless, all of them make a connection at the same time whenever there is a 
+voltage start. 
+ 
+
+
+--- PAGE 9 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+9 out of 71 
+ 
+WIRING IN DRYER (MACHINES) 
+ 
+Cables of probes (like those of compressor suction and discharge temperature, 
+etc.) must be prevented from joining or fastening to level 2 cables (like valve 
+operations, etc.). They must be kept apart as much as possible.  
+ 
+All valves have to be fitted with RC filters.  
+ 
+ 
+WIRING FOR COMMUNICATIONS BETWEEN SEC-970 
+AND COMPUTER.  
+ 
+ 
+Communication cable between controller and computer must be a four-wire 
+shielded cable, two wires for transmission and two for reception, and interlaced in twos,  
+separate shields for each couple and one shield common for both couples.  
+ 
+ 
+This communication cable transmits an RS-422 signal that by means of a 
+converter  becomes an RS-232 signal to enter computer.  
+ 
+ 
+ 
+Converter recommended by E.F.C. is WESTERMO MA-45. 
+ 
+
+
+--- PAGE 10 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+10 out of 71 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 2nd. Part 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CONTROL 
+ 
+
+
+--- PAGE 11 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+11 out of 71 
+ 
+TABLE OF CONTENTS 
+1. DESCRIPTION...................................................................................... 13 
+2. GETTING IN CONTACT WITH YOUR SECMATIC-970................. 14 
+2.1 LIQUID CRYSTAL DISPLAY (LCD) .......................................................................... 15 
+2.2 CONTROL KEYBOARD ............................................................................................ 16 
+2.3. SIGNAL LAMPS AND ON/OFF. KEY....................................................................... 17 
+3. MAIN DISPLAY ................................................................................... 18 
+4. MAIN MENU ........................................................................................ 21 
+5. AUTOMATIC CONTROL.................................................................... 23 
+5.1.START-UP OF DRYER CONTROLLED BY HUMIDITY.................................................. 23 
+5.1.1 Access to main menu ..................................................................................... 23 
+5.1.2. Selection of automatic running..................................................................... 24 
+5.1.3. Selection of control type by humidity ........................................................... 25 
+5.1.4. Selection and change of setpoints................................................................. 26 
+5.1.5. Control start-up............................................................................................ 27 
+5.2. START-UP OF  DRYER CONTROLLED BY HUMIDITY_GV......................................... 27 
+5.3. START-UP OF DRYER CONTROLLED BY TIME ......................................................... 28 
+5.4. START-UP OF DRYER CONTROLLED BY HUMIDITY AND TIME................................. 28 
+5.5. START-UP OF DRYER AS A WET CURING ROOM ...................................................... 28 
+5.6. START-UP OF DRYER AS A STORAGE ROOM ........................................................... 29 
+5.7. START-UP OF THAWING UNIT CONTROLLED BY STANDARD THAWING ................... 29 
+5.8. START-UP OF THAWING UNIT CONTROLLED BY PROBE THAWING. ......................... 29 
+6. PROGRAMMED CONTROL .............................................................. 30 
+6.1 SELECTION OF PROGRAMME NUMBER. ................................................................... 30 
+6.2 SELECTION OF STEP NUMBER AND ITS LENGTH....................................................... 30 
+6.3 APPLICATION OF PROGRAMMED CONTROL TO THAWING UNIT................................ 31 
+7. INPUTS AND OUTPUTS STATUS..................................................... 31 
+7.1 SELF-CONTAINED UNITS......................................................................................... 32 
+7.2 CENTRALIZED UNITS.............................................................................................. 34 
+8. GRAPHS ................................................................................................ 36 
+9.- FAILURES ........................................................................................... 37 
+9.1. FAILURES AND CODES........................................................................................... 38 
+10. DEFROST ENABLING / DISABLING.............................................. 39 
+11. PERMIT / PROHIBIT OUTSIDE AIR ............................................... 40 
+12. PERMIT  / PROHIBIT RENEWALS.................................................. 41 
+12.1. PERMIT CYCLIC RENEWAL................................................................................... 41 
+12.2. FORCED RENEWAL. ............................................................................................. 42 
+12.3. PERMIT LIMITED RENEWAL. ................................................................................ 42 
+
+
+--- PAGE 12 ---
+E.F.C.                                                       Secmatic-970 Installation and User's Manual. 
+                                                                      
+_____________________________________________________________________________________    
+12 out of 71 
+ 
+13.  DISPLAY OF LOSSES ...................................................................... 44 
+14.  AIR DISTRIBUTION DAMPERS..................................................... 45 
+15.  TEMPERATURE ALARM AND ACCESS PERMIT TO  
+MODIFICATIONS ............................................................................47 
+15.1 -  TEMPERATURE ALARM AND ACCESS PERMIT TO MODIFICATIONS BY USER........ 47 
+15.2 - ENERGY SAVING  (OFF-PEAK HOURS)................................................................. 48 
+15.3 - LOADING CONFIGURATION BY DEFAULT OR RESETTING HISTORY FROM  'USER'S 
+CONFIGURATION' DISPLAY .................................................................................... 50 
+15.4 - MODIFICATION OF VALUES BY DEFAULT OF ACCESS KEYS TO GENERAL 
+CONFIGURATION AND TO USER'S CONFIGURATION. ...................................................... 52 
+16. CHANGE OF LANGUAGE................................................................ 52 
+ 
+
+
+--- PAGE 13 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+13 out of 71 
+ 
+1. DESCRIPTION 
+ 
+ 
+The SECMATIC-970 controller is a microprocessor-based equipment consisting 
+of several modules, specially designed to manage drying rooms or thawing rooms. It 
+allows either the indefinite automatic operation or a programmed operation with the 
+possibility of setting and storing ten programmes of more than 15 phases each. 
+ 
+ 
+It is fitted with many types of control, among which the most important are:  
+ 
+ 
+ 
+- Drying control: (not available in thawing units): 
+- By Humidity. 
+- By Humidity_GV. 
+- By Time. 
+- By Humidity and Time. 
+ 
+ 
+ 
+ 
+ 
+ 
+- Wet curing control: (not available in thawing units) 
+ 
+ 
+ 
+- Storage room control. 
+ 
+ 
+ 
+- Outside air utilization (not available in thawing units) 
+ 
+- 
+Air renewals (not available in thawing units ) 
+- 
+Thawing control: (not available in dryers) 
+- 
+Standard 
+- 
+By probes 
+ 
+ 
+All drying controls are fitted with a temperature control during process.  
+ 
+ 
+A liquid crystal display (LCD) allows the following values of dryer, among 
+others, to be seen:  
+ 
+ 
+ 
+- Ambient values. 
+ 
+ 
+- Setpoint values. 
+ 
+ 
+- Type of control and of mode (automatic or programmed). 
+ 
+ 
+- Signalling of activations. 
+ 
+ 
+- Failures and alarms, including history. 
+ 
+ 
+- Graphs of last two hours.  
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 14 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+14 out of 71 
+ 
+ 
+ 
+2. GETTING IN CONTACT WITH YOUR SECMATIC-970 
+ 
+ 
+ 
+Control panel of SECMATIC-970 controller is divided into three main sections:  
+ 
+ 
+- Liquid crystal display (LCD). 
+ 
+ 
+- Control keyboard. 
+ 
+ 
+- Signal lamps including the run / stop lit pushbutton.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 15 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+15 out of 71 
+ 
+2.1 Liquid crystal display (LCD) 
+ 
+ 
+It allows the display and control of parameters, setpoints and message from unit 
+and dryer.  
+ 
+ 
+Main display 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 16 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+16 out of 71 
+ 
+2.2 Control keyboard  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Up Arrow × : 
+ 
+ 
+It allows moving upwards in menus to select the different options.  
+ 
+ 
+It allows increasing numerical values of setpoints.  
+ 
+Down arrow  Ø : 
+ 
+ 
+It allows moving downwards in menus to select the different options  
+ 
+ 
+It allows decreasing numerical values of setpoints. 
+  
+Right arrow Ö : 
+ 
+ 
+Once the setpoint to be modified has been selected, it allows moving to 
+numerical field to modify it.  
+ 
+Left arrow Õ : 
+ 
+ 
+It allows returning from numerical field of modified setpoint.  
+  
+<E> key : 
+ 
+ 
+It allows validating or entering one of the options in menus.  
+ 
+It allows validating value of a modified setpoint. 
+ 
+ 
+<F> key: It allows access to main menu from main display.  
+ 
+<Esc> key: 
+It allows getting out (Escape) from any point to main display.  
+ 
+ 
+
+
+--- PAGE 17 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+17 out of 71 
+ 
+ 
+2.3. Signal lamps and key ON/OFF. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+VENTILATION   
+REFRIGERATION 
+ 
+ 
+ 
+         HEATING 
+DEFROST 
+                          
+                     FAILURE                     
+ON / OFF (PAUSE)  
+ 
+                                                                                                                             
+ 
+ 
+Ventilation: It shows that fan is in operation.  
+Refrigeration: It shows that unit is under refrigeration process to recover set 
+temperature. 
+ 
+Heating: 
+It shows that unit is under heating process to recover set temperature.  
+ 
+Defrost: 
+It shows that unit is defrosting. 
+Failure:  
+It shows that there is a failure in unit or dryer.  
+ 
+ON / OFF (Pause) : Connection / disconnection of all digital outputs.  
+
+
+--- PAGE 18 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+18 out of 71 
+ 
+3. MAIN DISPLAY 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Essential information for unit control is contained in main display.  
+ 
+ 
+To have access to main display it is enough to press <Esc> key from any menu 
+of controller.  
+ 
+ 
+Display is divided into five areas:  
+ 
+1. Control type 
+ 
+ 
+Type of control that rules dryer is displayed here.  
+ 
+2. Humidity control 
+ 
+ 
+Ambient humidity and drying setpoints are displayed here.  
+ 
+3. Temperature control. 
+ 
+ 
+Ambient temperature and its setpoint are displayed here.  
+ 
+4. Failures and alarms. 
+ 
+ 
+There are two types of indications during normal operation:  
+
+
+--- PAGE 19 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+19 out of 71 
+ 
+ 
+ 
+a.- If control is automatic, it indicates time elapsed since process start-up.  
+ 
+ 
+b.- If control is programmed, it shows:  
+ 
+ 
+- Number of current programme. 
+ 
+ 
+- Number of current phase. 
+ 
+ 
+- Time elapsed in current phase.  
+ 
+ 
+- Remainder time for the new phase to start.  
+ 
+ 
+ 
+If there is a failure in operation, it is shown in this area of display. Failure alarm 
+will not disappear until any key of control keyboard is pressed.  
+ 
+ 
+5. Signalling 
+ 
+ 
+ 
+ 
+VENTILATION                                               REFRIGERATION 
+ 
+ 
+ 
+ 
+HEATING                                                        DEFROST 
+ 
+ 
+FAILURE 
+ 
+ 
+ 
+ 
+    DRYING (not available in 
+ 
+ 
+ 
+ 
+ 
+    thawing units) 
+                
+ 
+ 
+AIR RENEWAL 
+                                        HUMIDIFICATION 
+ 
+ 
+ 
+Ventilation: It means that fan is in operation.  
+ 
+ 
+Refrigeration: It means that unit is under refrigeration process to recover set 
+temperature.  
+ 
+ 
+Heating: It means that unit is under heating process to recover set temperature.  
+ 
+Drying:  It means that unit is in the drying cycle.   
+(not available in thawing units) 
+ 
+ 
+Humidification: It means that unit is in humidification cycle.  
+ 
+ 
+Defrost: It means that unit is defrosting.  
+ 
+ 
+Unfreezing: It means that unit is in unfreezing cycle. (Not available in dryers) 
+ 
+ 
+Failure:  It means that there is a failure in unit or dryer. 
+ 
+
+
+--- PAGE 20 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+20 out of 71 
+ 
+ 
+Outside air / renewal: If this signal is enabled together with drying signal, it 
+means that drying cycle is being carried out with outside air. Otherwise, it means that 
+air in room is being renewed. (Outside air is not available in thawing units) 
+ 
+REMARK: 
+ 
+ 
+Upon placing controller under voltage, the display shown below appears, where 
+we can see ambient temperature and humidity, reference of controller and a message 
+requiring us to press <F> key to have access to main menu  
+ 
+ 
+This display will also appear when there is no control started in controller. 
+. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 21 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+21 out of 71 
+ 
+4. MAIN MENU 
+ 
+ 
+MAIN MENU 
+Automatic control  
+Programmed control 
+Inputs / Outputs status 
+Graphs 
+Failures 
+*Energy saving 
+Activate Defrost cycle 
+*Permit outside air 
+ 
+              (1) 
+Permit cyclic renewal 
+ 
+              (2) 
+Activate forced renewal  
+              (2) 
+Permit limited renewal 
+ 
+              (2) 
+*Display of losses 
+*) Not available in thawing units 
+ 
+ 
+ 
+Main menu allows access to unit different controls.  
+ 
+ 
+To have access to main menu, press <F> key from main display.  
+ 
+ 
+We can see that AUTOMATIC CONTROL appears automatically selected in 
+reverse video.  
+ 
+ 
+With <Up arrow> and <Down arrow> we can move on menu to select the 
+desired option, afterwards we will press <E> key that will allow us to validate the 
+option chosen.  
+ 
+1. Automatic control.  
+ 
+ 
+From this option there is access to changes of control type and setpoints.  
+ 
+2. Programmed control  
+ 
+ 
+It allows the design and execution of programmes that permit changes of 
+setpoints in time.  
+ 
+3. Inputs/outputs status 
+ 
+ 
+It allows us to know whether the different controller inputs or outputs are 
+enabled (solenoids, contactors, ...)  
+ 
+ 
+4. Graphs 
+ 
+ 
+It makes possible to see a graph of ambient humidity and temperature for the last 
+two running hours.  
+
+
+--- PAGE 22 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+22 out of 71 
+ 
+5. Failures 
+ 
+ 
+It contains a history of failures showing moments, referred to an hour counter, 
+when the different anomalies occurred and where repaired.  
+ 
+6. Energy saving. (Not available in thawing units) 
+ 
+ 
+7. Activate / deactivate defrost cycle 
+ 
+ 
+It allows: 
+ 
+ 
+- activating manual defrost  
+ 
+ 
+- deactivating a defrost cycle in operation.  
+ 
+8. Permit / prohibit outside air (only if validated) (Not available in thawing units) 
+ 
+ 
+Drying by means of outside air used to reduce energy consumption is either 
+permitted or prohibited.  
+ 
+9. Permit / prohibit cyclic renewal (only if validated)  
+ 
+ 
+Operation of cyclic renewals during processes is either permitted or prohibited  
+.  
+ 
+10. Permit / prohibit forced renewal (only if validated) 
+ 
+ 
+The immediate air renewal is either permitted or prohibited 
+ 
+11. Permit / prohibit limited renewal (only if validated) 
+ 
+ 
+ 
+Limitation in air renewals depending on temperature difference between outside 
+air and temperature set in dryer is either permitted or prohibited   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 23 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+23 out of 71 
+ 
+5. AUTOMATIC CONTROL  
+ 
+ 
+The automatic control of dryer can be carried out in different ways:  
+ 
+ 
+- Drying control:  
+ 
+ 
+ 
+- By Humidity. 
+ 
+ 
+ 
+- By Humidity_GV. 
+ 
+ 
+ 
+- By Time 
+ 
+ 
+ 
+- By Humidity and time. 
+ 
+ 
+- Control of wet curing. 
+- Control of storage room.  
+ 
+ 
+The automatic control of thawing unit can be carried out in different ways:  
+ 
+ 
+- Control of standard thawing 
+ 
+ 
+- Control of thawing by probes 
+ 
+ 
+- Control of storage room 
+ 
+ 
+As this is the most commonly used control we will explain in depth drying 
+controlled by humidity. Starting up of dryer with remaining types of controls is carried 
+out in a similar way.  
+ 
+5.1. Start-up of dryer controlled by humidity.  
+ 
+5.1.1 Access to main menu 
+ 
+ 
+If there is any control started, main display is to be accessed firstly by pressing 
+<Esc> key. 
+ 
+ 
+If no control is started or when controller is being put under voltage, the 
+following display appears where we can see ambient temperature and humidity, 
+controller reference and a message requesting us to press <F> key to have access to 
+main menu.  
+ 
+ 
+ 
+When pressing <F> key we have access to main menu. 
+
+
+--- PAGE 24 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+24 out of 71 
+ 
+ 
+MAIN MENU  
+Automatic control. 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+(1) 
+Permit cyclic renewal  
+ 
+(2) 
+Activate forced renewal  
+(2) 
+Permit limited renewal 
+ 
+(2) 
+Display of losses 
+ 
+ 
+5.1.2. Selection of automatic operation 
+ 
+ 
+We can see that AUTOMATIC CONTROL appears automatically selected in 
+reverse video.  
+ 
+ 
+With up arrow and down arrow we can move on menu and select an option. 
+Then, we press <E> key what will allow us to validate the option chosen. 
+ 
+ 
+In main menu we select the option AUTOMATIC CONTROL and validate it by 
+pressing the <E> key. A display similar to the following will appear:  
+ 
+AUTOMATIC CONTROL 
+Control type .                                       Humidity 
+Temperature setpoint                   CTEM    3.0º 
+High humidity limit 
+HR2 
+ 
+85.2% 
+Low temperature limit 
+HR1  
+ 
+80.0% 
+Cyclic time  
+ 
+ 
+ 
+Start-up control 
+ 
+ 
+ 
+The sentence CONTROL TYPE will appear selected.  
+ 
+ 
+ 
+ 
+
+
+--- PAGE 25 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+25 out of 71 
+ 
+With <Right arrow> key we can move to field which will allow us to select control type 
+as required. 
+ 
+AUTOMATIC CONTROL 
+Control type.                                       Humidity 
+Temperature setpoint                   CTEM    3.0º 
+High humidity limit 
+HR2 
+ 
+85.2% 
+Low humidity limit 
+HR1  
+ 
+80.0% 
+Cyclic time  
+ 
+ 
+ 
+Start-up control 
+ 
+ 
+5.1.3. Selection of control type by humidity 
+ 
+  
+With <Up arrow> and <Down arrow> keys control type with which we want 
+dryer to be managed is selected.  
+ 
+ 
+These control types are as follows:  
+ 
+ 
+ 
+- Drying control:  
+ 
+ 
+ 
+- By humidity. 
+ 
+ 
+ 
+- By humidity_GV. 
+ 
+ 
+ 
+- By time. 
+ 
+ 
+ 
+- By Humidity and time. 
+ 
+ 
+ 
+ 
+ 
+ 
+- Wet curing control. (only if validated) 
+ 
+ 
+ 
+- Storage room control. 
+ 
+ 
+ 
+We choose control by humidity and we press <E> key.  
+ 
+ 
+Setpoints necessary for operation will appear automatically.  
+ 
+ 
+Finally, we press <Left arrow> key to go back to text fields.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 26 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+26 out of 71 
+ 
+5.1.4. Selection and change of setpoints 
+ 
+ 
+Having selected control by humidity we have to enter the following setpoints:  
+ 
+ 
+- CTEMP  Temperature 
+ 
+- HR2    High humidity limit. 
+ 
+- HR1    Low humidity limit. 
+ 
+- VVE    Fan speed.(1 or 2) (Not available) 
+ 
+- TVM    Fan running cyclic time. 
+ 
+- TVP    Fan stop cyclic time. 
+ 
+- TRM    Air renewal running cyclic time. 
+ 
+- TRP    Air renewal stop cyclic time. 
+ 
+ 
+Air renewals are possible only if there are the necessary dampers and in addition 
+they are permitted from main menu.  
+ 
+ 
+The way to enter the different setpoints is similar to the one described to enter 
+control type.  
+ 
+ 
+In numerical fields, if <Up arrow> or <Down arrow> key is kept held down, 
+increase or decrease of digits will be quicker.  
+ 
+ 
+ 
+To have access to cyclic time menu, firstly we have to select the option CYCLIC 
+TIMES and then validate it with <E> key. 
+ 
+AUTOMATIC CONTROL 
+Control type.                                       Humidity 
+Temperature setpoint                  CTEM    3.0º 
+High humidity limit 
+HR2 
+ 
+85.2% 
+Low humidity limit 
+HR1  
+ 
+80.0% 
+Cyclic time  
+ 
+ 
+Start-up control 
+ 
+From cyclic time menu it is possible to return to previous menu by selecting the option 
+SETPOINTS. 
+ 
+Cyclic time 
+ 
+*Fan speed 
+ 
+VVE 
+                      1 
+Fan running time  
+TVM 
+ 
+   1'00’’ 
+Fan stop  time 
+              TVP 
+ 
+ 10'00’’ 
+Renewal running time  
+TRM 
+ 
+   5'00’’ 
+Renewal stop time 
+TRP 
+             24H'00’ 
+Setpoints 
+ 
+Start-up control 
+     
+ 
+     * (Not available) 
+  
+ 
+
+
+--- PAGE 27 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+27 out of 71 
+ 
+5.1.5. Control start-up 
+ 
+ 
+ 
+Dryer start-up will be carried out by selecting and validating the option 
+CONTROL START-UP and then pressing <ON /OFF> key located next to signal 
+lamps. 
+ 
+ 
+Once unit has been started-up we press <Esc> key to return to main display.  
+ 
+ 
+AUTOMATIC CONTROL 
+Control type.                                       Humidity 
+Temperature setpoint                  CTEM    3.0º 
+High humidity limit 
+HR2 
+ 
+85.2% 
+Low humidity limit 
+HR1  
+ 
+80.0% 
+Cyclic time  
+ 
+ 
+ 
+Start-up control 
+ 
+ 
+5.2. Start-up of dryer controlled by humidity_GV- 
+ 
+ 
+The difference between this control and the previous one is just that if humidity 
+decreases 4 points with respect to low humidity setpoint, the humidification and 
+ventilations outputs are enabled until humidity has reached the low humidity setpoint 
+plus 1 point. 
+ 
+ 
+If HRroom <= HRmin – 4% until HRroom > HRmin + 1% 
+ 
+V and GV are enabled 
+ 
+For that purpose, the following steps are to be taken:  
+ 
+ 
+1. Main menu is to be accessed.  
+ 
+2. Select and validate the automatic control. 
+ 
+3. Select and validate control type by Humidity_GV. 
+ 
+4. Enter setpoints necessary for operation 
+ 
+- CTEMP  Temperature 
+ 
+- HR2    High humidity limit. 
+ 
+- HR1    Low humidity limit. 
+- VVE    Fan speed.(1 or 2, if it is a two-speed motor) (Not available) 
+ 
+- TVM    Fan running cyclic time. 
+ 
+- TVP    Fan stop cyclic time. 
+ 
+- TRM    Air renewal running cyclic time. 
+ 
+- TRP    Air renewal stop cyclic time. 
+ 
+5. Start-up control. 
+ 
+ 
+ 
+
+
+--- PAGE 28 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+28 out of 71 
+ 
+5.3. Start-up of dryer controlled by time 
+ 
+1. Main menu is to be accessed 
+ 
+2. Select and validate the automatic control. 
+ 
+3. Select and validate control type by time. 
+ 
+4. Enter setpoints necessary for operation 
+ 
+ 
+- CTEMP  Temperature 
+ 
+ 
+- TSM    Drying running time. 
+ 
+ 
+- TSP    Drying stop time. 
+ 
+ 
+- VVE    Fan speed. (Not available) 
+ 
+ 
+- TVM    Fan running cyclic time. 
+ 
+ 
+- TVP    Fan stop cyclic time. 
+ 
+ 
+- TRM    Air renewal running cyclic time. 
+ 
+ 
+- TRP    Air renewal stop cyclic time. 
+ 
+5. Start-up control. 
+ 
+5.4. Start-up of dryer controlled by humidity and time  
+ 
+ 
+1. Main menu is to be accessed 
+ 
+2. Select and validate the automatic control. 
+ 
+3. Select and validate control type by humidity and time. 
+ 
+4. Enter  setpoints necessary for operation 
+ 
+ 
+- CTEMP  Temperature 
+ 
+ 
+- HR2    High humidity limit. 
+ 
+ 
+- HR1    Low humidity limit. 
+ 
+ 
+- TSM    Drying running time. 
+ 
+ 
+- TSP    Drying stop time. 
+ 
+ 
+- VVE    Fan speed. (Not available) 
+ 
+ 
+- TVM    Fan running cyclic time. 
+ 
+ 
+- TVP    Fan stop cyclic time. 
+ 
+ 
+- TRM    Air renewal running cyclic time. 
+ 
+ 
+- TRP    Air renewal stop cyclic time. 
+ 
+5. Start-up control. 
+ 
+5.5. Start-up of dryer as a wet curing room. 
+ 
+ 
+1. Main menu is to be accessed 
+ 
+2. Select and validate the automatic control. 
+ 
+3. Select and validate control type as a curing room. 
+ 
+4. Enter setpoints necessary for operation 
+ 
+ 
+- CTEMP  Temperature 
+ 
+ 
+- HR2    High humidity limit. 
+ 
+ 
+- HR1    Low humidity limit. 
+ 
+ 
+- VVE    Fan speed. (Not available) 
+ 
+ 
+- TVM    Fan running cyclic time. 
+ 
+ 
+- TVP    Fan stop cyclic time. 
+ 
+ 
+- TRM    Air renewal running cyclic time. 
+ 
+ 
+- TRP    Air renewal stop cyclic time. 
+ 
+5. Start-up control. 
+
+
+--- PAGE 29 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+29 out of 71 
+ 
+5.6. Start-up of dryer as a storage room 
+ 
+ 
+1. Main menu is to be accessed 
+ 
+2. Select and validate the automatic control. 
+ 
+3. Select and validate control type as a storage room. 
+ 
+4. Enter setpoints necessary for operation 
+ 
+ 
+- CTEMP  Temperature 
+ 
+ 
+- VVE    Fan speed. (Not available) 
+ 
+ 
+- TVM    Fan running cyclic time. 
+ 
+ 
+- TVP    Fan stop cyclic time. 
+ 
+5. Start-up control. 
+ 
+ 
+5.7. Start-up of dryer controlled by standard thawing. 
+ 
+1.- Main menu is to be accessed 
+2.- Select and validate the automatic control. 
+3.- Select and validate  control type by standard thawing. 
+4.- Enter  setpoints necessary for operation 
+ 
+- CTEMP 
+Temperature 
+ 
+- HR2  
+High humidity limit (if humidifier is available) 
+ 
+- HR1  
+Low humidity limit. (if humidifier is available) 
+ 
+- TVM  
+Fan running cyclic time. 
+ 
+- TVP  
+Fan stop cyclic time. 
+5.- Start-up control. 
+ 
+ 
+5.8. Start-up of dryer controlled by probe thawing 
+ 
+1.- Main menu is to be accessed 
+2.- Select and validate the automatic control. 
+3.- Select and validate  control type by humidity and time. 
+4.- Enter  setpoints necessary for operation 
+ 
+- CTEMP 
+Temperature 
+ 
+- HR2  
+High humidity limit (if humidifier is available) 
+ 
+- HR1  
+Low humidity limit. (if humidifier is available) 
+- CTSP 
+Product surface temperature. 
+- CTIP  
+Product internal temperature. 
+ 
+- TVM  
+Fan running cyclic time. 
+ 
+- TVP  
+Fan stop cyclic time. 
+5.- Start-up control. 
+ 
+ 
+
+
+--- PAGE 30 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+30 out of 71 
+ 
+6. PROGRAMMED CONTROL 
+ 
+6.1 Selection of programme number 
+ 
+From main menu we select the option PROGRAMMED CONTROL and validate it by 
+pressing <E> key. 
+ 
+Automatic control 
+Programmed control 
+Inputs/outputs status 
+Graphs 
+Failures 
+Activate defrost cycle 
+Permit outside air 
+Permit cyclic renewal 
+Activate forced renewal 
+Permit limited renewal 
+ 
+Then, we select number of programme we want to create, modify or edit by means of 
+<Up arrow> or <Down arrow> keys . Then, we validate with <E> key.  
+ 
+ 
+PROGRAMME = 01 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+6.2 Selection of number of step and its length. 
+ 
+PROGRAMME = 1     STEP =O1          LENGTH= 00h00’ 
+Control type                Humidity 
+Temperature setpoint 
+CTEM  
+13.2 º 
+High humidity limit 
+HR2 
+ 
+80.0 % 
+Low humidity limit 
+HRl 
+ 
+76.0 % 
+Cyclic time 
+ 
+ 
+Start-up control 
+ 
+We select step to be modified and then its length by always pressing <E> key after any 
+modification.  
+ 
+A length of time equal to zero will mean that this step is the last one of programme and 
+that dryer will remain running indefinitely with the setpoints of the said step.  
+
+
+--- PAGE 31 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+31 out of 71 
+ 
+It is possible to create 9 programmes of 25 steps each.  
+ 
+Once number of programme, number of step and length have been chosen, we move 
+onto PROGRAMME and by means of <Down arrow> key we go over setpoints we 
+want to modify. Modification of setpoints is similar to the one in AUTOMATIC 
+CONTROL. 
+ 
+PROGRAMME = 1      STEP =O1           LENGTH= 00h00’ 
+Control type                Humidity 
+ 
+ 
+PROGRAMME = 1      STEP =O1           LENGTH= 00h00’ 
+Control type                Humidity 
+ 
+ 
+PROGRAMME = 1      STEP =O1           LENGTH= 00h00’ 
+Control type                Humidity 
+ 
+ 
+ 
+6.3 Application of  programmed control  in Thawing unit. 
+ 
+The best way to carry out a controlled thawing process is to use the "Thawing control 
+by probes" and to create a programme with the steps considered necessary depending on 
+type of product, load, speed, etc. (see 5.8) 
+  
+A standard thawing process is described below (values mentioned are a reference and 
+user must modify them depending on his requirements): 
+- CTEMP 
+16ºC (this value should decrease in successive steps as thawing progresses) 
+- CTSP  
+4ºC (this value can be kept in all steps)  
+- CTIP  
+1ºC (this value can be kept in all steps)  
+ 
+And a last step (time=0= indefinite), of "Storage control" (see chapter 5.6), to store 
+unfrozen products at, for example, 3ºC. 
+ 
+Times to be set to carry out thawing should be adjusted depending on mass, product and 
+several other factors, (it is usual to operate in thawing processes with times adding up 
+between 24 and 72 hours, depending on the above mentioned factors, but "each person 
+has his own way of thinking" and this point is not binding).  
+ 
+This “control of thawing by probes”, has two essential characteristics. The first one is 
+that as soon as CTSP or CTEM are reached machine stops providing heat. The second 
+one is that as soon as CTIP is reached by product internal Temperature, step is 
+considered finished and with no need to wait for step total time to elapse, it will 
+automatically jump to the following step that in last control would be "control of 
+storage". This means that as soon as thawing has finished it goes directly to storage 
+without waiting for timed fixed to elapse.     
+ 
+7. INPUTS AND OUTPUTS STATUS 
+ 
+
+
+--- PAGE 32 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+32 out of 71 
+ 
+7.1 Self-contained unit 
+ 
+ 
+From main menu we select the option INPUTS AND OUTPUTS STATUS and 
+we validate it by pressing the <E> key. 
+ 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+Permit cyclic renewal  
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+Then, a display where status, enabled or not, of different outputs of controller, is 
+accessed.  
+ 
+OUTPUTS STATUS 
+01  Alarm  
+           Yes/No 
+02  Fan                          Yes/No 
+03  CP1A      60%          Yes/No 
+04  CP1C 
+          Yes/No 
+05  VSD  
+          Yes/No 
+06  Compressor            Yes/No 
+07  VSL  
+           Yes/No 
+08  VSCI 
+          Yes/No 
+09  VSCE                      Yes/No 
+10  VSC                        Yes/No 
+11  GV                  Yes/No 
+12  CP2A     0%    Yes/No 
+13  CAEI 
+  Yes/No
+14  CAE2 
+  Yes/No
+15 VSE-CI            Yes/No 
+16 Vl                 Yes/No 
+17 V2                  Yes/No 
+18 V3                  Yes/No 
+19 CP2C      
+  Yes/No
+20 VSE-CE     
+  Yes/No
+ Analogical inlets <F> 
+ 
+ 
+By pressing <F> key, we reach a display with all values of analogical inputs. 
+ 
+ANALOGICAL INPUTS  
+01  Ambient Temperature                         
+ 
+35.8º 
+02  Ambient humidity .:  
+ 
+              75.7% 
+03  Outside Temperature :  
+ 
+               -4.6º 
+04  Outside Humidity : 
+ 
+                
+48.5% 
+05  Compressor suction pressure.  
+              15.4k 
+06  Compressor discharge pressure  
+ 
+14.4k 
+07  Compressor suction temp. 
+ 
+ 
+34.8º 
+08  Compressor discharge temp.   
+ 
+34.6º 
+09  Sample weight 
+ 
+ 
+              9.45 kg 
+10  Auxiliary inlet 
+ 
+ 
+ 
+7.5% 
+Analogical inputs <F> 
+ 
+
+
+--- PAGE 33 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+33 out of 71 
+ 
+By pressing <F> key again we will have access to display of Product surface 
+temperature and Product internal temperature probes.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+We press <F> key again to have access to status of digital inputs. 
+ 
+DIGITAL INPUTS  
+01 Compressor pressure switch. 
+ 
+              Yes/No 
+02 Failure in Fan thermal relay 
+ 
+ 
+Yes/No 
+03 Room thermostat 
+ 
+ 
+              Yes/No 
+04 Air-cooled cond. thermal relay  
+ 
+Yes/No 
+05 Compressor thermal relay 
+ 
+              Yes/No 
+06 Oil lacking 
+ in compressor 
+ 
+              Yes/No 
+07 Compressor klixon 
+ 
+ 
+ 
+Yes/No 
+ 
+Analogical outputs <F> 
+ 
+ 
+ 
+Finally, by pressing again <F> key, we can see display of output analogical 
+values.  
+ 
+ANALOGICAL OUTPUTS 
+Analogical output 1 
+ 
+ 
+ 
+52.5% 
+Analogical output 2 
+ 
+ 
+             10.0º 
+Analogical output 3 
+ 
+ 
+ 
+ 0.0% 
+Analogical output 4 
+ 
+ 
+ 
+100% 
+ 
+ 
+Return to Main menu <Esc> 
+ 
+ 
+From any of above displays it is possible to return to main display by pressing 
+<Esc> key.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ANALOGICAL INPUTS 
+11  Product surface temperature 
+ 
+3.8º 
+12  Product internal temperature:  
+-2.7% 
+  
+ 
+Digital inputs <F> 
+
+
+--- PAGE 34 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+34 out of 71 
+ 
+7.2 Centralized unit 
+ 
+ 
+From main menu we select the option INPUTS AND OUTPUTS STATUS and 
+we validate it by pressing the <E> key. 
+ 
+ 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+              
+Permit cyclic renewal  
+ 
+ 
+Activate forced renewal  
+ 
+Permit limited renewal 
+ 
+ 
+Display of losses 
+ 
+ 
+ 
+Then, a display where status, enabled or not, of different outputs of controller, is 
+accessed.  
+ 
+ 
+OUTPUTS STATUS 
+01  Alarm  
+              Yes/No 
+02  FaN  
+              Yes/No 
+03  CPB1 
+ 
+Yes/No 
+04  CPB2 
+ 
+Yes/No 
+05  VSD  
+ 
+Yes/No 
+06  SGF1 
+              Yes/No 
+07  SGF2 
+              Yes/No 
+08  SGC1 
+ 
+Yes/No 
+09  SGC2 
+ 
+Yes/No 
+10  SWC                            Yes/No 
+11  GV                    Yes/No 
+12  SH                   Yes/No 
+13  CAEI 
+    Yes/No 
+14  CAE2 
+    Yes/No 
+19 Aux.fan  
+    Yes/No 
+ 
+Analogical inputs <F> 
+ 
+ 
+By pressing <F> key, we reach a display with all values of analogical inputs. 
+ 
+ANALOGICAL INPUTS  
+01  Ambient temperature                         
+ 
+ 3.2º 
+02  Ambient humidity 
+ 
+ 
+              83.5% 
+03  Outside temperature   
+                  
+ 15.1º 
+04  Outside humidity 
+ 
+                
+80.3% 
+07  Cooling battery inlet temp.  
+ 
+             -9.3º 
+08  Cooling battery outlet temp.  
+ 
+              -6.2º 
+09  Sample weight 
+ 
+ 
+               9.2 kg 
+10  Auxiliary inlet 
+ 
+ 
+ 
+ 0.0% 
+Analogical inputs <F> 
+ 
+
+
+--- PAGE 35 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+35 out of 71 
+ 
+ 
+By pressing again <F> key we will have access to display of Product surface 
+temperature and Product internal temperature probes.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+We press <F>  key again to have access to status of digital inputs. 
+ 
+ 
+DIGITAL INPUTS  
+02 Failure of fan thermal relay 
+ 
+            Yes/No 
+03 Room thermostat 
+ 
+ 
+             Yes/No 
+08 Engine room locking  
+ 
+            Yes/No 
+ 
+Analogical outputs <F> 
+ 
+ 
+ 
+Finally, by pressing again <F> key, we can see display of output analogical 
+values.  
+ 
+ 
+ANALOGICAL OUTPUTS 
+Analogical output 1 
+ 
+ 
+ 
+52.5% 
+Analogical output 2 
+ 
+ 
+             10.0º 
+Analogical output 3 
+ 
+ 
+ 
+ 0.0% 
+Analogical output 4 
+ 
+ 
+ 
+100% 
+ 
+ 
+Return to Main menu <Esc> 
+ 
+ 
+From any of above displays it is possible to return to main display by pressing 
+<Esc> key 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ANALOGICAL INPUTS 
+11  Product surface temperature 
+ 
+3.8º 
+12  Product internal temperature:  
+-2.7% 
+  
+ 
+Digital inputs <F> 
+
+
+--- PAGE 36 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+36 out of 71 
+ 
+8. GRAPHS 
+ 
+From main menu we select the option GRAPHS and we validate it by pressing 
+the <E> key. 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+Permit cyclic renewal  
+Permit forced renewal  
+Permit limited renewal 
+Display of losses 
+ 
+We have access then to display of maximum bands that on large scale shows, in 
+two graphs, ambient humidity and temperature existing in dryer for the last 2 hours.  
+ 
+By pressing <F> key, scale of above graphs can be enlarged to the utmost.   
+From this point, we either press <F>  key to return to previous display (Maximum 
+bands) or we press <Esc> key to have access to main display.  
+ 
+
+
+--- PAGE 37 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+37 out of 71 
+ 
+9.- FAILURES 
+ 
+ 
+From main menu we select the option FAILURES and validate it by pressing the 
+<E> key. 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+Permit cyclic renewal  
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+ 
+Display of failure history is then accessed.  
+ 
+ 
+ 
+*) Not available in centralized units 
+**) Not available in self-contained units 
+ 
+Display contains the last 10 failures occurred.  
+ 
+Failures are ordered in reverse chronological order.   
+ 
+ 
+In right top part there is an hour counter. This is enabled whenever SECMATIC-
+970 controller is under voltage.  
+ 
+By pressing <F> key, we can obtain up to four displays with 10 failures each, 
+this means that a history with the last 40 failures occurred is available. 
+ 
+ 
+ 
+Failure and its code are shown, followed by appearance and disappearance 
+moment referred to hour counter of unit operation.  
+ 
+ 
+ 
+FAILURES          
+Machine hours 23782  
+Al.Ambient temp. 
+              23782 
+23782 
+A2.Ambient humidity                     11719 
+12345  
+A3.Outside temp. 
+              3459 
+4534 
+ 
+A4.Outside humidity 
+ 
+659 
+1244 
+ 
+*A5.Comp. suction pressure           319 
+0 
+*A6.Comp. discharge press. 
+123 
+145 
+A7.Comp. suction temp.                  89 
+89 
+A8.Comp. discharge temp.              19 
+19 
+A9.Sample weight 
+ 
+19 
+0 
+*D1.Compressor pressure switch    17  
+19 
+Previous Failures  <F> 
+FAILURES         Machine hours 23782  
+D2.Fan thermal relay  
+             12         12 
+D3.Room thermostat.: 
+             11         15 
+*D4.Aircooled cond.thermal relay 8 
+0 
+*D5.Compressor thermal relay 
+8 
+9 
+*D6.Oil lacking in compr.  
+5 
+5 
+*D7.Klixon Compressor :     
+1 
+2 
+**D8 Engine room locking              8            0
+ 
+ 
+Return to Main menu <Esc> 
+
+
+--- PAGE 38 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+38 out of 71 
+ 
+ 
+9.1. Failures and codes 
+ 
+Al 
+Failure in ambient temperature probe. 
+A2 
+Failure in ambient temperature humidity. 
+A3 
+Failure in outside temperature probe.  
+A4 
+Failure in outside humidity probe. 
+A5* 
+Failure in compressor suction pressure probe.   
+A6* 
+Failure in compressor discharge pressure probe.  
+A7 
+Failure in compressor suction temperature probe or  
+ 
+Failure in cooling battery inlet temperature probe.  
+A8 
+Failure in compressor discharge temperature probe or 
+ 
+Failure in cooling battery outlet temperature.  
+A9 
+Failure in sample weight probe.  
+A11 
+Failure in product surface temperature.  
+A12 
+Failure in product internal temperature.  
+ 
+D1* 
+Compressor high and low pressure switch enabled.  
+D2 
+Fan thermal relay enabled.  
+D3 
+Room temperature safety thermostats enabled.  
+D4* 
+Air-cooled condenser thermal relay enabled.  
+D5* 
+Compressor thermal relay enabled.  
+D6* 
+Oil pressure switch enabled.  
+D7* 
+Compressor klixon enabled.  
+D8** Engine room locking enabled. 
+D9 
+Damper closing safety enabled. 
+D10 
+High temperature failure.  
+ 
+*) Not available in centralized units.  
+**) Not available in self-contained units 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 39 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+39 out of 71 
+ 
+10. DEFROST ENABLING / DISABLING  
+ 
+ 
+Defrost cycle is automatic.  
+ 
+ 
+However, if, at any time, it is advisable to carry it out at once, we will select the 
+option ENABLE DEFROST CYCLE from main menu and we will validate it by 
+pressing <E> key. 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Enable defrost cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Enable forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+Whenever defrosting is being carried out, it is possible to end it by hand from 
+main menu. 
+The option DISABLE DEFROST CYCLE  is selected and then it is validated with <E> 
+key. 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Disable Defrost Cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 40 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+40 out of 71 
+ 
+11. PERMIT / PROHIBIT OUTSIDE AIR  
+(Not available in thawing units) 
+ 
+ 
+Only if your controller is fitted with the possibility of drying with outside air.  
+ 
+The option of outside air allows saving energy provided there are good 
+conditions when drying cycle takes place with outside air instead of with machine.  
+ 
+From main menu, the option PERMIT OUTSIDE AIR is selected and then it is 
+validated by pressing <E> key. 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air. 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+ 
+If, after the option of operation with outside air has been selected, we wish to 
+cancel it to carry out drying with machine, we have to select, from main menu, the 
+option PROHIBIT OUTSIDE AIR  and validate it by pressing <E> key. 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Prohibit outside air. 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 41 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+41 out of 71 
+ 
+12. PERMIT / PROHIBIT RENEWALS 
+ 
+ 
+12.1. Permit cyclic renewal . 
+ 
+ 
+It is possible to renew air of dryer in a cyclic way. For that purpose, in the first 
+place, this operation is to be permitted.  
+ 
+ 
+From main menu we select the option PERMIT CYCLIC RENEWAL and we 
+validate it by pressing <E> key.  
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+ 
+Once the cyclic renewal has been permitted, it is possible to prohibit it from 
+main menu. We select the option PROHIBIT CYCLIC RENEWAL and we validate it 
+with <E> key.  
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+Prohibit cyclic renewal  
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+
+
+--- PAGE 42 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+42 out of 71 
+ 
+12.2. Forced renewal. 
+ 
+ 
+It is possible to renew the air in dryer in a forced way.  
+ 
+From main menu we select the option PERMIT FORCED RENEWAL and we 
+validate it by pressing <E> key.  
+ 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+ 
+ 
+Once the forced renewal has been permitted, it is possible to prohibit it from 
+main menu. We select the option PROHIBIT FORCED RENEWAL and we validate it 
+with <E> key.  
+ 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+Activate cyclic renewal 
+ 
+Prohibit forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+12.3. Permit limited renewal. 
+ 
+ 
+It is possible to limit air renewals, both cyclic and forced, by making them 
+enable only if outside temperature is close to set temperature in dryer.  
+ 
+ 
+If, after limited renewal has been permitted, we try to renew air while outside 
+temperature is out of range, outside air signalling will remain blinking.  
+. 
+From main menu we select the option PERMIT LIMITED RENEWAL and we validate 
+it by pressing <E> key.  
+
+
+--- PAGE 43 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+43 out of 71 
+ 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Energy saving 
+Activate defrost cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+Once the limited renewal has been permitted, it is possible to prohibit it from main 
+menu. We select the option PROHIBIT LIMITED RENEWAL and we validate it with 
+<E> key.  
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Activate defrost cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Prohibit limited renewal 
+Display of losses 
+ 
+ 
+
+
+--- PAGE 44 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+44 out of 71 
+ 
+13.  DISPLAY OF LOSSES  
+ 
+ 
+Several data concerning product losses can be displayed.  
+ 
+From main menu we select the option DISPLAY OF LOSSES and press the  <E> key. 
+ 
+ 
+MAIN MENU 
+Automatic control 
+Programmed control 
+Inputs / outputs status 
+Graphs 
+Failures 
+Activate defrost cycle 
+Permit outside air 
+ 
+Permit cyclic renewal  
+ 
+Activate forced renewal 
+Permit limited renewal 
+Display of losses 
+ 
+ 
+The following display is shown when Losses are displayed.  
+ 
+Display of losses 
+Accumulated loss 
+                     20.6% 
+Loss speed per day 
+               0.08% / D 
+Reference initial weight                       8.6S k 
+Reference current weight                      7.58 k 
+  
+  
+   
+ 
+ 
+- Total loss since process start-up.  
+- Loss speed for the last 24 hours. 
+- Weight at process start-up.  
+- Current weight.  
+ 
+
+
+--- PAGE 45 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+45 out of 71 
+ 
+14.  AIR DISTRIBUTION DAMPERS  
+ 
+ 
+Distribution dampers have to be adjusted at start-up.  
+ 
+ 
+The adjustment has to result in the correct air distribution or sweeping within 
+room. (This is essential to achieve the best homogeneity in product.)  
+ 
+There are different systems to properly adjust these dampers, for example, with 
+an anemometer, etc.  
+ 
+ 
+Whenever fan is running, air distribution dampers have to be running.  
+ 
+ 
+Their running philosophy is as follows:  
+ 
+ 
+Running is exactly the same in all types of controls (Self-contained, centralized 
+or tandem).  
+ 
+Configuration of the following data will be made in "Distribution and defrost" 
+display:  
+ 
+• 
+Percent. of CP1 minimum opening CP1 (%MIN_CP1) 
+Range of edition = 0 – 50% 
+Value of load by default = 17% 
+• 
+Percent. of CP1 maximum opening (%MAX_CP1) 
+Range of edition = 50 – 100% 
+Value of load by default = 100% 
+• 
+Percent. of CP2 minimum opening (%MIN_CP2) 
+Range of edition = 0 – 50% 
+Value of load by default = 17% 
+• 
+Percent. of CP2 maximum opening CP2 (%MAX_CP2) 
+Range of edition = 50 – 100% 
+Value of load by default = 100% 
+• 
+Time of total run 
+Range of edition = 0´30” – 4´00 
+Value of load by default = 2´30” 
+• 
+Time of stop at each end 
+Range of edition = 1” – 60” 
+Value of load by default = 2” 
+ 
+ 
+There are 4 available outputs to enable damper opening and closing:  
+• Opening CP1 (CP1A) 
+• Closing CP1 (CP1C) 
+• Opening CP2 (CP2A) 
+• Closing CP2 (CP2C) 
+ 
+• The basic purpose intends to carry out the following:  
+ 
+To have the possibility of balancing the air as much as possible (unbalance 
+can be the result of conduit laying and other reasons), by limiting each 
+damper maximum and minimum opening, so that flow is limited.  
+
+
+--- PAGE 46 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+46 out of 71 
+ 
+ 
+• The basic running intends to carry out the following: 
+ 
+Assuming different opening values in both dampers and a stroke time for 
+both servomotors, basic running must make CP1 close while CP2 opens 
+and conversely. Shortest closing time damper must meet some waiting time 
+for synchronization to be correct.  
+ 
+ 
+ 
+Display of damper running status: 
+ 
+<Left arrow> + <Down arrow> 
+ 
+ 
+By holding down at the same time <Left arrow> + <Down arrow> keys from main 
+synoptic chart  we reach a display where damper running status can be seen. 
+ 
+ 
+It shows how positioning is being made.  
+ 
+On which side positioning is taking place (side 1 or side 2) 
+ 
+Whether it is a standard operation, a readjusting operation or initial adjusting.  
+ 
+ 
+ 
+In addition, percents of opening of both dampers (closing, opening or stopped) are 
+shown at any time. Counter of number of operations since last readjustment is shown 
+as well.  
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 47 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+47 out of 71 
+ 
+15. TEMPERATURE ALARM AND ACCESS PERMIT TO 
+MODIFICATIONS.  
+ 
+15.1 -  Temperature alarm and access permit to modifications by user 
+ 
+This alarm and this permit are configured in display 'USER'S CONFIGURATION' that 
+can be accessed from main display by holding down at the same time <Left arrow> + 
+<Right arrow> keys.  
+ 
+USER'S CONFIGURATION     KEY = 235 
+ 
+ 
+Before the possible configuration options appear it is necessary to enter user's key. This 
+key is different from the one for general configuration. If a faulty key is entered, control 
+returns to main display.  
+ 
+Once correct key has been entered:  
+ 
+USER'S CONFIGURATION     CLAVE = 235 
+High temperature hysteresis HTA=OFF 
+Modification permit....YES 
+ 
+With <Down arrow> key we move onto 'Hysteresis..." line and then its status can be 
+modified by pressing <Up arrow> and <E> keys.  
+ 
+In case of OFF, no high temperature failure control is carried out; if there is any value, 
+this value would be of hysteresis over temperature setpoint and in the case room 
+temperature is higher than CTEM + HTA, we will receive a failure alarm but this will 
+NOT stop machine. 
+ 
+With <Down arrow> key we move onto  'Modification permit...' line. Its status is 
+modified by pressing <E>key.  
+ 
+If 'Modification permit .....NO', no data can be modified, no action whatsoever, like start 
+or stop a control, can be carried out, not even <ON/OFF> key would have any effect. It 
+will be possible to increase or decrease data but these values cannot be validated by 
+pressing <E> key.  
+
+
+--- PAGE 48 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+48 out of 71 
+ 
+15.2 - Energy saving (off-peak hours). 
+ 
+From 'USER'S CONFIGURATION' display, by holding down <F> key: 
+ 
+USER'S CONFIGURATION     KEY = 235 
+High temperature hysteresis HTA=OFF 
+Modification permit....YES 
+Energy saving....NO 
+ 
+ 
+ 
+If we change to  Æ 'Energy saving...YES', in main menu, a new line Æ 'Energy saving' 
+will appear that will permit access to the following display:  
+ 
+ 
+ENERGY SAVING 
+ 
+Hour / Day      12h45’   /   Wednesday 
+Monday              7-10           12-15            17-19 
+Tuesday             7-10           12-15            17-19 
+Wednesday        7-10           12-15            17-19 
+Thursday            7-10           12-15            17-19 
+Friday                7-10           12-15            17-19 
+Saturday             7-10           12-15            17-19 
+Sunday               7-10           12-15            17-19 
+ 
+Temperature safety band  +/- 3.0º 
+Humidity safety band                4.0% 
+ 
+ 
+Display includes:  
+ 
+Current hour and day. 
+ 
+Weekly table for saving hours. 
+ 
+Safety bands. 
+ 
+Value of current hour and day is not controlled by a clock that will keep running during 
+supply cuts, therefore, hour can be delayed with respect to actual hour a period of time 
+equivalent to the time unit has been kept without supply. Any installation fitted with a 
+commercial  computer will avoid this problem since from time to time computer will 
+update hour as well as day, saving table and bands.  
+
+
+--- PAGE 49 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+49 out of 71 
+ 
+Programming of a day, in the hour table, consists of 3 sections or intervals where 
+energy saving it to be carried out; thus, a section 7-15 means that the energy saving will 
+start at 7 o'clock and will end at 15 o'clock. 
+In the hour table a value of 0 to 24 h can be edited as well as xx that will mean that this 
+interval does not exist.  
+ 
+Safety bands are limits that if exceeded, will make saving stop. Value of these 
+temperature limits is equal to value of temperature setpoint ± temperature safety band.  
+ 
+Actually, humidity safety band is not a true band as it is just a limit over high 
+humidity setpoint (HR2) in drying controls (humidity, humidity and time, and losses) or 
+under low humidity setpoint (HR1) in curing and thawing unit controls.  
+ 
+With <Up arrow> and <Down Arrow>  keys we move over the different line 
+headings. With <Right arrow>  key edition fields are accessed. Once inside one of these 
+fields value will be modified with <Up arrow> and <Down arrow> keys and it will be 
+validated with <E> key. In edition fields of hour table, if <Right arrow> key is kept held 
+down, all table fields will scroll quickly.   
+ 
+The edition of several days with the same intervals can be carried out by making a 
+copy of intervals of the day before. For that purpose, it is necessary to go onto heading 
+of the day on which we wish to make a copy and hold down <E> key for 1 sec. Thus 
+copy of intervals of day of previous line is made. 
+ 
+Evidence of saving being carried out is by means of the quick blinking of 
+<ON/OFF> key.  
+ 
+  
+Energy saving operation: 
+ 
+ 
+Control will begin saving process provided the following conditions exist:  
+- Current hour within a saving interval. 
+- Temperature and humidity within safety bands.  
+- Humidity > HR2 - 2 ºC (drying controls) or 
+- Humidity < HR1 (curing or thawing controls). 
+ 
+ 
+Control will stop saving when the following conditions exist:  
+- Current hour out of a saving range. 
+- Temperature or humidity out of safety bands. 
+ 
+If control has discontinued saving because temperature or humidity are out of 
+safety bands, the unit will resume saving as soon as temperature reaches its setpoint and 
+humidity is < HR2 - 2 ºC (drying controls) or humidity is  > HR1 (curing or thawing 
+controls). 
+
+
+--- PAGE 50 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+50 out of 71 
+ 
+In time and storage control types only the temperature safety band it to be taken 
+into account.  
+ 
+The evidence that saving is in process is given by the quick blinking of 
+<ON/OFF> key. If control is stopped or on stand-by but within a saving interval, 
+blinking will also take place.  
+ 
+During saving process, actuations will be shown in display, although actually they 
+will not take place as long as the saving condition is maintained, unless it is question of 
+fan running by cyclic times or a cyclic or forced air renewal.  
+ 
+During saving process, fan will be running by cyclic times and cyclic or forced 
+renewals can be made.  
+ 
+While saving is being carried out, the use of outside air is not permitted. However, 
+it will be permitted, if while being in a saving interval, saving has been discontinued 
+because it is out of safety bands.  
+ 
+15.3 - To load configuration by default or reset history from 'USER'S 
+CONFIGURATION' display.  
+ 
+  
+Press <F> key 4 times: 
+ 
+USER'S CONFIGURATION     KEY = 235 
+High temperature hysteresis HTA=OFF 
+Modification permit...YES 
+Energy saving....NO 
+Failure history resetting 
+Graphs history resetting 
+Load configuration by default 
+ 
+ 
+ 
+The operation will be carried out when positioning cursor on history resetting 
+lines and pressing <E> key .  
+ 
+By positioning cursor on loading line and pressing <E> key: 
+ 
+ 
+ 
+Load configuration by default. Are you sure? 
+E = YES                Esc = NO 
+ 
+ 
+ 
+
+
+--- PAGE 51 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+51 out of 71 
+ 
+ 
+By pressing <E> key: 
+     
+ 
+ 
+ 
+Load configuration by default. Are you sure? 
+E = YES                  Esc = NO 
+ 
+Configuration loaded 
+ 
+ 
+ 
+Load is carried out in the same way as load in general configuration except for 
+the following values (that keep their value):  
+ 
+Serial line speed, Address 
+General configuration key. User's key.  
+Machine hours, compressor or cooling battery running hours, heating battery 
+running hours.  
+ 
+Code of machine (year, purchase order number and machine number, except 
+number of version which is actually loaded)  
+Language 
+Automatic or programmed programmes.  
+Energy saving: hour, day, table and safety bands.  
+Reset counters 
+ 
+When making this load, the following configurations remain configured as:  
+Modification permit... YES 
+Energy saving...NO 
+Consequently, if we wish not to permit modifications or validate energy saving, 
+we should enter again user's configuration to modify its status.  
+ 
+By pressing <E> key: 
+ 
+COMPUTER CONFIGURATION  
+ 
+Transmission speed (Bauds) = 9600 
+Address in networks                            =       5 
+ 
+ 
+ 
+These two values can be modified if incorrect.  
+ 
+By pressing <Esc> key it will initiate and control will show main display.  
+ 
+
+
+--- PAGE 52 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+52 out of 71 
+ 
+15.4 - Modification of values by default of access keys to general configuration and 
+to user's configuration. 
+ 
+Values of keys will be as follows:  
+ 
+ 
+ 
+General 
+configuration key  
+User's configuration 
+key 
+Value with which keys will initiate when loading from general 
+configuration or when changing of version or when memory is 
+lifted or when holding down memory delete pushbutton for some 
+seconds.  
+. 
+ 
+ 
+Check with  E.F.C. 
+ 
+ 
+          235 
+ 
+ 
+When load is made from user's configuration, none of values of keys is changed.  
+ 
+ 
+ 
+ 
+16. CHANGE OF LANGUAGE. 
+ 
+ 
+To change language press <Arrow down> key together with <Esc> key. Every 
+click will mean the change to a new language.  
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 53 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+53 out of 71 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 3rd. PART 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+MISCELLANEOUS 
+ 
+
+
+--- PAGE 54 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+54 out of 71 
+ 
+ 
+SECMATIC 
+MISCELLANEOUS 
+ 
+ 
+ 
+INDEX 
+ 
+CONTROLLER TERMINAL HOLDERS ................................................ 55 
+SUPPLY ..................................................................................................................... 56 
+SERIAL LINE OF COMMUNICATIONS ................................................................ 56 
+DIGITAL INPUTS ..................................................................................................... 58 
+DIGITAL OUTPUTS ................................................................................................. 59 
+ANALOGICAL INPUTS .......................................................................................... 61 
+ANALOGICAL OUTPUTS ...................................................................................... 63 
+PLATES ..................................................................................................... 66 
+BASEPLATE ............................................................................................................. 68 
+PLATE OF DIGITAL OUTPUTS ............................................................................. 69 
+PLATE OF ANALOGICAL INPUTS AND OUTPUTS............................................ 70 
+PERSONNEL TRAINING ........................................................................ 71 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 55 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+55 out of 71 
+ 
+ 
+CONTROLLER TERMINAL HOLDERS. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+1 
+2 
+3 
+Diagram of location of Secmatic 970 
+terminals.
+4........13 
+14........23 
+41........50 
+51........60 
+24.........28 
+61.........65 
+29.........34 
+66.........71 
+78.........83 
+35.........40
+72.........77
+84.........89
+
+
+--- PAGE 56 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+56 out of 71 
+ 
+SUPPLY 
+ 
+TERMINALS  
+SYMBOL 
+ 
+DESCRIPTION 
+ 
+1 
+ 
+ 
+Controller ground. 
+2-3 
+220v (+/-10%)  
+Controller supply at 220v alternating. 
+ 
+SELF-CONTAINED DRYERS: Supply 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+       220v 
+1     2     3 
+
+
+--- PAGE 57 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+57 out of 71 
+ 
+SERIAL LINE OF COMMUNICATIONS 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+SELF-CONTAINED DRYERS: Serial Line 
+ 
+ 
+ 
+TX+   TX-    RX+  RX- 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Display 
+24    25     26    27    28 
+
+
+--- PAGE 58 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+58 out of 71 
+ 
+DIGITAL INPUTS SELF-CONTAINED UNITS 
+ 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOL 
+DESCRIPTION 
+ 
+34-29 
+ PAC 
+ 
+Safety high and low pressure switch.  
+34-30 
+ RTV 
+ 
+Centrifugal fan thermal relay.  
+34-31 
+ TMM 
+ 
+Safety maximum and minimum thermostat.  
+34-32 
+ RTA 
+ 
+Air-cooled condenser thermal relay.  
+34-33 
+ RTC 
+ 
+Compressor thermal relay. 
+ 
+40-35 
+ PFA 
+ 
+Compressor oil pressure switch.  
+40-36 
+ KXC 
+ 
+Compressor Klixon. 
+40-37 
+  
+ 
+ 
+Free. 
+40-38 
+ SBC 
+ 
+Damper locking safety. 
+40-39 
+  
+ 
+ 
+Free. 
+
+
+--- PAGE 59 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+59 out of 71 
+ 
+DIGITAL INPUTS - CENTRALIZED UNITS 
+ 
+ 
+ 
+ 
+ 
+TERMINALS  
+SYMBOL 
+ 
+DESCRIPTION 
+ 
+34-29 
+--- 
+---. 
+34-30 
+RTV 
+Centrifugal fan thermal relay.  
+34-31 
+TMM 
+Safety maximum and minimum thermostat.  
+34-32 
+--- 
+---. 
+34-33 
+--- 
+---. 
+ 
+40-35 
+--- 
+---. 
+40-36 
+--- 
+---. 
+40-37 
+BSM 
+Engine room locking. 
+40-38 
+SBC 
+Damper locking safety.  
+40-39 
+--- 
+---. 
+
+
+--- PAGE 60 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+60 out of 71 
+ 
+DIGITAL OUTPUTS -  SELF-CONTAINED UNITS 
+ 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOL 
+DESCRIPTION 
+ 
+41-42 
+AVERIA 
+Failure output . 
+43-44 
+V 
+Centrifugal fan. 
+45-46 
+CP1A 
+Opening of distribution damper 1. 
+47-48 
+CP1C 
+Closing of distribution damper 1. 
+49-50 
+VSD 
+Defrost solenoid valve.  
+51-52 
+C 
+Compressor. 
+53-54 
+VSL 
+Liquid solenoid valve. 
+55-56 
+VSCI 
+Internal-con solenoid valve.  
+57-58 
+VSCE 
+Outside-con solenoid valve.  
+59-60 
+VSC 
+Heating solenoid valve or Heaters.  
+4-5 
+GV 
+Steam generator.  
+6-7 
+CP2A 
+Opening of distribution damper 2. 
+8-9 
+CAE1 
+Opening of air dampers.  
+10-11 
+CAE2 
+Closing of outside air dampers.  
+12-13 
+VSE-CI 
+Internal cond. balance solenoid valve.  
+14-15 
+V1 
+Fan 1 of air-cooled condenser.  
+16-17 
+V2 
+Fan 2 of air-cooled condenser. 
+18-19 
+V3 
+Fan 3 of air-cooled condenser.  
+20-21 
+CP2C. 
+Closing of distribution damper 2. 
+22-23 
+VSE-CE 
+Ext-Cond balance solenoid valve.  
+
+
+--- PAGE 61 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+61 out of 71 
+ 
+DIGITAL OUTPUTS - CENTRALIZED UNITS 
+ 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOL 
+ 
+DESCRIPTION 
+ 
+41-42 
+AVERIA 
+ 
+Failure output. 
+43-44 
+V 
+ 
+ 
+Centrifugal fan. 
+45-46 
+CP1A  
+ 
+Opening of distribution damper 1. 
+47-48 
+CP1C  
+ 
+Closing of distribution damper 1. 
+49-50 
+VSD  
+ 
+Defrost solenoid valve. 
+51-52 
+SGF1  
+ 
+Cold glycol solenoid valve 1. 
+53-54 
+SGF2  
+ 
+Cold glycol solenoid valve 2. 
+55-56 
+SGC1  
+ 
+Hot glycol solenoid valve 1.  
+57-58 
+SGC2  
+ 
+Hot glycol solenoid valve 2.  
+59-60 
+SWC 
+Hot water solenoid valve or Heaters.  
+4-5 
+GV 
+ 
+ 
+Steam generator.  
+6-7 
+CP2A  
+ 
+Opening of distribution damper 2. 
+8-9 
+CAE1  
+ 
+Opening of air dampers.  
+10-11 
+CAE2  
+ 
+Closing of outside air dampers.  
+12-13 
+ 
+ 
+ 
+ 
+14-15 
+FRIO  
+ 
+SGF1(6)+SGF2(7). 
+16-17 
+CALOR 
+ 
+SGC1(8)+SGC2(9)+SD(5). 
+18-19 
+Cal.Aux. 
+ 
+SWC(10). 
+20-21 
+CP2C.  
+ 
+Closing of distribution damper 2. 
+22-23 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 62 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+62 out of 71 
+ 
+ANALOGICAL INPUTS - SELF-CONTAINED UNITS  
+ 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOL 
+DESCRIPTION 
+ 
+66-67-68 
+TI 
+ 
+Room temperature (Pt100) 
+69-70-71 
+HRI  
+Room relative humidity  (Pt100) 
+ 
+72 
+ 
+ 
+ 24v/100mA output 
+73 
+TSP  
+Product surface temperature (0/10v ó 2/10v) 
+74 
+TIP  
+Product internal temperature  (0/10v ó 2/10v) 
+75 
+PP  
+Sample weight (0/10v) 
+76 
+EA  
+Auxiliary input  (0/10v) 
+77 
+ 
+ 
+Common 
+ 
+78-79-80 
+TD  
+Compressor discharge temperature (Pt100) 
+81-82-83 
+TA  
+Compressor suction temperature (Pt100) 
+ 
+84 
+ 
+ 
+24v/100mA output 
+85 
+TE  
+Outside temperature  (0/10v) 
+86 
+HRE  
+Outside relative humidity  (0/10v) 
+87 
+PAC  
+Compressor suction pressure  (4/20mA) 
+88 
+PDC  
+Compressor discharge pressure (4/20mA) 
+89 
+ 
+ 
+Common 
+
+
+--- PAGE 63 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+63 out of 71 
+ 
+ANALOGICAL INPUTS - CENTRALIZED UNITS  
+ 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOL 
+DESCRIPTION 
+ 
+66-67-68 
+TI 
+Room temperature (Pt100) 
+69-70-71 
+HRI 
+Room relative humidity (Pt100) 
+ 
+72 
+ 
+24v/100mA Output 
+73 
+TSP 
+Product surface temperature (0/10v or 2/10v) 
+74 
+TIP 
+Product internal temperature (0/10v or 2/10v) 
+75 
+PP 
+Sample weight (0/10 V) 
+76 
+EA 
+Auxiliary input (0/10v) 
+77 
+ 
+Common 
+ 
+78-79-80 
+TSBF 
+Cooling battery outlet temperature (Pt100) 
+81-82-83 
+TEBF 
+Cooling battery inlet temperature (Pt100) 
+ 
+84 
+ 
+24v/100mA output 
+85 
+TE 
+Outside temperature (0/10v) 
+86 
+HRE 
+Outside relative humidity (0/10v) 
+87 
+--- 
+ 
+--- 
+88 
+--- 
+ 
+--- 
+89 
+ 
+Common 
+
+
+--- PAGE 64 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+64 out of 71 
+ 
+ANALOGICAL OUTPUTS - SELF-CONTAINED UNITS 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOLS 
+ 
+DESCRIPTION 
+ 
+61 
+Free. 
+62 
+Free. 
+63 
+Free. 
+64 
+Free. 
+65 
+Common. 
+ 
+ 
+Analogical outputs will be  0/10 V with jumpers (SW1, SW2, SW3, SW4) installed  
+and 0/1 V with jumpers removed 
+ 
+ 
+Analogical outputs will be assigned by configuration to any of analogical inputs.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 65 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+65 out of 71 
+ 
+ 
+ANALOGICAL OUTPUTS - CENTRALIZED UNITS  
+ 
+ 
+ 
+ 
+ 
+TERMINALS 
+SYMBOL 
+DESCRIPTION 
+ 
+61 
+Free. 
+62 
+Free. 
+63 
+Free. 
+64 
+Free. 
+65 
+Common. 
+ 
+ 
+Analogical outputs will be  0/10 V with jumpers (SW1, SW2, SW3, SW4) installed 
+and 0/1 V with jumpers removed. 
+ 
+ 
+Analogical outputs will be assigned by configuration to any of analogical inputs.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+--- PAGE 66 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+66 out of 71 
+ 
+PLATES 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+FLUORESCENT 
+LCD DISPLAY PLATE  
+MULTIPLE 
+CONNECT. 
+CABLE 
+DISPLAY SWITCH IN  
+REVERSE VIDEO 
+LIQUID CRYSTAL CONTRAST 
+REACTANCE FOR  
+FLUORESCENT 
+CONNECTOR TO 
+MOTHERBOARD 
+FLUORESCENT 
+OFF SWITCH (10 
+MINUTES) 
+FLUORESCENT 
+SUPPLY 
+TRANSFORMER
+
+
+--- PAGE 67 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+67 out of 71 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CONNECTION FOR 
+DISPLAY AND KEYBOARD 
+RESET 
+BUTTON 
+PLATE OF 
+ANALOGICAL I/O 
+SEE PAGE 9/10 
+ANALOGICAL 
+INPUTS 
+ANALOGICAL 
+OUTPUTS 
+DIGITAL OUTPUTS 
+PLATE OF DIGITAL 
+OUTPUTS. SEE PAGE 
+8/10
+MOTHER 
+BOARD 
+PLATE 
+SEE PAGE 
+7/10
+SUPPLY 
+220V~50/60Hz 
+FLUORESCENT SUPPLY 
+CONNECTION 
+S-970 BOTTOM VIEW. THESE ARE THREE PLATES THAT CAN BE SEEN SEPARATELY ON PAG. 7/10, 8/10 & 9/10 
+
+
+--- PAGE 68 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+68 out of 71 
+ 
+BASEPLATE 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+RESET 
+BUTTON 
+BATTERY 
+RAM 
+EPROM 
+CONFIGURATION 
+MICROSWTICH  
+CONNECTION FOR 
+DISPLAY AND KEYBOARD 
+DIGITAL 
+INPUTS 
+RS-422 
+COMMUNICATION 
+DIGITAL OUTPUTS 
+FLUORESCENT SUPPLY 
+CONNECTION 
+Ó
+Ó
+GROUNDING 
+SUPPLY 
+220V~50/60Hz 
+CPU PLATE (MOTHERBOARD) 
+
+
+--- PAGE 69 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+69 out of 71 
+ 
+PLATE OF DIGITAL OUTPUTS 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+DIGITAL OUTPUTS 
+
+
+--- PAGE 70 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+70 out of 71 
+ 
+PLATE OF ANALOGICAL INPUTS AND OUTPUTS 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ANALOGICAL OUTPUTS
+ANALOGICAL INPUTS 
+
+
+--- PAGE 71 ---
+   E.F.C.                                                      Secmatic-970 Installation and user's Manual  
+                                             
+_____________________________________________________________________________________    
+71 out of 71 
+ 
+PERSONNEL TRAINING 
+ 
+ 
+ 
+TRAINING OF PERSONNEL RESPONSIBLE FOR THE START-
+UP , MAINTENANCE AND REPAIR. 
+ 
+Given the electric power used and how unit operates, personnel who is going to 
+carry out above operations must be familiar with both the electrical system and the 
+refrigeration system.  This knowledge has to be confirmed by training courses or 
+recognised specific knowledge. 
+ 
+ 
+SAFETY MATERIAL TO BE USED DURING THE 
+OPERATIONS OF START-UP, MAINTENANCE AND REPAIR.  
+ 
+It will be necessary to tell apart operations in electrical system and in 
+refrigeration system. In any case, material used must be in accordance with system to be 
+checked. Likewise, the exacting compliance of safety measures concerning electric 
+contacts and protections, is required. 
+ 
+RESIDUAL RISKS 
+ 
+Given unit construction and how they are delivered, it is assumed that there are 
+no risk areas, taking into account particularly, that personnel responsible for any 
+intervention must be familiar with unit. Nevertheless and as they are important, the 
+following should be mentioned:  
+Fan and its transmission are covered with a metal housing that can be removed with the 
+appropriate tool, in that case it is necessary to remove voltage and to take care not to 
+introduce any extremities or sharp objects into fan, motor or transmission.  
+ 
+The electric panel, in its condition as a  power supply centre, must be handled 
+without voltage and with total lack of sharp objects.  
+To handle it, use indicators of unit status to avoid the accidental start-up.  
+ 
+
+

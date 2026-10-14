@@ -1,0 +1,69 @@
+=== FILE: ARQUITECTURA DEL SISTEMA +40 -5  +5.pdf (Pages: 1) ===
+
+--- PAGE 1 ---
+LAN   100 /1000 Mbps Ethernet
+1
+2
+CONTROL DE RED CON
+SERVIDOR WEB 700
+IP  192.168.x.x
+ESTANDAR: FTT-10
+LONWORK BUS
+SERVIDOR PC
+SUPERVISOR DE RED CON ACCESO HTML
+ALMACENAMIENTO DE DATOS. MODELO: WEB-S-AX-DVD
+OS Windows 7 con procesador Intel Dual Core, 4GB RAM,
+350 GB HDD, Quad Monitor de 27".
+ACCESO PARA OPERADOR VIA WEB BROWSER E
+INTEGRACION CON SOFTWARE SUPERVISOR DE
+LA PLANTA 3
+INTERNET FIREWALL ROUTER
+PARA MONITOREO REMOTO
+G
+F
+E
+D
+C
+B
+H
+PANELES DE CONTROL
+LOCALES
+@ FUTURO
+A
+I
+4
+MODBUS RTU
+C&A 06
+A
+R. ROUVIER 
+GENICA - DALVI
+S/E
+WILLY HUNGERS 
+W. HUNGUERS
+NICOLAS D' ALESSANDRO.
+ARQUITECTURA DEL SISTEMA +5, -5, +40.
+WILLY HUNGERS 
+CIRCUITO +40.
+Tablero De Control Proceso FundidMAo 1
+Tablero De Control Proceso Fundido 2
+Tablero De Control De Empaque
+Tablero De Control De Cocina
+Tablero De Control Proceso Mozzarella
+Tablero De Control Para Procesos Naturales
+Tablero De Control Para Control De Fan Coil
+LEYENDA
+B
+C
+D
+E
+F
+G
+H
+A
+Tablero De Control Circuito +40
+AGOSTO. 2.012
+AGOSTO. 2012
+H.HENAO
+H.HENAO
+
+
