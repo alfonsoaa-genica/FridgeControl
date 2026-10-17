@@ -60,8 +60,8 @@ export const ModbusDiagnostic: React.FC = () => {
   const [testActiveMessage, setTestActiveMessage] = useState<{ [nodeId: number]: string }>({});
 
   // Estados del Escáner
-  const [startId, setStartId] = useState<number>(1);
-  const [endId, setEndId] = useState<number>(16);
+  const [startId, setStartId] = useState<number | string>(1);
+  const [endId, setEndId] = useState<number | string>(16);
   const [resetList, setResetList] = useState<boolean>(false);
   const [scanning, setScanning] = useState<boolean>(false);
   const [currentScanId, setCurrentScanId] = useState<number>(0);
@@ -69,7 +69,7 @@ export const ModbusDiagnostic: React.FC = () => {
   const [scanMessage, setScanMessage] = useState<string>('');
 
   // Estados del Ping Individual
-  const [pingId, setPingId] = useState<number>(100);
+  const [pingId, setPingId] = useState<number | string>(1);
   const [pingLoading, setPingLoading] = useState<boolean>(false);
   const [pingResult, setPingResult] = useState<PingResponse | null>(null);
 
@@ -116,11 +116,15 @@ export const ModbusDiagnostic: React.FC = () => {
   }, 1000);
 
   const handleStartScan = async () => {
+    const sId = Math.max(1, Math.min(247, Number(startId) || 1));
+    const eId = Math.max(sId, Math.min(247, Number(endId) || 32));
+    setStartId(sId);
+    setEndId(eId);
     setScanning(true);
     setScanResults([]);
     setScanMessage(t('diagnostic.scanStarting'));
     try {
-      await startBusScan(startId, endId, resetList);
+      await startBusScan(sId, eId, resetList);
     } catch (e) {
       setScanning(false);
       setScanMessage(t('diagnostic.scanError'));
@@ -128,15 +132,17 @@ export const ModbusDiagnostic: React.FC = () => {
   };
 
   const handlePing = async () => {
+    const targetId = Math.max(1, Math.min(247, Number(pingId) || 1));
+    setPingId(targetId);
     setPingLoading(true);
     setPingResult(null);
     try {
-      const res = await pingSlave(pingId);
+      const res = await pingSlave(targetId);
       setPingResult(res);
       loadStats();
     } catch (e) {
       setPingResult({
-        id: pingId,
+        id: targetId,
         success: false,
         rtt_ms: 0,
         model: 'ERROR',
@@ -298,16 +304,44 @@ export const ModbusDiagnostic: React.FC = () => {
                   type="number"
                   size="small"
                   value={startId}
-                  onChange={(e) => setStartId(parseInt(e.target.value) || 1)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === '') {
+                      setStartId('');
+                    } else {
+                      const p = parseInt(val, 10);
+                      setStartId(isNaN(p) ? '' : p);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (startId === '' || Number(startId) < 1) setStartId(1);
+                    else if (Number(startId) > 247) setStartId(247);
+                  }}
+                  onFocus={(e) => e.target.select()}
                   disabled={scanning}
+                  slotProps={{ htmlInput: { min: 1, max: 247 } }}
                 />
                 <TextField
                   label={t('diagnostic.idEnd')}
                   type="number"
                   size="small"
                   value={endId}
-                  onChange={(e) => setEndId(parseInt(e.target.value) || 32)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === '') {
+                      setEndId('');
+                    } else {
+                      const p = parseInt(val, 10);
+                      setEndId(isNaN(p) ? '' : p);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (endId === '' || Number(endId) < 1) setEndId(1);
+                    else if (Number(endId) > 247) setEndId(247);
+                  }}
+                  onFocus={(e) => e.target.select()}
                   disabled={scanning}
+                  slotProps={{ htmlInput: { min: 1, max: 247 } }}
                 />
               </Stack>
 
@@ -398,8 +432,22 @@ export const ModbusDiagnostic: React.FC = () => {
                   type="number"
                   size="small"
                   value={pingId}
-                  onChange={(e) => setPingId(parseInt(e.target.value) || 1)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === '') {
+                      setPingId('');
+                    } else {
+                      const p = parseInt(val, 10);
+                      setPingId(isNaN(p) ? '' : p);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (pingId === '' || Number(pingId) < 1) setPingId(1);
+                    else if (Number(pingId) > 247) setPingId(247);
+                  }}
+                  onFocus={(e) => e.target.select()}
                   disabled={pingLoading}
+                  slotProps={{ htmlInput: { min: 1, max: 247 } }}
                   sx={{ width: 180 }}
                 />
                 <Button

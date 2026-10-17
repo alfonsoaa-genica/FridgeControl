@@ -80,11 +80,11 @@ export const CavasDashboard: React.FC = () => {
   // Modal para configuración de alarmas y tiempos ISA-18.2
   const [alarmDialogOpen, setAlarmDialogOpen] = useState<boolean>(false);
   const [alarmCava, setAlarmCava] = useState<CavaState | null>(null);
-  const [doorGraceSec, setDoorGraceSec] = useState<number>(90);
-  const [doorBuzzerSec, setDoorBuzzerSec] = useState<number>(180);
-  const [ackGraceMin, setAckGraceMin] = useState<number>(10);
+  const [doorGraceSec, setDoorGraceSec] = useState<number | string>(90);
+  const [doorBuzzerSec, setDoorBuzzerSec] = useState<number | string>(180);
+  const [ackGraceMin, setAckGraceMin] = useState<number | string>(10);
   const [tempAlarmDelta, setTempAlarmDelta] = useState<number>(2.5);
-  const [tempAlarmDelaySec, setTempAlarmDelaySec] = useState<number>(300);
+  const [tempAlarmDelaySec, setTempAlarmDelaySec] = useState<number | string>(300);
   const [savingAlarm, setSavingAlarm] = useState<boolean>(false);
   const [alarmMsg, setAlarmMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -147,12 +147,17 @@ export const CavasDashboard: React.FC = () => {
     setSavingAlarm(true);
     setAlarmMsg(null);
     try {
+      const dGrace = Math.max(10, Number(doorGraceSec) || 90);
+      const dBuzzer = Math.max(20, Number(doorBuzzerSec) || 180);
+      const aMin = Math.max(1, Number(ackGraceMin) || 10);
+      const tDelay = Math.max(0, Number(tempAlarmDelaySec) || 300);
+
       await updateCavaAlarmConfig(alarmCava.id, {
-        door_grace_sec: doorGraceSec,
-        door_buzzer_sec: doorBuzzerSec,
-        ack_grace_sec: ackGraceMin * 60,
+        door_grace_sec: dGrace,
+        door_buzzer_sec: dBuzzer,
+        ack_grace_sec: aMin * 60,
         temp_alarm_delta: tempAlarmDelta,
-        temp_alarm_delay_sec: tempAlarmDelaySec,
+        temp_alarm_delay_sec: tDelay,
       });
       setAlarmMsg({ type: 'success', text: 'Parámetros ISA-18.2 guardados exitosamente.' });
       setTimeout(() => {
@@ -876,7 +881,14 @@ export const CavasDashboard: React.FC = () => {
                     label="Advertencia Puerta (segundos)"
                     type="number"
                     value={doorGraceSec}
-                    onChange={(e) => setDoorGraceSec(Math.max(10, parseInt(e.target.value) || 90))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setDoorGraceSec(val === '' ? '' : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (doorGraceSec === '' || Number(doorGraceSec) < 10) setDoorGraceSec(10);
+                    }}
+                    onFocus={(e) => e.target.select()}
                     helperText="Luz Amarilla preventiva en torreta (Defecto: 90 s)"
                     fullWidth
                     size="small"
@@ -887,7 +899,14 @@ export const CavasDashboard: React.FC = () => {
                     label="Sirena Crítica (segundos)"
                     type="number"
                     value={doorBuzzerSec}
-                    onChange={(e) => setDoorBuzzerSec(Math.max(20, parseInt(e.target.value) || 180))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setDoorBuzzerSec(val === '' ? '' : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (doorBuzzerSec === '' || Number(doorBuzzerSec) < 20) setDoorBuzzerSec(20);
+                    }}
+                    onFocus={(e) => e.target.select()}
                     helperText="Disparo de sirena acústica continua (Defecto: 180 s)"
                     fullWidth
                     size="small"
@@ -898,7 +917,14 @@ export const CavasDashboard: React.FC = () => {
                     label="Silencio por Botón ACK (minutos)"
                     type="number"
                     value={ackGraceMin}
-                    onChange={(e) => setAckGraceMin(Math.max(1, parseInt(e.target.value) || 10))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setAckGraceMin(val === '' ? '' : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (ackGraceMin === '' || Number(ackGraceMin) < 1) setAckGraceMin(1);
+                    }}
+                    onFocus={(e) => e.target.select()}
                     helperText="Tiempo de cortesía silenciosa al pulsar el botón físico exterior (Defecto: 10 min)"
                     fullWidth
                     size="small"
@@ -922,9 +948,10 @@ export const CavasDashboard: React.FC = () => {
                   <TextField
                     label="Desviación Máx. Temperatura (+°C)"
                     type="number"
-                    inputProps={{ step: '0.1' }}
+                    slotProps={{ htmlInput: { step: '0.1' } }}
                     value={tempAlarmDelta}
                     onChange={(e) => setTempAlarmDelta(parseFloat(e.target.value) || 2.5)}
+                    onFocus={(e) => e.target.select()}
                     helperText="Tolerancia sobre el Setpoint antes de alarma (Defecto: +2.5°C)"
                     fullWidth
                     size="small"
@@ -935,7 +962,14 @@ export const CavasDashboard: React.FC = () => {
                     label="Retardo de Confirmación (segundos)"
                     type="number"
                     value={tempAlarmDelaySec}
-                    onChange={(e) => setTempAlarmDelaySec(Math.max(0, parseInt(e.target.value) || 300))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setTempAlarmDelaySec(val === '' ? '' : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (tempAlarmDelaySec === '' || Number(tempAlarmDelaySec) < 0) setTempAlarmDelaySec(0);
+                    }}
+                    onFocus={(e) => e.target.select()}
                     helperText="Tiempo que debe persistir para evitar falsas alarmas (Defecto: 300 s / 5 min)"
                     fullWidth
                     size="small"

@@ -51,7 +51,7 @@ interface CavaFormData {
   original_id?: string;
   id: string;
   descripcion: string;
-  modbus_id: number;
+  modbus_id: number | string;
   tipo: 'conservacion' | 'maduracion';
   has_humidity: boolean;
   temp_sp: number;
@@ -92,7 +92,7 @@ export const CavasConfigPage: React.FC = () => {
 
   // Template Modal
   const [templateDialogOpen, setTemplateDialogOpen] = useState<boolean>(false);
-  const [templateCount, setTemplateCount] = useState<number>(4);
+  const [templateCount, setTemplateCount] = useState<number | string>(4);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -155,10 +155,15 @@ export const CavasConfigPage: React.FC = () => {
       setFeedback({ type: 'error', text: 'El código / tag de la cava es obligatorio (ej. C1)' });
       return;
     }
+    const finalModbusId = Math.max(1, Math.min(247, Number(formData.modbus_id) || 1));
+    const payload = {
+      ...formData,
+      modbus_id: finalModbusId,
+    };
     setSaving(true);
     setFeedback(null);
     try {
-      await saveCavaConfig(formData);
+      await saveCavaConfig(payload as any);
       setFeedback({ type: 'success', text: `Cava "${formData.id}" guardada exitosamente en cavas.json` });
       setDialogOpen(false);
       await loadData();
@@ -186,10 +191,11 @@ export const CavasConfigPage: React.FC = () => {
   };
 
   const handleApplyTemplate = async () => {
+    const count = Math.min(16, Math.max(1, Number(templateCount) || 4));
     setSaving(true);
     try {
-      await initCavasTemplate(templateCount);
-      setFeedback({ type: 'success', text: `Plantilla aplicada: Creadas ${templateCount} cavas (ID 1 a ${templateCount})` });
+      await initCavasTemplate(count);
+      setFeedback({ type: 'success', text: `Plantilla aplicada: Creadas ${count} cavas (ID 1 a ${count})` });
       setTemplateDialogOpen(false);
       await loadData();
     } catch (e: any) {
@@ -427,9 +433,23 @@ export const CavasConfigPage: React.FC = () => {
                 type="number"
                 fullWidth
                 value={formData.modbus_id}
-                onChange={(e) => setFormData({ ...formData, modbus_id: parseInt(e.target.value) || 1 })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFormData({
+                    ...formData,
+                    modbus_id: val === '' ? '' : parseInt(val, 10),
+                  });
+                }}
+                onBlur={() => {
+                  if (formData.modbus_id === '' || Number(formData.modbus_id) < 1) {
+                    setFormData({ ...formData, modbus_id: 1 });
+                  } else if (Number(formData.modbus_id) > 247) {
+                    setFormData({ ...formData, modbus_id: 247 });
+                  }
+                }}
+                onFocus={(e) => e.target.select()}
                 helperText="Dirección RS-485 (1..247)"
-                inputProps={{ min: 1, max: 247 }}
+                slotProps={{ htmlInput: { min: 1, max: 247 } }}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -565,9 +585,17 @@ export const CavasConfigPage: React.FC = () => {
             type="number"
             fullWidth
             value={templateCount}
-            onChange={(e) => setTemplateCount(Math.min(16, Math.max(1, parseInt(e.target.value) || 1)))}
+            onChange={(e) => {
+              const val = e.target.value;
+              setTemplateCount(val === '' ? '' : parseInt(val, 10));
+            }}
+            onBlur={() => {
+              if (templateCount === '' || Number(templateCount) < 1) setTemplateCount(1);
+              else if (Number(templateCount) > 16) setTemplateCount(16);
+            }}
+            onFocus={(e) => e.target.select()}
             helperText="Ingrese un número del 1 al 16"
-            inputProps={{ min: 1, max: 16 }}
+            slotProps={{ htmlInput: { min: 1, max: 16 } }}
           />
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
