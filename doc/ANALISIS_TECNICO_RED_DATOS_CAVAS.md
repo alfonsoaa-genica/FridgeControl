@@ -97,3 +97,42 @@ Para simplificar la puesta en marcha inicial en DALVI y brindar una potente herr
 * **Vista General (Cards Grid):** Tarjetas con temperatura, estado de relés y salud de enlace.
 * **Modo Primer Plano (Smartphones de 6"):** Vista a pantalla completa para ajuste táctil de Setpoints, estados de fancoils y gráfico de tendencia interactiva de 24 horas.
 * **Pestaña de Diagnóstico de Red:** Panel para técnicos de planta con escáner interactivo del bus, calidad de enlace por cava ($Q\%$) y latencias.
+
+
+---
+
+## 7. Topología Híbrida de Bus: Puente 2 Hilos (Satélites) a 4 Hilos (Controladores KIDE con ADM489)
+
+### 7.1. Diagnóstico de Campo y Convivencia de Capa Física
+Durante el análisis de campo de las cavas de DALVI se determinó una dualidad tecnológica fundamental:
+1. **Controladores KIDE (KP-100 y KIDEMATIC-970):** Implementan interfaz de comunicación serial a **4 hilos** (Full-Duplex RS-422 / RS-485 con pares independientes $TX+/TX-$ y $RX+/RX-$).
+2. **Red de Supervisores Auxiliares (`FridgeIO`):** Utilizan el estándar moderno industrial a **2 hilos** (Half-Duplex diferencial $A+/B-$).
+
+### 7.2. Solución: Puente de Capa Física Transparente
+Para evitar el re-cableado destructivo o invasivo de las cámaras frigoríficas y sin modificar el firmware del maestro ESP32-S3:
+* El maestro **Waveshare ESP32-S3** emite y recibe tramas Modbus por su puerto RS-485 de 2 hilos ($A+/B-$).
+* Los satélites de señalización **FridgeIO** se conectan directamente sobre este bus de 2 hilos.
+* En paralelo al bus de 2 hilos se conecta un **transceptor con auto-switchover** (conmutación automática de dirección de flujo) que extrae las líneas serie lógicas a nivel **TTL (TX y RX)**.
+* Estas líneas TTL alimentan directamente a un driver diferencial **ADM489** (Full-Duplex de 4 hilos), cuyas salidas $Y/Z$ ($TX+/TX-$) y entradas $A/B$ ($RX+/RX-$) se conectan al tendido original de 4 hilos de los KIDE.
+* Las respuestas de los controladores KIDE retornan por el ADM489 hacia el transceptor auto-switchover, que las reinyecta al bus de 2 hilos hacia el ESP32-S3.
+
+```
+ [ ESP32-S3 MAESTRO ]
+  (RS-485 2 Hilos A+/B-)
+           │
+           ├────────────────────────────► [ Satélites FridgeIO (ES32D26) ] (2 Hilos A+/B-)
+           │
+           ▼
+ [ Transceptor 2H con Auto-Switchover ]
+           │ TTL (TX / RX)
+           ▼
+ [ Driver Full-Duplex ADM489 ]
+           │ 4 Hilos (TX+/TX- , RX+/RX-)
+           ▼
+ [ Controladores KIDE KP-100 / KIDEMATIC-970 ]
+```
+
+### 7.3. Ventajas Técnicas
+* **Cero impacto en firmware:** ModbusEngine sigue operando sobre una única UART no bloqueante.
+* **Integridad del cableado de planta:** Se preserva el tendido y apantallamiento de 4 hilos existente en las cavas.
+* **Aislamiento y robustez:** Cada segmento opera en su condición de impedancia óptima con terminadores de 120 Ω.

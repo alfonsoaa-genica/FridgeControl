@@ -80,6 +80,7 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 | **Oct 2026** | **FridgeIO Firmware** | Creación y flasheo de firmware esclavo Modbus RTU en placa ES32D26 física (`COM20`). |
 | **Oct 2026** | **Hardware Maestro** | Homologación del Waveshare Industrial ESP32-S3 Relay 6CH con RS-485 aislado (`COM24`). |
 | **Oct 2026** | **Supervisión de Nodos** | Implementación en `ModbusEngine` del ciclo de sondeo de satélites `FridgeIO` y máquina de estados de torretas. |
+| **Oct 2026** | **Topología Híbrida** | Especificación del puente de capa física (2 hilos a 4 hilos) con auto-switchover y driver ADM489 para compatibilidad con controladores KIDE. |
 | **Oct 2026** | **Flasheo Total Maestro** | **Grabación exitosa de Firmware y Filesystem (LittleFS) en el Waveshare ESP32-S3 (`COM24`)**. |
 
 ---

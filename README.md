@@ -9,7 +9,7 @@
 Este repositorio contiene el sistema integral de supervisión, telemetría y señalización para las cavas de refrigeración y maduración de la planta DALVI (Génica), compuesto por dos firmwares complementarios:
 
 1. **`FridgeControl` (Raíz del Repositorio):**  
-   Gateway IoT y Maestro Modbus RTU sobre ESP32. Interroga a los controladores KIDE (KP-100 y Secmatic-970) y a los satélites `FridgeIO`. Aloja un servidor web con SPA en **React** (LittleFS), WebSockets, buffer circular de 24h en memoria RAM, escáner de red (*Auto-Discovery*) con métricas de calidad de enlace ($Q\%$) y cliente MQTT conectado a la red corporativa.
+   Gateway IoT y Maestro Modbus RTU sobre ESP32. Interroga a los controladores KIDE (KP-100 y Secmatic-970) mediante puente híbrido 2H/4H (ADM489) y a los satélites `FridgeIO` en bus de 2 hilos. Aloja un servidor web con SPA en **React** (LittleFS), WebSockets, buffer circular de 24h en memoria RAM, escáner de red (*Auto-Discovery*) con métricas de calidad de enlace ($Q\%$) y cliente MQTT conectado a la red corporativa.
 2. **`FridgeIO` ([`FridgeControl/FridgeIO/`](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/FridgeIO)):**  
    Firmware determinista para satélites industriales de campo en placa **eletechsup ES32D26** (carril DIN). Actúa como esclavo Modbus RTU puro (IDs 100, 102, 104, 106, 108) controlando 2 cavas contiguas con 8 relés de potencia para torretas luminosas y buzzers, y 8 entradas optoacopladas para switches magnéticos de puerta, botones físicos de reconocimiento (ACK) y contactos de alarma de los KIDE. Gestión administrativa 100% remota sobre el bus RS-485.
 
