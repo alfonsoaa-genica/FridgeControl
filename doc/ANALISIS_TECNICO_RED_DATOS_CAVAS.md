@@ -109,6 +109,8 @@ Durante el análisis de campo de las cavas de DALVI se determinó una dualidad t
 2. **Red de Supervisores Auxiliares (`FridgeIO`):** Utilizan el estándar moderno industrial a **2 hilos** (Half-Duplex diferencial $A+/B-$).
 
 ### 7.2. Solución: Puente de Capa Física Transparente
+* **Alimentación Eléctrica del Puente (+5V):** Tanto el transceptor RS-485 de 2 hilos (con auto-switchover) como el driver diferencial ADM489 de 4 hilos se alimentan con **+5V DC tomados directamente desde el propio maestro** (placa Waveshare ESP32-S3), garantizando referencia de masa (GND) unificada para las líneas TTL y niveles de excursión diferencial óptimos bajo la norma EIA-485/EIA-422.
+
 Para evitar el re-cableado destructivo o invasivo de las cámaras frigoríficas y sin modificar el firmware del maestro ESP32-S3:
 * El maestro **Waveshare ESP32-S3** emite y recibe tramas Modbus por su puerto RS-485 de 2 hilos ($A+/B-$).
 * Los satélites de señalización **FridgeIO** se conectan directamente sobre este bus de 2 hilos.
