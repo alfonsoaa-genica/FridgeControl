@@ -138,3 +138,25 @@ Para evitar el re-cableado destructivo o invasivo de las cámaras frigoríficas 
 * **Cero impacto en firmware:** ModbusEngine sigue operando sobre una única UART no bloqueante.
 * **Integridad del cableado de planta:** Se preserva el tendido y apantallamiento de 4 hilos existente en las cavas.
 * **Aislamiento y robustez:** Cada segmento opera en su condición de impedancia óptima con terminadores de 120 Ω.
+
+
+---
+
+## 8. Procedimiento de Intervención en Campo, Desacoplamiento del WEB-700 y Plan de Pruebas
+
+### 8.1. Estrategia de Intervención en Punto Medio (Daisychain en Bornera Exterior)
+Para realizar las pruebas de comunicación en caliente sin alterar la topología de la red de cavas:
+1. **Bornera de Paso en Daisychain:** Se interviene la línea de 4 hilos en un punto medio accesible del cableado mediante una bornera exterior en paso continuo (*in-and-out*), evitando ramales en estrella (*stubs*) que degraden la señal.
+2. **Conexión al Puente ADM489 con CAT-6E:** Se utilizan tramos cortos de cable CAT-6E respetando la asignación estricta por pares trenzados:
+   * **Par 1 (TX):** Hacia entradas +/RX-$ de los controladores KIDE.
+   * **Par 2 (RX):** Desde salidas +/TX-$ de los controladores KIDE.
+   * **Masa / Drenaje:** Conectado a la referencia común (GND) para inmunidad ante ruido industrial de modo común.
+3. **Cero Terminación en Punto Medio:** El módulo ADM489 operará con sus resistencias de terminación de 120 $\Omega$ desactivadas, ya que las terminaciones deben ubicarse exclusivamente en los dos extremos físicos de la línea.
+
+### 8.2. Desacoplamiento de la Pasarela del WEB-700 y Terminación de 100 Ω
+* **Aislamiento Físico en Gabinete:** Se desconecta la pasarela serial previa que comunicaba los controladores con el sistema Tridium Niagara / WEB-700. Esto erradica colisiones de tramas y contienda en el bus durante el barrido de *Auto-Discovery* de FridgeControl.
+* **Bornera Terminal de 100 Ω:** En el borne del gabinete donde se extrae la pasarela (ahora extremo de línea), se instala una bornera fabricada expresamente con una resistencia de terminación de **\,\Omega$**. Al coincidir con la impedancia característica ($) del cableado CAT-6E, absorbe las reflexiones de onda terminales y mantiene la red original 100% intacta y balanceada.
+
+### 8.3. Oportunidad de Reutilización de la Pasarela Serial Legacy
+* Tras el aislamiento preventivo de la pasarela retirada del WEB-700, se procederá a su diagnóstico en mesa técnica de laboratorio (revisión de marca, modelo, rango de alimentación DC, diagrama de bornes y configuración de terminación/polarización interna).
+* Si se confirma que es un convertidor industrial transparente RS-232/TTL a RS-422 de 4 hilos en carril DIN, podrá ser homologado para su aprovechamiento en la instalación final de DALVI, optimizando la inversión y reduciendo componentes adicionales.

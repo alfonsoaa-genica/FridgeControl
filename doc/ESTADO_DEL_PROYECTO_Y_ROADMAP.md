@@ -85,7 +85,17 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 
 ---
 
-## 4. Próximos Pasos (Validación en Banco Físico)
+## 4. Plan de Despliegue en Campo y Próximos Pasos
+
+1. **Intervención y Prueba de Conexión en Campo (Cavas DALVI):**
+   * **Punto Medio:** Conectar el puente híbrido ADM489 mediante bornera exterior en daisychain continuo con tramos cortos de CAT-6E (sin terminador en punto medio).
+   * **Gabinete WEB-700:** Desconectar la pasarela serial legacy y cerrar ese extremo de línea instalando la bornera terminal con resistencia de \,\Omega$.
+   * **Auto-Discovery:** Ejecutar escaneo desde la interfaz web de FridgeControl para verificar la respuesta inmediata de los KIDE KP-100 y KIDEMATIC-970.
+2. **Diagnóstico del Convertidor Serial Legacy:**
+   * Evaluar en mesa técnica la pasarela retirada del WEB-700 (RS-232 a RS-422 de 4 hilos) para su posible homologación y aprovechamiento como driver definitivo en carril DIN.
+3. **Prueba de Señalización Andon con Satélites FridgeIO:**
+   * Conectar los satélites eletechsup ES32D26 al bus de 2 hilos del maestro, validando tiempos de puerta abierta, torretas luminosas y botón físico de ACK (ISA-18.2).
+
 
 1. **Conexión Física de Banco:**
    * Conectar par trenzado RS-485 entre:
