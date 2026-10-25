@@ -255,26 +255,6 @@
     "messages": {
       "time_set_success": "Time configured successfully",
       "time_set_error": "Problem updating time"
-    },
-    "rtc": {
-      "title": "DS3231 Hardware RTC (ZS-042)",
-      "chip_status": "RTC Module",
-      "chip_detected": "Dallas DS3231 Detected (TCXO ±2ppm)",
-      "chip_not_detected": "Not Detected (Bench Mode)",
-      "temp_tcxo": "TCXO Temperature",
-      "sync_status": "NTP Synchronization",
-      "synced": "Synchronized with NTP",
-      "pending_sync": "Pending Synchronization",
-      "drift_label": "Detected Drift",
-      "drift_exact": "0 sec (Exact)",
-      "last_sync": "Last NTP Sync",
-      "eeprom_title": "AT24C32 EEPROM Memory",
-      "eeprom_detected": "4096 Non-Volatile Bytes Available (0x57)",
-      "eeprom_not_detected": "Not Detected",
-      "sync_button": "Sync RTC Now",
-      "syncing": "Synchronizing...",
-      "sync_success": "DS3231 RTC synchronized and calibrated successfully",
-      "sync_error": "Failed to synchronize with NTP server"
     }
   },
   "mqtt": {

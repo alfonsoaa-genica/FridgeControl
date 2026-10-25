@@ -260,26 +260,6 @@
     "messages": {
       "time_set_success": "Hora configurada con éxito",
       "time_set_error": "Problema al actualizar la hora"
-    },
-    "rtc": {
-      "title": "Hardware RTC DS3231 (ZS-042)",
-      "chip_status": "Módulo RTC",
-      "chip_detected": "Dallas DS3231 Detectado (TCXO ±2ppm)",
-      "chip_not_detected": "No Detectado (Modo Banco)",
-      "temp_tcxo": "Temperatura TCXO",
-      "sync_status": "Sincronización NTP",
-      "synced": "Sincronizado con NTP",
-      "pending_sync": "Pendiente de Sincronización",
-      "drift_label": "Desfase Detectado",
-      "drift_exact": "0 seg (Exacto)",
-      "last_sync": "Última Sincronización NTP",
-      "eeprom_title": "Memoria EEPROM AT24C32",
-      "eeprom_detected": "4096 bytes No Volátiles Disponibles (0x57)",
-      "eeprom_not_detected": "No Detectada",
-      "sync_button": "Sincronizar RTC ahora",
-      "syncing": "Sincronizando...",
-      "sync_success": "RTC DS3231 sincronizado y calibrado con éxito",
-      "sync_error": "Fallo al sincronizar con el servidor NTP"
     }
   },
   "mqtt": {
