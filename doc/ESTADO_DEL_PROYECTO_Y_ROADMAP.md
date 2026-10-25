@@ -108,6 +108,19 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 
 ---
 
+### 2.5. Diferenciación Visual y Operativa en la Interfaz Web (SPA)
+* **Separación Estricta de Capas Físicas en UI:**
+  * **Red RS-422 (Exclusiva para Cavas KIDE):**
+    * *Ventana de Edición / Registro:* Subtítulo explícito `Red RS-422 (Controladores KIDE Exclusivamente)`.
+    * *Campo ID Modbus:* Helper text actualizado a `Dirección RS-422 (1..99)`.
+    * *Selector Directo:* Opciones concisas sin desbordamiento: **`KP-100`** y **`KIDEMATIC 970`**.
+    * *Tabla de Diagnóstico:* Panel dedicado **"Métricas de Calidad de Enlace RS-422 (Cavas KIDE)"** con badge de hardware `RS-422 Full-Duplex (Puerto 2: GPIO 4 TX / GPIO 5 RX)`.
+  * **Red RS-485 (Exclusiva para Auxiliares FridgeIO):**
+    * *Panel de Señalización:* Módulos auxiliares eletechsup ES32D26 (IDs $\ge 100$).
+    * *Tabla de Diagnóstico Separada:* Panel dedicado **"Métricas de Calidad de Enlace RS-485 (Auxiliares FridgeIO)"** con badge de hardware `RS-485 Half-Duplex (Puerto 1: GPIO 17 TX / GPIO 18 RX)`. Muestra ID de nodo auxiliar y tags de cavas asociadas (Canal A / Canal B).
+
+---
+
 ## 3. Bitácora de Hitos Completados
 
 | Fecha | Componente | Hito Alcanzado |
