@@ -279,7 +279,7 @@ export const CavasConfigPage: React.FC = () => {
                 <TableCell sx={{ fontWeight: 700 }}>ID Modbus</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Código / Tag</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Nombre / Descripción Operativa</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Tipo de Cava</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Controlador (RS-422)</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Control Humedad</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Temp SP</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>HR SP</TableCell>
@@ -448,7 +448,7 @@ export const CavasConfigPage: React.FC = () => {
                   }
                 }}
                 onFocus={(e) => e.target.select()}
-                helperText="Dirección RS-485 (1..247)"
+                helperText="Dirección RS-422 (1..99)"
                 slotProps={{ htmlInput: { min: 1, max: 247 } }}
               />
             </Grid>

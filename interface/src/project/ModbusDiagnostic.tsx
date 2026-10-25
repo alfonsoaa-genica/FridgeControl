@@ -274,6 +274,9 @@ export const ModbusDiagnostic: React.FC = () => {
     }
   };
 
+  const cavasStats: DiagnosticStat[] = stats.filter((s) => s.type === 'KIDE' || s.modbus_id < 100);
+  const auxStats: DiagnosticStat[] = stats.filter((s) => s.type === 'FRIDGE_IO' || s.modbus_id >= 100);
+
   return (
     <Box sx={{ p: { xs: 1.5, md: 3 } }}>
       <Typography variant="h5" fontWeight={700} color="primary" sx={{ mb: 1 }}>
@@ -765,18 +768,28 @@ export const ModbusDiagnostic: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* PANEL 3: TABLA DE SALUD Y MÉTRICAS DE ENLACE */}
+        {/* PANEL 3A: MÉTRICAS DE ENLACE RS-422 (CAVAS KIDE EXCLUSIVAMENTE) */}
         <Grid size={{ xs: 12 }}>
           <Card sx={{ borderRadius: 2 }}>
             <CardContent>
-              <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
-                {t('diagnostic.metricsTitle')}
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, flexWrap: 'wrap', gap: 1 }}>
+                <Typography variant="h6" fontWeight={700}>
+                  {t('diagnostic.metricsTitleKide', 'Métricas de Calidad de Enlace RS-422 (Cavas KIDE)')}
+                </Typography>
+                <Chip
+                  label="RS-422 Full-Duplex (Puerto 2: GPIO 4 TX / GPIO 5 RX)"
+                  color="primary"
+                  size="small"
+                  variant="outlined"
+                  sx={{ fontWeight: 600 }}
+                />
+              </Box>
+
               {loadingStats ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
                   <CircularProgress />
                 </Box>
-              ) : stats.length === 0 ? (
+              ) : cavasStats.length === 0 ? (
                 <Alert severity="info">{t('diagnostic.noActiveCavas')}</Alert>
               ) : (
                 <TableContainer component={Paper} variant="outlined">
@@ -785,6 +798,7 @@ export const ModbusDiagnostic: React.FC = () => {
                       <TableRow>
                         <TableCell>{t('diagnostic.colCava')}</TableCell>
                         <TableCell>{t('diagnostic.colId')}</TableCell>
+                        <TableCell>{t('diagnostic.colModel', 'Controlador')}</TableCell>
                         <TableCell align="center">{t('diagnostic.colStatus')}</TableCell>
                         <TableCell align="right">{t('diagnostic.colTx')}</TableCell>
                         <TableCell align="right">{t('diagnostic.colRx')}</TableCell>
@@ -795,10 +809,101 @@ export const ModbusDiagnostic: React.FC = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {stats.map((row) => (
-                        <TableRow key={row.cava}>
-                          <TableCell><b>{row.cava}</b></TableCell>
+                      {cavasStats.map((row) => (
+                        <TableRow key={row.cava_id || row.cava}>
+                          <TableCell><b>{row.cava_id || row.cava}</b></TableCell>
                           <TableCell>{row.modbus_id}</TableCell>
+                          <TableCell>
+                            <Chip
+                              label={row.controller_name || (row.cava === 'C3' || row.cava === 'C4' ? 'KIDEMATIC 970' : 'KP-100')}
+                              size="small"
+                              color="secondary"
+                              variant="outlined"
+                              sx={{ fontSize: '0.72rem', fontWeight: 600 }}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Chip
+                              label={row.online ? 'Online' : 'Timeout'}
+                              color={row.online ? 'success' : 'default'}
+                              size="small"
+                              sx={{ fontSize: '0.7rem' }}
+                            />
+                          </TableCell>
+                          <TableCell align="right">{row.tx_frames}</TableCell>
+                          <TableCell align="right">{row.rx_success}</TableCell>
+                          <TableCell align="right">{row.timeouts}</TableCell>
+                          <TableCell align="right">{row.crc_errors}</TableCell>
+                          <TableCell align="right">{row.last_rtt_ms} ms</TableCell>
+                          <TableCell align="right">
+                            <b style={{ color: row.quality_percent > 90 ? '#2e7d32' : row.quality_percent > 70 ? '#ed6c02' : '#d32f2f' }}>
+                              {row.quality_percent.toFixed(1)}%
+                            </b>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* PANEL 3B: MÉTRICAS DE ENLACE RS-485 (AUXILIARES FRIDGEIO EXCLUSIVAMENTE) */}
+        <Grid size={{ xs: 12 }}>
+          <Card sx={{ borderRadius: 2 }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, flexWrap: 'wrap', gap: 1 }}>
+                <Typography variant="h6" fontWeight={700}>
+                  {t('diagnostic.metricsTitleAux', 'Métricas de Calidad de Enlace RS-485 (Auxiliares FridgeIO)')}
+                </Typography>
+                <Chip
+                  label="RS-485 Half-Duplex (Puerto 1: GPIO 17 TX / GPIO 18 RX)"
+                  color="warning"
+                  size="small"
+                  variant="outlined"
+                  sx={{ fontWeight: 600 }}
+                />
+              </Box>
+
+              {loadingStats ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+                  <CircularProgress />
+                </Box>
+              ) : auxStats.length === 0 ? (
+                <Alert severity="info">{t('diagnostic.noActiveAux', 'No hay módulos auxiliares activos en el bus RS-485 aún.')}</Alert>
+              ) : (
+                <TableContainer component={Paper} variant="outlined">
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>{t('diagnostic.colAuxNode', 'Módulo Auxiliar')}</TableCell>
+                        <TableCell>{t('diagnostic.colId')}</TableCell>
+                        <TableCell>{t('diagnostic.colMappedCavas', 'Cavas Asociadas')}</TableCell>
+                        <TableCell align="center">{t('diagnostic.colStatus')}</TableCell>
+                        <TableCell align="right">{t('diagnostic.colTx')}</TableCell>
+                        <TableCell align="right">{t('diagnostic.colRx')}</TableCell>
+                        <TableCell align="right">{t('diagnostic.colTimeouts')}</TableCell>
+                        <TableCell align="right">{t('diagnostic.colCrc')}</TableCell>
+                        <TableCell align="right">{t('diagnostic.colLastRtt')}</TableCell>
+                        <TableCell align="right">{t('diagnostic.colQuality')}</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {auxStats.map((row) => (
+                        <TableRow key={row.modbus_id}>
+                          <TableCell><b>{row.cava || `Auxiliar ${row.modbus_id}`}</b></TableCell>
+                          <TableCell>{row.modbus_id}</TableCell>
+                          <TableCell>
+                            <Chip
+                              label={row.cava_id || 'C3 / C4'}
+                              size="small"
+                              color="info"
+                              variant="outlined"
+                              sx={{ fontSize: '0.72rem', fontWeight: 600 }}
+                            />
+                          </TableCell>
                           <TableCell align="center">
                             <Chip
                               label={row.online ? 'Online' : 'Timeout'}

@@ -311,8 +311,10 @@ void FridgeApiService::registerEndpoints() {
         for (size_t i = 0; i < cavaCount; i++) {
             JsonObject obj = arr.add<JsonObject>();
             obj["cava_id"] = cavas[i].id;
+            obj["cava"] = cavas[i].id;
             obj["modbus_id"] = cavas[i].modbus_id;
             obj["type"] = "KIDE";
+            obj["controller_name"] = (cavas[i].controller_model == KIDEMATIC_970) ? "KIDEMATIC 970" : "KP-100";
             obj["online"] = cavas[i].comm_online;
             obj["tx_frames"] = cavas[i].diag.tx_frames;
             obj["rx_success"] = cavas[i].diag.rx_success;
@@ -327,6 +329,9 @@ void FridgeApiService::registerEndpoints() {
         for (size_t i = 0; i < nodeCount; i++) {
             JsonObject obj = arr.add<JsonObject>();
             obj["cava_id"] = String(nodes[i].cava_a_id) + "/" + String(nodes[i].cava_b_id);
+            obj["cava"] = "Auxiliar " + String(nodes[i].modbus_id);
+            obj["cava_a"] = nodes[i].cava_a_id;
+            obj["cava_b"] = nodes[i].cava_b_id;
             obj["modbus_id"] = nodes[i].modbus_id;
             obj["type"] = "FRIDGE_IO";
             obj["online"] = nodes[i].online;

@@ -46,7 +46,10 @@ export interface TrendPoint {
 
 export interface DiagnosticStat {
   cava: string;
+  cava_id?: string;
   modbus_id: number;
+  type?: 'KIDE' | 'FRIDGE_IO';
+  controller_name?: string;
   tx_frames: number;
   rx_success: number;
   timeouts: number;

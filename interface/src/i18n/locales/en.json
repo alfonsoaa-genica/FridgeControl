@@ -572,9 +572,14 @@
     "colCrc": "CRC Errors",
     "colLastRtt": "Last RTT",
     "colQuality": "Quality (Q%)",
-    "colModel": "Model",
+    "colModel": "Controller",
     "colTemp": "Temp",
     "colHr": "RH",
-    "colRtt": "RTT"
+    "colRtt": "RTT",
+    "metricsTitleKide": "RS-422 Link Quality Metrics (KIDE Cavas)",
+    "metricsTitleAux": "RS-485 Link Quality Metrics (FridgeIO Auxiliaries)",
+    "noActiveAux": "No active auxiliary modules on RS-485 bus yet.",
+    "colAuxNode": "Auxiliary Module",
+    "colMappedCavas": "Mapped Cavas"
   }
 }
