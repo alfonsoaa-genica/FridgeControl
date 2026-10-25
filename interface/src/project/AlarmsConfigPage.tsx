@@ -194,7 +194,7 @@ export const AlarmsConfigPage: React.FC = () => {
             No hay cavas detectadas o configuradas
           </Typography>
           <Typography variant="body2" sx={{ mb: 2 }}>
-            El sistema aún no tiene cámaras registradas en la memoria del controlador. Puedes descubrirlas automáticamente mediante el escáner Modbus RS-485.
+            El sistema aún no tiene cámaras registradas en la memoria del controlador. Puedes descubrirlas automáticamente mediante el escáner Modbus.
           </Typography>
           <Button variant="contained" href="/cavas/diagnostic" color="warning">
             Ir a Diagnóstico y Escaneo Modbus

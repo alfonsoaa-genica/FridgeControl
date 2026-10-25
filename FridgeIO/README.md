@@ -13,7 +13,7 @@
 * Accionar las torretas luminosas y zumbadores de 2 cavas completas (8 relés de potencia).
 * Leer los sensores magnéticos (Reed switch) de puertas y botones físicos de ACK (8 entradas optoacopladas NPN).
 * Ejecutar **temporizadores autónomos no bloqueantes en hardware** (5 segundos de pulso por relé y 5 segundos de Lamp Test) para que el esclavo sea el dueño absoluto de sus tiempos.
-* Leer sondas de temperatura de respaldo Dallas DS18B20 (1-Wire) en caso de fallo del controlador frigorífico principal.
+* Leer sondas de temperatura de respaldo Dallas DS18B20 mediante el bus de sensores de respaldo (protocolo 1-Wire), para disponer de una lectura independiente del controlador frigorífico principal.
 * Gestionar la configuración administrativa remota **100% a través del bus RS-485**.
 
 ---
@@ -47,7 +47,7 @@ Cada relé físico cuenta con un **cronómetro autónomo en hardware de 5.000 ms
 | `00006` (5) | Relé 6 | **Cava B** — Luz Amarilla | Advertencia/alarma de puerta según temporización local |
 | `00007` (6) | Relé 7 | **Cava B** — Luz Roja | Alarma de proceso o NOCOMM |
 | `00008` (7) | Relé 8 | **Cava B** — Sirena / Buzzer | Alarma no reconocida de puerta/proceso |
-| `00009` (8) | Virtual | **Control 1-Wire** | `1` = Habilita lectura periódica de sondas DS18B20 en GPIO 4 (Persistente en NVS) |
+| `00009` (8) | Virtual | **Bus de sensores de respaldo** | `1` = Habilita lectura periódica de sondas DS18B20 en GPIO 4 (Persistente en NVS) |
 | `00010` (9) | Comando | **Prueba de Lámparas** | Escribir `1` dispara Lamp Test de 5 segundos en los 8 relés físicos |
 | `00011` (10) | Comando | **Cancelar / Stop Test** | Escribir `1` aborta de inmediato cualquier prueba y apaga relés |
 | `00012` (11) | Virtual | **Alarma proceso A** | Estado de alarma de proceso recibido del Maestro |
@@ -97,7 +97,7 @@ Permite comisionar el módulo desde el Gateway o desde una laptop con conversor 
 
 ---
 
-### 3.4. Diagnóstico de Salud y Sondas 1-Wire (Input Registers / Función 04)
+### 3.4. Diagnóstico de Salud y Bus de Sensores de Respaldo (Input Registers / Función 04)
 
 | Dirección | Registro | Tipo | Descripción |
 | :---: | :--- | :---: | :--- |
@@ -107,10 +107,10 @@ Permite comisionar el módulo desde el Gateway o desde una laptop con conversor 
 | `30004` (3) | `POLLS_COUNT_LO` | uint16 | Total de solicitudes Modbus atendidas (Palabra baja). |
 | `30005` (4) | `LAST_COMM_AGO_MS` | uint16 | Milisegundos transcurridos desde la última trama válida del maestro. |
 | `30006` (5) | `FIRMWARE_VERSION` | uint16 | Versión del firmware (`120` = v1.2.0). |
-| `30007` (6) | `TEMP_BACKUP_A` | int16 | Temperatura Sonda 1-Wire Cava A en centésimas de °C (ej. `425` = 4.25°C; `-32768` = inválida o no disponible). |
-| `30008` (7) | `TEMP_BACKUP_B` | int16 | Temperatura Sonda 1-Wire Cava B en centésimas de °C (ej. `-1850` = -18.50°C; `-32768` = inválida o no disponible). |
-| `30009` (8) | `1WIRE_ENABLED` | uint16 | Estado de habilitación 1-Wire (`1` = habilitado, `0` = deshabilitado). |
-| `30010` (9) | `1WIRE_DEVICE_COUNT` | uint16 | Cantidad de sensores DS18B20 detectados al habilitar 1-Wire. |
+| `30007` (6) | `TEMP_BACKUP_A` | int16 | Temperatura del sensor de respaldo del canal A en centésimas de °C (ej. `425` = 4.25°C; `-32768` = inválida o no disponible). |
+| `30008` (7) | `TEMP_BACKUP_B` | int16 | Temperatura del sensor de respaldo del canal B en centésimas de °C (ej. `-1850` = -18.50°C; `-32768` = inválida o no disponible). |
+| `30009` (8) | `1WIRE_ENABLED` | uint16 | Estado de habilitación del bus de sensores de respaldo (`1` = habilitado, `0` = deshabilitado). |
+| `30010` (9) | `1WIRE_DEVICE_COUNT` | uint16 | Cantidad de sensores DS18B20 detectados en el bus de sensores de respaldo. |
 
 Las temperaturas y el diagnóstico se leen mediante **FC04 (Read Input Registers)**. El valor se redondea a dos decimales para transmitirlo como entero con signo; la resolución física del DS18B20 sigue dependiendo de su configuración interna.
 
@@ -127,7 +127,7 @@ El FridgeIO ejecuta localmente la temporización de puerta, el reconocimiento AC
            | GPIO 1 (TX0)   --> RS-485 DI          |
            | GPIO 3 (RX0)   <-- RS-485 RO          |
            | GPIO 21        --> RS-485 DE/RE       |
-           | GPIO 4         <-> Bus 1-Wire DS18B20 |
+           | GPIO 4         <-> Bus de sensores de respaldo DS18B20 (protocolo 1-Wire) |
            | GPIO 13        --> 74HC595 SER (Data) |
            | GPIO 12        --> 74HC595 RCLK (Latch|
            | GPIO 14        --> 74HC595 SRCLK (Clk)|

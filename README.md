@@ -123,17 +123,17 @@ Las pantallas **WiFi** y **MQTT** permiten importar y exportar sus ajustes JSON.
 Después del primer arranque, NVS prevalece sobre los JSON del filesystem. Por ello, subir un filesystem nuevo no reemplaza las credenciales guardadas; los cambios posteriores se realizan desde las pantallas WiFi/MQTT y se guardan también en NVS. Si el equipo ya arrancó antes de copiar los JSON locales, importa cada archivo en su pantalla y presiona **Guardar**. Los JSON de ejemplo no contienen credenciales.
 
 ### Última validación (25 de octubre de 2026)
-La interfaz React compiló correctamente y se generaron los recursos de producción. Para el Waveshare, el firmware `waveshare_esp32s3_relay_6ch/firmware.bin` con la SPA integrada en `WWWData.h` se cargó mediante la web y el usuario confirmó que la interfaz actualizada aparece correctamente. Después se cambió el nombre visible de 1-Wire a **Bus de sensores de respaldo**; el firmware actual se recompiló con ese último texto y queda pendiente cargarlo.
+La interfaz React compiló correctamente y se generaron los recursos de producción. Para el Waveshare, el firmware `waveshare_esp32s3_relay_6ch/firmware.bin` con la SPA integrada en `WWWData.h` se cargó mediante la web y el usuario confirmó que la interfaz actualizada aparece correctamente. Luego se cambió el nombre visible del bus de sensores y se retiraron de las fichas de cavas el enlace de comunicación y la lectura de evaporador. El firmware más reciente, con estos últimos ajustes, se recompiló correctamente y queda pendiente cargarlo.
 
 La imagen `littlefs.bin` también se generó correctamente, pero no es la imagen que actualiza la SPA de esta placa. La compilación de LittleFS no equivale a una carga ni sustituye la actualización del firmware integrado.
 
 Cambios de interfaz confirmados:
-* **Cavas en Vivo:** retirados los estados de desescarche y vapor; se conservan los indicadores pertinentes de frío y ventilador.
+* **Cavas en Vivo:** retirados los estados de desescarche y vapor, además del pie con enlace RS-485 y temperatura de evaporador; se conservan los indicadores pertinentes de frío y ventilador.
 * **Mantenimiento de Cavas, WiFi y MQTT:** eliminadas de las pantallas las menciones a nombres y rutas de archivos `.json`.
 * La pantalla inicial del firmware integrado evita la caché para que el navegador solicite la versión vigente de la SPA.
 
 ### Mantenimiento de Equipos Auxiliares de Cava (FridgeIO)
-Desde **Proyecto → Equipos Auxiliares**, cada satélite FridgeIO tiene una ficha propia con asociación de canales **A** y **B**, estado de campo, pruebas de salidas y métricas RS-485. Incluye habilitación y diagnóstico del bus de sensores de respaldo DS18B20, cantidad de sondas detectadas y temperatura de respaldo por canal en °C con dos decimales. Las asociaciones se guardan de forma persistente vía `POST /rest/signaling/mapping`. La pantalla **Diagnóstico Modbus** queda para escaneo, ping, métricas KIDE y consola HEX.
+Desde **Proyecto → Equipos Auxiliares**, cada satélite FridgeIO tiene una ficha propia con asociación de canales **A** y **B**, estado de campo, pruebas de salidas y métricas de comunicación. Incluye habilitación y diagnóstico del bus de sensores de respaldo DS18B20, cantidad de sondas detectadas y temperatura de respaldo por canal en °C con dos decimales. Las asociaciones se guardan de forma persistente vía `POST /rest/signaling/mapping`. La pantalla **Diagnóstico Modbus** queda para escaneo, ping, métricas de comunicación y consola HEX.
 
 Flujo recomendado en planta:
 1. Crear/validar primero las cavas en `cavas.json`.

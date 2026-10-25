@@ -533,12 +533,6 @@ export const CavasDashboard: React.FC = () => {
                       </Tooltip>
                     </Stack>
 
-                    {/* Footer Diagnóstico Rápido */}
-                    <Box sx={{ mt: 1.2, textAlign: 'right' }}>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.68rem' }}>
-                        {t('cavas.rs485Link', { percent: cava.quality_percent.toFixed(0), temp: cava.temp_evap.toFixed(1) })}
-                      </Typography>
-                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
