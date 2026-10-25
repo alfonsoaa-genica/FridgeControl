@@ -27,7 +27,12 @@ void UploadFirmwareService::handleUpload(AsyncWebServerRequest* request,
   if (!index) {
     Authentication authentication = _securityManager->authenticateRequest(request);
     if (AuthenticationPredicates::IS_ADMIN(authentication)) {
-      if (Update.begin(request->contentLength())) {
+#ifdef ESP32
+      size_t maxSpace = UPDATE_SIZE_UNKNOWN;
+#elif defined(ESP8266)
+      size_t maxSpace = request->contentLength() > 0 ? request->contentLength() : 0xFFFFFFFF;
+#endif
+      if (Update.begin(maxSpace, U_FLASH)) {
         // success, let's make sure we end the update if the client hangs up
         request->onDisconnect(UploadFirmwareService::handleEarlyDisconnect);
       } else {
