@@ -92,6 +92,14 @@ export const updateSignalingMapping = async (nodeId: number, cavaA: string, cava
   return res.data;
 };
 
+export const setSignalingOneWireEnabled = async (nodeId: number, enabled: boolean) => {
+  const params = new URLSearchParams();
+  params.append('node_id', nodeId.toString());
+  params.append('enabled', enabled ? 'true' : 'false');
+  const res = await axios.post('/rest/signaling/1wire', params);
+  return res.data;
+};
+
 export const updateCavaAlarmConfig = async (
   cavaId: string,
   config: {

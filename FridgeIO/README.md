@@ -39,17 +39,22 @@ Cada relé físico cuenta con un **cronómetro autónomo en hardware de 5.000 ms
 
 | Dirección Coil | Canal Físico | Asignación en Cavas | Función y Comportamiento |
 | :---: | :---: | :--- | :--- |
-| `00001` (0) | Relé 1 | **Cava A** — Luz Verde | Operación normal (5s en prueba manual o control maestro) |
-| `00002` (1) | Relé 2 | **Cava A** — Luz Amarilla | Advertencia puerta abierta (> 90 s) |
-| `00003` (2) | Relé 3 | **Cava A** — Luz Roja | Alarma de temperatura / pérdida de frío |
-| `00004` (3) | Relé 4 | **Cava A** — Sirena / Buzzer | Alarma sonora (> 180 s o fallo crítico de frío) |
-| `00005` (4) | Relé 5 | **Cava B** — Luz Verde | Operación normal |
-| `00006` (5) | Relé 6 | **Cava B** — Luz Amarilla | Advertencia puerta abierta (> 90 s) |
-| `00007` (6) | Relé 7 | **Cava B** — Luz Roja | Alarma de temperatura / pérdida de frío |
-| `00008` (7) | Relé 8 | **Cava B** — Sirena / Buzzer | Alarma sonora (> 180 s o fallo crítico de frío) |
+| `00001` (0) | Relé 1 | **Cava A** — Luz Verde | Estado normal, gobernado por FSM local |
+| `00002` (1) | Relé 2 | **Cava A** — Luz Amarilla | Advertencia/alarma de puerta según temporización local |
+| `00003` (2) | Relé 3 | **Cava A** — Luz Roja | Alarma de proceso o NOCOMM |
+| `00004` (3) | Relé 4 | **Cava A** — Sirena / Buzzer | Alarma no reconocida de puerta/proceso |
+| `00005` (4) | Relé 5 | **Cava B** — Luz Verde | Estado normal, gobernado por FSM local |
+| `00006` (5) | Relé 6 | **Cava B** — Luz Amarilla | Advertencia/alarma de puerta según temporización local |
+| `00007` (6) | Relé 7 | **Cava B** — Luz Roja | Alarma de proceso o NOCOMM |
+| `00008` (7) | Relé 8 | **Cava B** — Sirena / Buzzer | Alarma no reconocida de puerta/proceso |
 | `00009` (8) | Virtual | **Control 1-Wire** | `1` = Habilita lectura periódica de sondas DS18B20 en GPIO 4 (Persistente en NVS) |
 | `00010` (9) | Comando | **Prueba de Lámparas** | Escribir `1` dispara Lamp Test de 5 segundos en los 8 relés físicos |
 | `00011` (10) | Comando | **Cancelar / Stop Test** | Escribir `1` aborta de inmediato cualquier prueba y apaga relés |
+| `00012` (11) | Virtual | **Alarma proceso A** | Estado de alarma de proceso recibido del Maestro |
+| `00013` (12) | Virtual | **Alarma NOCOMM A** | KIDE A sin comunicación (estado recibido del Maestro) |
+| `00014` (13) | Virtual | **Alarma proceso B** | Estado de alarma de proceso recibido del Maestro |
+| `00015` (14) | Virtual | **Alarma NOCOMM B** | KIDE B sin comunicación (estado recibido del Maestro) |
+| `00016`–`00023` (15–22) | Comando | **Prueba individual de relé** | Pulso de prueba local de 5 segundos por salida |
 
 ---
 
@@ -80,6 +85,10 @@ Permite comisionar el módulo desde el Gateway o desde una laptop con conversor 
 | `40004` (3) | `REG_ADMIN_SAVE_EEPROM` | `0x55AA` (21930) | **Comando de Guardado:** Persiste ID, Baudrate y Timeout en memoria Flash NVS. |
 | `40005` (4) | `REG_ADMIN_REBOOT` | `0xDEAD` (57005) | **Comando de Reinicio:** Reinicia el ESP32 para aplicar cambios. |
 | `40006` (5) | `REG_ADMIN_LAMP_TEST_SEC` | `1` a `60` | Duración de la prueba de lámparas en segundos (Defecto: 5 s). |
+| `40007` (6) | `DOOR_GRACE_A` | segundos | Retardo de advertencia de puerta del canal A, recibido del Maestro. |
+| `40008` (7) | `DOOR_CRITICAL_A` | segundos | Retardo crítico de puerta del canal A, recibido del Maestro. |
+| `40009` (8) | `DOOR_GRACE_B` | segundos | Retardo de advertencia de puerta del canal B, recibido del Maestro. |
+| `40010` (9) | `DOOR_CRITICAL_B` | segundos | Retardo crítico de puerta del canal B, recibido del Maestro. |
 
 > **Comisionamiento Remoto por RS-485:**  
 > 1. Escribir el nuevo ID (ej. `102`) en el registro `40001`.
@@ -98,8 +107,14 @@ Permite comisionar el módulo desde el Gateway o desde una laptop con conversor 
 | `30004` (3) | `POLLS_COUNT_LO` | uint16 | Total de solicitudes Modbus atendidas (Palabra baja). |
 | `30005` (4) | `LAST_COMM_AGO_MS` | uint16 | Milisegundos transcurridos desde la última trama válida del maestro. |
 | `30006` (5) | `FIRMWARE_VERSION` | uint16 | Versión del firmware (`120` = v1.2.0). |
-| `30007` (6) | `TEMP_BACKUP_A` | int16 | Temperatura Sonda 1-Wire Cava A en décimas de °C (ej. `42` = 4.2°C; `-999` = desconectada). |
-| `30008` (7) | `TEMP_BACKUP_B` | int16 | Temperatura Sonda 1-Wire Cava B en décimas de °C (ej. `-185` = -18.5°C; `-999` = desconectada). |
+| `30007` (6) | `TEMP_BACKUP_A` | int16 | Temperatura Sonda 1-Wire Cava A en centésimas de °C (ej. `425` = 4.25°C; `-32768` = inválida o no disponible). |
+| `30008` (7) | `TEMP_BACKUP_B` | int16 | Temperatura Sonda 1-Wire Cava B en centésimas de °C (ej. `-1850` = -18.50°C; `-32768` = inválida o no disponible). |
+| `30009` (8) | `1WIRE_ENABLED` | uint16 | Estado de habilitación 1-Wire (`1` = habilitado, `0` = deshabilitado). |
+| `30010` (9) | `1WIRE_DEVICE_COUNT` | uint16 | Cantidad de sensores DS18B20 detectados al habilitar 1-Wire. |
+
+Las temperaturas y el diagnóstico se leen mediante **FC04 (Read Input Registers)**. El valor se redondea a dos decimales para transmitirlo como entero con signo; la resolución física del DS18B20 sigue dependiendo de su configuración interna.
+
+El FridgeIO ejecuta localmente la temporización de puerta, el reconocimiento ACK y la salida de relés. El Maestro envía por coils 11–14 las banderas de alarma de proceso y NOCOMM, y actualiza los retardos en holding registers 6–9. ACK silencia el buzzer y deja fija la luz de la alarma reconocida hasta que el estado de alarma recibido se normalice.
 
 ---
 
@@ -126,5 +141,5 @@ Permite comisionar el módulo desde el Gateway o desde una laptop con conversor 
 ---
 
 ## 5. Reglas de Fail-Safe de Seguridad
-1. **Silenciado de Sirenas por Watchdog:** Si el bus RS-485 se desconecta o el Maestro se apaga por más del tiempo de watchdog configurado (`activeTimeoutSec`, defecto 15 s), el esclavo apaga automáticamente los relés de sirena/buzzer (Relés 4 y 8) para evitar contaminación acústica continua en la planta, manteniendo las luces de estado.
+1. **Autonomía ante pérdida del Maestro:** Si se pierde el bus RS-485, el FridgeIO conserva el último estado recibido de alarma de proceso/NOCOMM y continúa evaluando puertas, ACK y salidas localmente. El watchdog no cancela alarmas activas.
 2. **Arranque Seguro:** Al energizarse la placa, el pin `OE` del 74HC595 se mantiene en nivel ALTO hasta que los registros de salida se limpian a cero, garantizando que **ningún relé conmute en falso durante el encendido**.

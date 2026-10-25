@@ -6,12 +6,16 @@
 **Ubicación en Repositorio:** [`FridgeControl/doc/DISENO_SENALIZACION_LUMINOSA_Y_PUERTAS.md`](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/doc/DISENO_SENALIZACION_LUMINOSA_Y_PUERTAS.md)  
 **Documento Complementario:** [`FridgeControl/doc/ANALISIS_TECNICO_RED_DATOS_CAVAS.md`](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/doc/ANALISIS_TECNICO_RED_DATOS_CAVAS.md)
 
+> Para una consulta rápida de los valores predeterminados, prioridades y consideraciones del firmware actual, véase el [Resumen de Alarmas ISA-18.2](./RESUMEN_ALARMAS_ISA18_2.md).
+
 ---
 
 ## 1. Justificación y Alcance Operativo
 
-En las naves de refrigeración y maduración de planta DALVI (Génica), el tránsito continuo de montacargas, transpaletas y operadores genera dos riesgos críticos para el aseguramiento de la calidad del producto y la eficiencia energética:
-1. **Pérdida de frío por puertas mal cerradas:** Descuido en el cierre de puertas frigoríficas tras maniobras de carga/descarga, lo que genera entrada masiva de calor y humedad, escarcha excesiva en evaporadores y sobrecarga de compresores.
+Todas las cavas cubiertas por este proyecto son de **agua helada y emplean unidades FanCoil**. No hay compresores propios en las cavas: la producción y distribución de agua helada queda fuera del alcance de FridgeControl. Los controladores KIDE reportan las variables y estados asociados al proceso de cada cava/FanCoil.
+
+En las áreas de conservación y maduración de planta DALVI (Génica), el tránsito continuo de montacargas, transpaletas y operadores genera riesgos para el aseguramiento de la calidad del producto y la operación eficiente:
+1. **Desviación térmica por puertas mal cerradas:** El ingreso de aire caliente y húmedo durante maniobras de carga/descarga incrementa la carga térmica de la cava y puede dificultar que el FanCoil mantenga la consigna.
 2. **Latencia en la detección de fallas:** El personal en pasillo no tiene visibilidad inmediata del estado de la cava a menos que consulte una pantalla SCADA o abra el tablero del controlador.
 
 El objetivo de este subsistema es dotar a cada cava de una **señalización visual y acústica de alta visibilidad (tipo Andon)** en la parte superior/dintel de la puerta, combinada con un **sensor magnético industrial (Reed switch)** para supervisión de cierre y un **botón físico de reconocimiento (ACK)** para forzar la presencia del operador en sitio.
@@ -25,7 +29,7 @@ El objetivo de este subsistema es dotar a cada cava de una **señalización visu
 * **Costo referencial:** ~$89.99 USD por paquete de 6 unidades (**$15.00 USD por cava**).
 * **Óptica:** 3 lentes cilíndricos continuos (Rojo superior, Amarillo intermedio, Verde inferior) con visibilidad de 360°.
 * **Base Articulada (Abatible 90°):** Permite fijación directa en pared vertical, dintel plano o vigas inclinadas sin requerir escuadras ni herrajes adicionales. Ofrece absorción mecánica ante roces accidentales de escaleras o cargas elevadas.
-* **Alarma Sonora Integrada:** Buzzer piezoeléctrico de alto decibelio en la base para alertar al personal incluso sobre el ruido de fondo de compresores y montacargas.
+* **Alarma Sonora Integrada:** Buzzer piezoeléctrico de alto decibelio en la base para alertar al personal en el ambiente operativo de la planta.
 * **Tensión de Trabajo:** Rango universal **12V a 24V DC**, compatible con las fuentes de alimentación estándar de tablero.
 
 ```
@@ -101,13 +105,13 @@ El objetivo de este subsistema es dotar a cada cava de una **señalización visu
                       │    ESTADO EN ATENCIÓN       │
                       │ • Buzzer: SE SILENCIA       │
                       │ • Luz: Pasa a FIJA          │
-                      │ • Temporizador Snooze: 10 m │
+                      │ • ACK hasta normalizar causa│
                       └──────────────┬──────────────┘
                                      │
                       ┌──────────────┴──────────────┐
                       ▼                             ▼
-              ¿Problema RESUELTO?          ¿Pasaron 10 min sin
-            (Puerta cerrada / Temp OK)      resolver el problema?
+              ¿Problema RESUELTO?
+            (Puerta cerrada / Temp OK)
                       │                             │
                       ▼                             ▼
              ┌─────────────────┐           ┌─────────────────┐
@@ -215,7 +219,8 @@ enum TowerLightState {
     TOWER_YELLOW_ACK  = 3, // Puerta abierta con ACK en atención
     TOWER_RED_ALARM   = 4, // Pérdida de frío con buzzer
     TOWER_RED_ACK     = 5, // Pérdida de frío con ACK en atención
-    TOWER_COMM_ERROR  = 6  // Fallo de comunicación RS-485
+    TOWER_COMM_ERROR  = 6, // Fallo de comunicación RS-485
+    TOWER_COMM_ACK    = 7  // NOCOMM reconocido; luz roja fija
 };
 
 // Parámetros de Puerta y Señalización por Cava
@@ -229,7 +234,7 @@ struct CavaState {
     uint16_t door_buzzer_sec;      // Disparo de buzzer (defecto: 180 s)
     bool ack_pressed;              // true si el operario pulsó ACK en sitio
     uint32_t ack_timestamp;        // Momento en que se pulsó ACK (ms)
-    uint16_t ack_grace_sec;        // Tiempo de gracia post-ACK (defecto: 600 s / 10 min)
+    // ACK se mantiene hasta que el Maestro indique que la causa se normalizó.
 
     // Contacto Físico de Alarma KIDE
     bool kide_hw_alarm_contact;    // true: OK (cerrado), false: Alarma de hardware abierta
@@ -240,7 +245,7 @@ struct CavaState {
 
     void updateSignalingLogic(uint32_t now_ms) {
         if (!comm_online) {
-            tower_state = TOWER_COMM_ERROR;
+            tower_state = ack_pressed ? TOWER_COMM_ACK : TOWER_COMM_ERROR;
             buzzer_active = false;
             return;
         }
@@ -250,21 +255,12 @@ struct CavaState {
         bool door_exceeded = (!door_closed && door_open_duration >= door_grace_sec);
         bool door_critical = (!door_closed && door_open_duration >= door_buzzer_sec);
 
-        // Evaluación de ACK y re-alarma post 10 minutos
-        bool ack_valid = false;
-        if (ack_pressed && (!door_closed || alarm_temp_high)) {
-            uint32_t ack_elapsed_sec = (now_ms - ack_timestamp) / 1000;
-            if (ack_elapsed_sec < ack_grace_sec) {
-                ack_valid = true; // Sigue vigente el silencio por presencia del operador
-            } else {
-                ack_pressed = false; // Expiró el tiempo de atención: Re-alarma
-            }
-        } else if (door_closed && !alarm_temp_high) {
-            ack_pressed = false; // Se resolvió el problema: Reset automático
-        }
+        bool acknowledgeable = alarm_active || door_critical;
+        if (!acknowledgeable) ack_pressed = false;
+        bool ack_valid = ack_pressed && acknowledgeable;
 
         // Jerarquía de luces y buzzer
-        if (alarm_temp_high || alarm_hr_high || alarm_hr_low || !kide_hw_alarm_contact) {
+        if (alarm_active) {
             // Alarma Crítica de Frío o Hardware
             tower_state = ack_valid ? TOWER_RED_ACK : TOWER_RED_ALARM;
             buzzer_active = !ack_valid;

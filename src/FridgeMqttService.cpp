@@ -148,19 +148,18 @@ void FridgeMqttService::publishNodeTelemetry(const SignalingNode& node) {
     in["kide_alarm_b"] = node.kide_alarm_b;
 
     JsonObject out = doc["reles"].to<JsonObject>();
-    out["rele_1_verde_a"] = node.green_a;
-    out["rele_2_amarillo_a"] = node.yellow_a;
-    out["rele_3_rojo_a"] = node.red_a;
-    out["rele_4_sirena_a"] = node.buzzer_a;
-    out["rele_5_verde_b"] = node.green_b;
-    out["rele_6_amarillo_b"] = node.yellow_b;
-    out["rele_7_rojo_b"] = node.red_b;
-    out["rele_8_sirena_b"] = node.buzzer_b;
+    const uint32_t now = millis();
+    out["rele_1_verde_a"] = node.green_a.outputState(now);
+    out["rele_2_amarillo_a"] = node.yellow_a.outputState(now);
+    out["rele_3_rojo_a"] = node.red_a.outputState(now);
+    out["rele_4_sirena_a"] = node.buzzer_a.outputState(now);
+    out["rele_5_verde_b"] = node.green_b.outputState(now);
+    out["rele_6_amarillo_b"] = node.yellow_b.outputState(now);
+    out["rele_7_rojo_b"] = node.red_b.outputState(now);
+    out["rele_8_sirena_b"] = node.buzzer_b.outputState(now);
 
-    if (node.enable_1wire) {
-        doc["temp_backup_a"] = serialized(String(node.temp_backup_a, 1));
-        doc["temp_backup_b"] = serialized(String(node.temp_backup_b, 1));
-    }
+    doc["temp_backup_a"] = serialized(String(node.temp_backup_a, 2));
+    doc["temp_backup_b"] = serialized(String(node.temp_backup_b, 2));
 
     doc["ts"] = (uint32_t)time(nullptr);
 

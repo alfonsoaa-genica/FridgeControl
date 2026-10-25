@@ -130,8 +130,19 @@ enum TowerLightState {
   TOWER_YELLOW_ACK = 3,   // Puerta abierta con ACK en atención
   TOWER_RED_ALARM = 4,    // Pérdida de frío con buzzer
   TOWER_RED_ACK = 5,      // Pérdida de frío con ACK en atención
-  TOWER_COMM_ERROR = 6    // Fallo de comunicación RS-485
+  TOWER_COMM_ERROR = 6,   // Fallo de comunicación RS-485
+  TOWER_COMM_ACK = 7      // Fallo de comunicación reconocido
 };
+
+constexpr uint16_t FRIDGEIO_COIL_ALARM_A_PROCESS = 11;
+constexpr uint16_t FRIDGEIO_COIL_ALARM_A_COMM = 12;
+constexpr uint16_t FRIDGEIO_COIL_ALARM_B_PROCESS = 13;
+constexpr uint16_t FRIDGEIO_COIL_ALARM_B_COMM = 14;
+constexpr uint16_t FRIDGEIO_COIL_TEST_RELAY_BASE = 15;
+constexpr uint16_t FRIDGEIO_REG_DOOR_GRACE_A = 6;
+constexpr uint16_t FRIDGEIO_REG_DOOR_CRITICAL_A = 7;
+constexpr uint16_t FRIDGEIO_REG_DOOR_GRACE_B = 8;
+constexpr uint16_t FRIDGEIO_REG_DOOR_CRITICAL_B = 9;
 
 // Estructura de Nodo Satélite de Señalización (FridgeIO / ES32D26)
 #define MAX_SIGNALING_NODES 8
@@ -154,49 +165,107 @@ struct SignalingNode {
   bool kide_alarm_a;  // DI 5: Contacto Alarma KIDE A (1=OK, 0=Alarma)
   bool kide_alarm_b;  // DI 6: Contacto Alarma KIDE B (1=OK, 0=Alarma)
 
-  // Salidas a Relé Comandadas (1 = Relé Activado, 0 = Apagado)
-  bool green_a;  // DO 1: Luz Verde Cava A
-  bool yellow_a; // DO 2: Luz Amarilla Cava A
-  bool red_a;    // DO 3: Luz Roja Cava A
-  bool buzzer_a; // DO 4: Buzzer Cava A
-  bool green_b;  // DO 5: Luz Verde Cava B
-  bool yellow_b; // DO 6: Luz Amarilla Cava B
-  bool red_b;    // DO 7: Luz Roja Cava B
-  bool buzzer_b; // DO 8: Buzzer Cava B
+  struct RelayIndication {
+    bool automatic_state;
+    bool test;
+    bool test_state;
+    bool test_started;
+    uint32_t test_duration_ms;
+    uint32_t test_until;
+
+    void setAutomaticState(bool state) {
+      automatic_state = state;
+    }
+
+    void startTest(bool state, uint32_t durationMs) {
+      test = true;
+      test_state = state;
+      test_started = false;
+      test_duration_ms = durationMs;
+    }
+
+    void clearTest() {
+      test = false;
+      test_started = false;
+      test_duration_ms = 0;
+      test_until = 0;
+    }
+
+    void updateTest(uint32_t now) {
+      if (test && !test_started) {
+        test_until = now + test_duration_ms;
+        test_started = true;
+      } else if (test && (int32_t)(now - test_until) >= 0) {
+        clearTest();
+      }
+    }
+
+    bool outputState(uint32_t now) const {
+      if (test && (!test_started || (int32_t)(now - test_until) < 0)) {
+        return test_state;
+      }
+      return automatic_state;
+    }
+  };
+
+  RelayIndication green_a;  // DO 1: Luz Verde Cava A
+  RelayIndication yellow_a; // DO 2: Luz Amarilla Cava A
+  RelayIndication red_a;    // DO 3: Luz Roja Cava A
+  RelayIndication buzzer_a; // DO 4: Buzzer Cava A
+  RelayIndication green_b;  // DO 5: Luz Verde Cava B
+  RelayIndication yellow_b; // DO 6: Luz Amarilla Cava B
+  RelayIndication red_b;    // DO 7: Luz Roja Cava B
+  RelayIndication buzzer_b; // DO 8: Buzzer Cava B
 
   // Temperaturas de Respaldo 1-Wire (DS18B20 en satélite)
   bool enable_1wire;    // true si el satélite tiene el bus 1-Wire activo (Coil 8)
-  float temp_backup_a;  // Temperatura sonda 1-Wire Cava A (-999 si desconectada)
-  float temp_backup_b;  // Temperatura sonda 1-Wire Cava B (-999 si desconectada)
+  uint8_t onewire_device_count;
+  float temp_backup_a;  // Temperatura sonda 1-Wire Cava A (-999 si no disponible)
+  float temp_backup_b;  // Temperatura sonda 1-Wire Cava B (-999 si no disponible)
+  uint16_t sent_door_grace_a;
+  uint16_t sent_door_critical_a;
+  uint16_t sent_door_grace_b;
+  uint16_t sent_door_critical_b;
 
   // Métricas de Diagnóstico del Nodo
   ModbusDiagnostics diag;
 
-  // Control de Prueba Manual / Lamp Test
-  uint32_t override_until; // Timestamp millis() hasta el que se mantiene activo el test
-  uint8_t override_coils;  // Coils forzados manualmente durante el test
+  void startRelayTest(uint8_t relayIndex, uint32_t durationMs) {
+    if (relayIndex >= 8) return;
+    RelayIndication* relay = getRelay(relayIndex);
+    relay->startTest(true, durationMs);
+  }
 
-  uint8_t packCoilsByte() const {
-    if (override_until > 0 && millis() < override_until) {
-      return override_coils;
+  void clearRelayTests() {
+    for (uint8_t relayIndex = 0; relayIndex < 8; relayIndex++) {
+      getRelay(relayIndex)->clearTest();
     }
+  }
+
+  RelayIndication* getRelay(uint8_t relayIndex) {
+    switch (relayIndex) {
+      case 0: return &green_a;
+      case 1: return &yellow_a;
+      case 2: return &red_a;
+      case 3: return &buzzer_a;
+      case 4: return &green_b;
+      case 5: return &yellow_b;
+      case 6: return &red_b;
+      case 7: return &buzzer_b;
+      default: return nullptr;
+    }
+  }
+
+  uint8_t packCoilsByte() {
     uint8_t b = 0;
-    if (green_a)
-      b |= (1 << 0);
-    if (yellow_a)
-      b |= (1 << 1);
-    if (red_a)
-      b |= (1 << 2);
-    if (buzzer_a)
-      b |= (1 << 3);
-    if (green_b)
-      b |= (1 << 4);
-    if (yellow_b)
-      b |= (1 << 5);
-    if (red_b)
-      b |= (1 << 6);
-    if (buzzer_b)
-      b |= (1 << 7);
+    const uint32_t now = millis();
+    for (uint8_t relayIndex = 0; relayIndex < 8; relayIndex++) {
+      RelayIndication* relay = getRelay(relayIndex);
+      relay->updateTest(now);
+      if (relay->outputState(now)) {
+        b |= (1U << relayIndex);
+      }
+    }
     return b;
   }
 };
@@ -253,10 +322,12 @@ struct CavaState {
 
   // Supervisión de Puerta y Botón Físico de ACK (ISA-18.2)
   bool door_closed;         // true: cerrada, false: abierta
+  bool door_state_initialized;
   uint32_t door_open_epoch; // Momento de apertura en millis()
   uint16_t door_grace_sec;  // Cortesía silenciosa (defecto: 90 s)
   uint16_t door_buzzer_sec; // Disparo de buzzer (defecto: 180 s)
   bool ack_pressed;         // true si el operario pulsó ACK en sitio
+  bool ack_input_pressed;
   uint32_t ack_timestamp;   // Momento en que se pulsó ACK en millis()
   uint16_t ack_grace_sec;   // Tiempo de gracia post-ACK (defecto: 600 s / 10 min)
   uint32_t temp_high_epoch; // Momento en que temp_pv superó umbral (millis)
@@ -282,6 +353,23 @@ struct CavaState {
 
   // Buffer Circular de Tendencias en RAM (24h)
   TrendBuffer trends;
+
+  void updateFieldInputs(bool doorIsClosed, bool ackIsPressed, uint32_t now_ms) {
+    if (!door_state_initialized) {
+      door_state_initialized = true;
+      door_closed = doorIsClosed;
+      door_open_epoch = doorIsClosed ? 0 : now_ms;
+    } else if (door_closed != doorIsClosed) {
+      door_closed = doorIsClosed;
+      door_open_epoch = doorIsClosed ? 0 : now_ms;
+    }
+
+    if (ackIsPressed && !ack_input_pressed) {
+      ack_pressed = true;
+      ack_timestamp = now_ms;
+    }
+    ack_input_pressed = ackIsPressed;
+  }
 
   void evaluateAlarms() {
     if (!comm_online) {
@@ -312,17 +400,10 @@ struct CavaState {
       alarm_hr_high = false;
     }
 
-    alarm_active = alarm_temp_high || alarm_hr_low || alarm_hr_high;
+    alarm_active = alarm_temp_high || alarm_hr_low || alarm_hr_high || !kide_hw_alarm_contact;
   }
 
   void updateSignalingLogic(uint32_t now_ms) {
-    if (!comm_online) {
-      tower_state = TOWER_COMM_ERROR;
-      buzzer_active = false;
-      return;
-    }
-
-    // Lógica de apertura de puerta
     uint32_t door_open_duration =
         (!door_closed) ? ((now_ms - door_open_epoch) / 1000) : 0;
     bool door_exceeded =
@@ -332,28 +413,17 @@ struct CavaState {
         (!door_closed &&
          door_open_duration >= (door_buzzer_sec > 0 ? door_buzzer_sec : 180));
 
-    // Evaluación de ACK y re-alarma post 10 minutos
-    uint16_t effective_ack_grace = (ack_grace_sec > 0) ? ack_grace_sec : 600;
-    bool ack_valid = false;
-    if (ack_pressed && (!door_closed || alarm_temp_high)) {
-      uint32_t ack_elapsed_sec = (now_ms - ack_timestamp) / 1000;
-      if (ack_elapsed_sec < effective_ack_grace) {
-        ack_valid =
-            true; // Sigue vigente el silencio por presencia del operador
-      } else {
-        ack_pressed = false; // Expiró el tiempo de atención: Re-alarma
-      }
-    } else if (door_closed && !alarm_temp_high) {
-      ack_pressed = false; // Condición normalizada: Reset automático
-    }
+    const bool commAlarm = !comm_online;
+    const bool processAlarm = alarm_active;
+    const bool acknowledgeable = commAlarm || processAlarm || door_critical;
+    if (!acknowledgeable) ack_pressed = false;
+    const bool ack_valid = ack_pressed && acknowledgeable;
 
     // Jerarquía de luces y buzzer
-    if (!comm_online) {
-      // Sin comunicación con controlador KIDE: no activar luz verde en falso
-      tower_state = TOWER_COMM_ERROR;
+    if (commAlarm) {
+      tower_state = ack_valid ? TOWER_COMM_ACK : TOWER_COMM_ERROR;
       buzzer_active = false;
-    } else if (alarm_temp_high || alarm_hr_low || alarm_hr_high ||
-        !kide_hw_alarm_contact) {
+    } else if (processAlarm) {
       // Alarma Crítica de Frío o Fallo de Hardware
       tower_state = ack_valid ? TOWER_RED_ACK : TOWER_RED_ALARM;
       buzzer_active = !ack_valid;

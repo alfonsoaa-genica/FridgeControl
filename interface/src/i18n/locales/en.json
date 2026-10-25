@@ -192,7 +192,7 @@
     "manual_config": "Manual Configuration",
     "import_json": "Import JSON",
     "export_json": "Export JSON",
-    "json_help": "Save the exported JSON as data/config/wifiSettings.json to provision a new device.",
+    "json_help": "Save the exported settings to provision a new device.",
     "json_invalid": "The file does not contain valid WiFi settings.",
     "json_imported": "Settings imported. Press Save to apply them.",
     "forget_network": "Forget this Network",
@@ -288,7 +288,7 @@
     },
     "import_json": "Import JSON",
     "export_json": "Export JSON",
-    "json_help": "Save the exported JSON as data/config/mqttSettings.json to provision a new device.",
+    "json_help": "Save the exported settings to provision a new device.",
     "json_invalid": "The file does not contain valid MQTT settings.",
     "json_imported": "Settings imported. Press Save to apply them.",
     "status_list": {

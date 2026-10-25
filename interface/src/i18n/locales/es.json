@@ -197,7 +197,7 @@
     "manual_config": "Configuración Manual",
     "import_json": "Importar JSON",
     "export_json": "Exportar JSON",
-    "json_help": "Guarda el JSON exportado en data/config/wifiSettings.json para aprovisionar un equipo nuevo.",
+    "json_help": "Guarda la configuración exportada para aprovisionar un equipo nuevo.",
     "json_invalid": "El archivo no contiene una configuración WiFi válida.",
     "json_imported": "Configuración importada. Presiona Guardar para aplicarla.",
     "forget_network": "Olvidar esta Red",
@@ -293,7 +293,7 @@
     },
     "import_json": "Importar JSON",
     "export_json": "Exportar JSON",
-    "json_help": "Guarda el JSON exportado en data/config/mqttSettings.json para aprovisionar un equipo nuevo.",
+    "json_help": "Guarda la configuración exportada para aprovisionar un equipo nuevo.",
     "json_invalid": "El archivo no contiene una configuración MQTT válida.",
     "json_imported": "Configuración importada. Presiona Guardar para aplicarla.",
     "status_list": {

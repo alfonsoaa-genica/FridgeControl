@@ -102,7 +102,7 @@ export const CavasConfigPage: React.FC = () => {
       data.sort((a, b) => a.modbus_id - b.modbus_id);
       setCavas(data);
     } catch (e) {
-      setFeedback({ type: 'error', text: 'Error al cargar la lista de cavas de /config/cavas.json' });
+      setFeedback({ type: 'error', text: 'Error al cargar la lista de cavas.' });
     } finally {
       setLoading(false);
     }
@@ -164,7 +164,7 @@ export const CavasConfigPage: React.FC = () => {
     setFeedback(null);
     try {
       await saveCavaConfig(payload as any);
-      setFeedback({ type: 'success', text: `Cava "${formData.id}" guardada exitosamente en cavas.json` });
+      setFeedback({ type: 'success', text: `Cava "${formData.id}" guardada exitosamente.` });
       setDialogOpen(false);
       await loadData();
     } catch (e: any) {
@@ -219,7 +219,7 @@ export const CavasConfigPage: React.FC = () => {
           <Stack direction="row" spacing={1.5} alignItems="center">
             <KitchenIcon color="primary" sx={{ fontSize: 32 }} />
             <Typography variant="h5" fontWeight={700}>
-              Mantenimiento de Cavas (cavas.json)
+              Mantenimiento de Cavas
             </Typography>
           </Stack>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
@@ -300,7 +300,7 @@ export const CavasConfigPage: React.FC = () => {
                 <TableRow>
                   <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
                     <Typography variant="body1" fontWeight={600} color="text.secondary">
-                      No hay cavas registradas en cavas.json.
+                      No hay cavas registradas.
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, mb: 2 }}>
                       Presione "+ Nueva Cava" o "Plantilla 1..N" para generar la estructura inicial.
@@ -557,7 +557,7 @@ export const CavasConfigPage: React.FC = () => {
         <DialogTitle sx={{ fontWeight: 700 }}>¿Eliminar Cava {cavaToDelete?.id}?</DialogTitle>
         <DialogContent>
           <Typography variant="body2">
-            ¿Está seguro de que desea eliminar la cava <strong>{cavaToDelete?.id}</strong> ({cavaToDelete?.descripcion}) de la configuración <code>cavas.json</code>?
+            ¿Está seguro de que desea eliminar la cava <strong>{cavaToDelete?.id}</strong> ({cavaToDelete?.descripcion})?
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
             El bus Modbus dejará de sondear esta dirección hasta que se vuelva a agregar.

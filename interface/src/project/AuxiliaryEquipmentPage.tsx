@@ -8,12 +8,14 @@ import {
   Chip,
   CircularProgress,
   FormControl,
+  FormControlLabel,
   Grid,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -23,6 +25,7 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  DeviceThermostat as ThermostatIcon,
   MeetingRoom as DoorIcon,
   PowerSettingsNew as PowerIcon,
   Save as SaveIcon,
@@ -34,6 +37,7 @@ import {
   fetchCavas,
   fetchDiagnosticStats,
   fetchSignalingNodes,
+  setSignalingOneWireEnabled,
   triggerSignalingTest,
   updateSignalingMapping,
 } from './api/cavas';
@@ -153,6 +157,22 @@ export const AuxiliaryEquipmentPage: React.FC = () => {
     }
   };
 
+  const handleOneWireChange = async (node: SignalingNodeData, enabled: boolean) => {
+    try {
+      await setSignalingOneWireEnabled(node.modbus_id, enabled);
+      setFeedback({
+        severity: 'success',
+        text: `Bus de sensores de respaldo ${enabled ? 'habilitado' : 'deshabilitado'} para el satélite ${node.modbus_id}.`,
+      });
+      await loadData();
+    } catch (error: any) {
+      setFeedback({
+        severity: 'error',
+        text: error.response?.data?.error || error.message || `No se pudo cambiar el bus de sensores de respaldo del satélite ${node.modbus_id}.`,
+      });
+    }
+  };
+
   return (
     <Box sx={{ p: { xs: 1.5, md: 3 } }}>
       <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={1} sx={{ mb: 2 }}>
@@ -220,10 +240,55 @@ export const AuxiliaryEquipmentPage: React.FC = () => {
                     </Stack>
                   </Stack>
 
+                  <Paper
+                    variant="outlined"
+                    sx={{
+                      display: 'flex',
+                      alignItems: { xs: 'flex-start', sm: 'center' },
+                      justifyContent: 'space-between',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      gap: 1,
+                      p: 1.5,
+                      mb: 2,
+                    }}
+                  >
+                    <Box>
+                      <Typography variant="subtitle2" fontWeight={700}>
+                        MANTENIMIENTO DEL CONTROLADOR AUXILIAR
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Bus de sensores de respaldo DS18B20.
+                      </Typography>
+                    </Box>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Chip
+                        size="small"
+                        label={`${node.onewire_device_count} sonda(s) detectada(s)`}
+                        color={node.enable_1wire && node.onewire_device_count > 0 ? 'success' : 'default'}
+                        variant="outlined"
+                      />
+                      {isAdmin && (
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              size="small"
+                              checked={node.enable_1wire}
+                              disabled={!node.online}
+                              onChange={(_, checked) => void handleOneWireChange(node, checked)}
+                            />
+                          }
+                          label="Habilitar bus de sensores"
+                        />
+                      )}
+                    </Stack>
+                  </Paper>
+
                   <Grid container spacing={2}>
                     {(['a', 'b'] as const).map((channel) => {
                       const suffix = channel.toUpperCase() as 'A' | 'B';
                       const cavaId = channel === 'a' ? mapping.cava_a : mapping.cava_b;
+                      const backupTemperature = node[`temp_backup_${channel}`];
+                      const hasBackupTemperature = Number.isFinite(backupTemperature) && backupTemperature !== -999;
                       return (
                         <Grid size={{ xs: 12, md: 6 }} key={channel}>
                           <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
@@ -279,6 +344,27 @@ export const AuxiliaryEquipmentPage: React.FC = () => {
                                 variant="outlined"
                               />
                             </Stack>
+
+                            <Paper
+                              variant="outlined"
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                px: 1.25,
+                                py: 0.75,
+                                mb: 1.5,
+                                width: 'fit-content',
+                              }}
+                            >
+                              <ThermostatIcon fontSize="small" color={hasBackupTemperature ? 'primary' : 'disabled'} />
+                              <Typography variant="body2" color="text.secondary">
+                                Temperatura de respaldo:
+                              </Typography>
+                              <Typography variant="body2" fontWeight={700}>
+                                {hasBackupTemperature ? `${backupTemperature.toFixed(2)} °C` : 'No disponible'}
+                              </Typography>
+                            </Paper>
 
                             <Typography variant="caption" color="text.secondary" fontWeight={700}>
                               SALIDAS DE SEÑALIZACIÓN

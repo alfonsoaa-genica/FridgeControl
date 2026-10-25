@@ -107,11 +107,12 @@ bool ModbusEngine::queueFridgeIOWriteCoil(uint8_t slaveId, uint16_t coilIndex, b
     return xQueueSend(_queueFridgeIO, &cmd, pdMS_TO_TICKS(100)) == pdPASS;
 }
 
-bool ModbusEngine::queueFridgeIOWriteCoilsMask(uint8_t slaveId, uint16_t coilMask, uint16_t numCoils) {
+bool ModbusEngine::queueFridgeIOWriteCoilsMask(uint8_t slaveId, uint16_t coilMask,
+                                               uint16_t numCoils, uint16_t startAddress) {
     if (!_queueFridgeIO) return false;
     ModbusWriteCommand cmd;
     cmd.modbus_id = slaveId;
-    cmd.register_address = 0x0000;
+    cmd.register_address = startAddress;
     cmd.raw_value = (int16_t)coilMask;
     cmd.is_coil = true;
     cmd.is_multiple_coils = true;
@@ -179,6 +180,8 @@ bool ModbusEngine::queueWriteSetpointHR(const char* cavaId, float hr_sp) {
 void ModbusEngine::update() {
     if (_scanTarget != SCAN_TARGET_NONE) {
         performScanStep();
+        updateAlarmAndSignalingOutputs();
+        processTrendSampling();
         return;
     }
 
@@ -199,7 +202,19 @@ void ModbusEngine::update() {
         pollSignalingNodes();
     }
 
+    updateAlarmAndSignalingOutputs();
     processTrendSampling();
+}
+
+void ModbusEngine::updateAlarmAndSignalingOutputs() {
+    if (!_cavas || !_signalingNodes) return;
+
+    const uint32_t now = millis();
+    for (size_t i = 0; i < _cavaCount; i++) {
+        CavaState& cava = _cavas[i];
+        cava.evaluateAlarms();
+        cava.updateSignalingLogic(now);
+    }
 }
 
 void ModbusEngine::processFridgeIOWriteQueue() {
@@ -310,12 +325,8 @@ void ModbusEngine::pollSignalingNodes() {
         if (strlen(node.cava_a_id) > 0) {
             CavaState* ca = getCavaById(node.cava_a_id);
             if (ca) {
-                ca->door_closed = node.door_closed_a;
+                ca->updateFieldInputs(node.door_closed_a, node.ack_pressed_a, millis());
                 ca->kide_hw_alarm_contact = node.kide_alarm_a;
-                if (node.ack_pressed_a) {
-                    ca->ack_pressed = true;
-                    ca->ack_timestamp = millis();
-                }
             }
         }
 
@@ -323,12 +334,8 @@ void ModbusEngine::pollSignalingNodes() {
         if (strlen(node.cava_b_id) > 0) {
             CavaState* cb = getCavaById(node.cava_b_id);
             if (cb) {
-                cb->door_closed = node.door_closed_b;
+                cb->updateFieldInputs(node.door_closed_b, node.ack_pressed_b, millis());
                 cb->kide_hw_alarm_contact = node.kide_alarm_b;
-                if (node.ack_pressed_b) {
-                    cb->ack_pressed = true;
-                    cb->ack_timestamp = millis();
-                }
             }
         }
     } else {
@@ -342,10 +349,120 @@ void ModbusEngine::pollSignalingNodes() {
         node.online = false;
     }
 
-    // 2. Transmisión del estado de las 8 Salidas a Relé hacia el módulo auxiliar
     if (node.online) {
-        uint8_t coilsByte = node.packCoilsByte();
-        queueFridgeIOWriteCoilsMask(node.modbus_id, coilsByte, 8);
+        node.diag.recordTx();
+        _fridgeIOBusDiag.recordTx();
+        uint8_t resTemp = _traceFridgeIO.execute([&]() {
+            return _nodeFridgeIO.readInputRegisters(6, 4);
+        });
+        if (resTemp == _nodeFridgeIO.ku8MBSuccess) {
+            node.diag.recordSuccess((uint16_t)(millis() - startMs));
+            _fridgeIOBusDiag.recordSuccess((uint16_t)(millis() - startMs));
+
+            const int16_t rawTempA = (int16_t)_nodeFridgeIO.getResponseBuffer(0);
+            const int16_t rawTempB = (int16_t)_nodeFridgeIO.getResponseBuffer(1);
+            node.enable_1wire = _nodeFridgeIO.getResponseBuffer(2) != 0;
+            node.onewire_device_count = (uint8_t)_nodeFridgeIO.getResponseBuffer(3);
+            node.temp_backup_a = (rawTempA == INT16_MIN)
+                                     ? -999.0f
+                                     : rawTempA / 100.0f;
+            node.temp_backup_b = (rawTempB == INT16_MIN)
+                                     ? -999.0f
+                                     : rawTempB / 100.0f;
+        } else {
+            if (resTemp == _nodeFridgeIO.ku8MBInvalidCRC) {
+                node.diag.recordCrcError();
+                _fridgeIOBusDiag.recordCrcError();
+            } else {
+                node.diag.recordTimeout();
+                _fridgeIOBusDiag.recordTimeout();
+            }
+            node.temp_backup_a = -999.0f;
+            node.temp_backup_b = -999.0f;
+            node.onewire_device_count = 0;
+        }
+    } else {
+        node.temp_backup_a = -999.0f;
+        node.temp_backup_b = -999.0f;
+        node.onewire_device_count = 0;
+    }
+
+    if (node.online) {
+        node.diag.recordTx();
+        _fridgeIOBusDiag.recordTx();
+        uint8_t resCoils = _traceFridgeIO.execute([&]() {
+            return _nodeFridgeIO.readCoils(0x0000, 8);
+        });
+        if (resCoils == _nodeFridgeIO.ku8MBSuccess) {
+            node.diag.recordSuccess((uint16_t)(millis() - startMs));
+            _fridgeIOBusDiag.recordSuccess((uint16_t)(millis() - startMs));
+            const uint16_t outputs = _nodeFridgeIO.getResponseBuffer(0);
+            node.green_a.automatic_state = (outputs & (1U << 0)) != 0;
+            node.yellow_a.automatic_state = (outputs & (1U << 1)) != 0;
+            node.red_a.automatic_state = (outputs & (1U << 2)) != 0;
+            node.buzzer_a.automatic_state = (outputs & (1U << 3)) != 0;
+            node.green_b.automatic_state = (outputs & (1U << 4)) != 0;
+            node.yellow_b.automatic_state = (outputs & (1U << 5)) != 0;
+            node.red_b.automatic_state = (outputs & (1U << 6)) != 0;
+            node.buzzer_b.automatic_state = (outputs & (1U << 7)) != 0;
+        } else if (resCoils == _nodeFridgeIO.ku8MBInvalidCRC) {
+            node.diag.recordCrcError();
+            _fridgeIOBusDiag.recordCrcError();
+        } else {
+            node.diag.recordTimeout();
+            _fridgeIOBusDiag.recordTimeout();
+        }
+    }
+
+    // Enviar al auxiliar datos de alarma y temporizadores; el auxiliar acciona
+    // las salidas localmente a partir de estos estados y sus entradas físicas.
+    if (node.online) {
+        uint16_t alarmMask = 0;
+        const uint16_t graceA = FRIDGEIO_REG_DOOR_GRACE_A;
+        const uint16_t criticalA = FRIDGEIO_REG_DOOR_CRITICAL_A;
+        const uint16_t graceB = FRIDGEIO_REG_DOOR_GRACE_B;
+        const uint16_t criticalB = FRIDGEIO_REG_DOOR_CRITICAL_B;
+
+        CavaState* cavaA = strlen(node.cava_a_id) ? getCavaById(node.cava_a_id) : nullptr;
+        CavaState* cavaB = strlen(node.cava_b_id) ? getCavaById(node.cava_b_id) : nullptr;
+        if (cavaA) {
+            cavaA->evaluateAlarms();
+            if (cavaA->comm_online) {
+                if (cavaA->alarm_active) alarmMask |= 1U << 0;
+            } else {
+                alarmMask |= 1U << 1;
+            }
+            const uint16_t doorGrace = cavaA->door_grace_sec ? cavaA->door_grace_sec : 90;
+            const uint16_t doorCritical = cavaA->door_buzzer_sec ? cavaA->door_buzzer_sec : 180;
+            if (node.sent_door_grace_a != doorGrace &&
+                queueFridgeIOWriteRegister(node.modbus_id, graceA, doorGrace)) {
+                node.sent_door_grace_a = doorGrace;
+            }
+            if (node.sent_door_critical_a != doorCritical &&
+                queueFridgeIOWriteRegister(node.modbus_id, criticalA, doorCritical)) {
+                node.sent_door_critical_a = doorCritical;
+            }
+        }
+        if (cavaB) {
+            cavaB->evaluateAlarms();
+            if (cavaB->comm_online) {
+                if (cavaB->alarm_active) alarmMask |= 1U << 2;
+            } else {
+                alarmMask |= 1U << 3;
+            }
+            const uint16_t doorGrace = cavaB->door_grace_sec ? cavaB->door_grace_sec : 90;
+            const uint16_t doorCritical = cavaB->door_buzzer_sec ? cavaB->door_buzzer_sec : 180;
+            if (node.sent_door_grace_b != doorGrace &&
+                queueFridgeIOWriteRegister(node.modbus_id, graceB, doorGrace)) {
+                node.sent_door_grace_b = doorGrace;
+            }
+            if (node.sent_door_critical_b != doorCritical &&
+                queueFridgeIOWriteRegister(node.modbus_id, criticalB, doorCritical)) {
+                node.sent_door_critical_b = doorCritical;
+            }
+        }
+        queueFridgeIOWriteCoilsMask(node.modbus_id, alarmMask, 4,
+                                    FRIDGEIO_COIL_ALARM_A_PROCESS);
     }
 
     _currentSignalingIdx = (_currentSignalingIdx + 1) % _signalingNodeCount;

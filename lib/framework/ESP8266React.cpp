@@ -35,9 +35,15 @@ ESP8266React::ESP8266React(AsyncWebServer* server) :
   // Serve static resources from PROGMEM
   WWWData::registerRoutes(
       [server, this](const String& uri, const String& contentType, const uint8_t* content, size_t len) {
-        ArRequestHandlerFunction requestHandler = [contentType, content, len](AsyncWebServerRequest* request) {
+        const bool isIndex = uri.equals("/index.html");
+        ArRequestHandlerFunction requestHandler = [contentType, content, len, isIndex](AsyncWebServerRequest* request) {
           AsyncWebServerResponse* response = request->beginResponse(200, contentType, content, len);
           response->addHeader("Content-Encoding", "gzip");
+          if (isIndex) {
+            response->addHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+            response->addHeader("Pragma", "no-cache");
+            response->addHeader("Expires", "0");
+          }
           request->send(response);
         };
         server->on(uri.c_str(), HTTP_GET, requestHandler);

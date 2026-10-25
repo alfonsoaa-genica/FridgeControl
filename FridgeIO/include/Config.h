@@ -91,6 +91,19 @@ enum AdminHoldingRegister {
   9 // Coil Virtual 9: 1=Disparo de Lamp Test autónomo (temporizado en esclavo)
 #define COIL_CMD_STOP_TEST                                                     \
   10 // Coil Virtual 10: 1=Cancelar prueba y restablecer a modo automático
+#define COIL_CAVA_A_PROCESS_ALARM 11
+#define COIL_CAVA_A_COMM_ALARM 12
+#define COIL_CAVA_B_PROCESS_ALARM 13
+#define COIL_CAVA_B_COMM_ALARM 14
+#define COIL_CMD_TEST_RELAY_1 15
+#define COIL_CMD_TEST_RELAY_8 22
+
+#define REG_DOOR_GRACE_A 6
+#define REG_DOOR_CRITICAL_A 7
+#define REG_DOOR_GRACE_B 8
+#define REG_DOOR_CRITICAL_B 9
+#define DEFAULT_DOOR_GRACE_SEC 90
+#define DEFAULT_DOOR_CRITICAL_SEC 180
 
 // Registros de Entrada de Diagnóstico (Input Registers / 30001+)
 enum DiagnosticInputRegister {
@@ -103,7 +116,11 @@ enum DiagnosticInputRegister {
   REG_DIAG_FIRMWARE_VERSION =
       5, // 30006: Versión de firmware (ej. 100 = v1.0.0)
   REG_DIAG_TEMP_BACKUP_A =
-      6, // 30007: Temp Respaldo Cava A (décimas °C, -999 = sin sonda)
+      6, // 30007: Temp Respaldo Cava A (centésimas °C, -32768 = inválida)
   REG_DIAG_TEMP_BACKUP_B =
-      7 // 30008: Temp Respaldo Cava B (décimas °C, -999 = sin sonda)
+      7, // 30008: Temp Respaldo Cava B (centésimas °C, -32768 = inválida)
+  REG_DIAG_1WIRE_ENABLED =
+      8, // 30009: Estado 1-Wire (1=habilitado)
+  REG_DIAG_1WIRE_DEVICE_COUNT =
+      9 // 30010: Cantidad de sensores DS18B20 detectados
 };

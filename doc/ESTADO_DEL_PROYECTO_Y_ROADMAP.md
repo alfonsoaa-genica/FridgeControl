@@ -8,7 +8,9 @@
 
 ## 1. Resumen Ejecutivo de la Arquitectura
 
-El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y brinda una solución integral **OT/IT (Industria 4.0)**:
+Todas las cavas incluidas en este proyecto son de **agua helada y utilizan FanCoils**. No existen compresores propios en las cavas; FridgeControl supervisa las variables de los controladores KIDE y las alarmas del proceso FanCoil, pero no controla la producción central de agua helada ni equipos de compresión.
+
+El ecosistema desacopla el monitoreo de las cavas de la antigua pasarela LonWorks y brinda una solución integral **OT/IT (Industria 4.0)**:
 
 ```
                                   RED CORPORATIVA GÈNICA
@@ -49,17 +51,21 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 ### 2.1. Maestro Gateway: `FridgeControl`
 * **Hardware Físico:** **Waveshare Industrial ESP32-S3 WiFi Relay 6CH** (`COM24`).
 * **Puerto RS-485:** Aislamiento galvánico on-board con control automático de dirección (`GPIO 17` TX, `GPIO 18` RX). Jumper de terminación 120R y LEDs de tráfico TX/RX.
-* **Estado de banco:** Firmware y filesystem habían sido flasheados en validaciones previas. **Los últimos binarios, generados el 25 de octubre de 2026, solo fueron compilados; no se han cargado a la placa.**
-  * **Últimos binarios compilados:** `.pio/build/waveshare_esp32s3_relay_6ch/firmware.bin` (08:30) y `.pio/build/waveshare_esp32s3_relay_6ch/littlefs.bin` (08:20).
-  * **Filesystem:** La imagen LittleFS generada incluye la SPA actualizada, y tanto su generación como la compilación final del firmware terminaron correctamente.
+* **Estado de banco (25 de octubre de 2026):** El firmware Maestro con la SPA actualizada fue compilado y cargado mediante la web; el usuario confirmó que la interfaz se veía correctamente. A continuación se cambió el nombre visible de 1-Wire a **Bus de sensores de respaldo** y se volvió a compilar el firmware. Este último binario, con el nuevo texto, queda pendiente de carga.
+  * La SPA se sirve desde `WWWData.h` en PROGMEM (`PROGMEM_WWW=1`); para actualizarla se debe cargar el firmware, no solo `littlefs.bin`.
+  * `littlefs.bin` también se generó correctamente, pero no es el mecanismo de actualización de la SPA para este entorno. LittleFS conserva su función de almacenamiento de configuración y datos.
+  * La página inicial del firmware añade cabeceras anti-caché para evitar que el navegador mantenga una versión antigua de la interfaz.
 * **Nuevas Funcionalidades Integradas:**
   * Supervisión continua de nodos de señalización `FridgeIO` (lectura de Discrete Inputs 10001..10008 cada 500 ms).
-  * Máquina de estados **ISA-18.2** (tiempos de puerta abierta, alertas acústicas por buzzer, temporizador de 10 min de silencio tras botón físico de ACK).
+  * Máquina de estados **ISA-18.2** (tiempos de puerta abierta y alertas acústicas por buzzer). El ACK local silencia mientras la causa persiste; la señalización queda reconocida hasta que la condición se normaliza.
   * Auto-descubrimiento en bus: identifica controladores KIDE (KP-100 / Secmatic-970) y satélites `FRIDGE_IO` en rango 100d.
   * Mapeo dinámico y persistente de cavas asociadas a los canales A y B de cada satélite (`/config/signaling.json`).
   * Consola web de trazas Modbus en hexadecimal (TX/RX) sobre WebSocket en tiempo real.
   * Pausa de monitoreo mediante cierre de la conexión WebSocket dedicada a trazas; reanudar abre una nueva conexión. La consola limita el histórico a 500 tramas en memoria.
   * Mantenimiento de auxiliares separado en **Proyecto → Equipos Auxiliares**: permite asociar los canales A y B a cavas existentes, revisar estados de campo, probar salidas y consultar métricas RS-485. **Diagnóstico Modbus** se reserva para escaneo, ping, métricas KIDE y consola HEX.
+  * Bus de sensores de respaldo DS18B20 en mantenimiento auxiliar: habilitación persistente, cantidad de sondas detectadas y temperaturas por canal con resolución de 0.01 °C. El usuario confirmó que la lectura de temperatura ya funciona.
+  * El FridgeIO ejecuta localmente la señalización de puertas, alarmas y ACK. El Maestro transmite estados de proceso/NOCOMM y lee por FC01 los estados efectivos de las ocho salidas para reportarlos.
+  * En **Cavas en Vivo** se retiraron los indicadores de desescarche y vapor, que no aplican a las cavas de agua helada con FanCoils. También se simplificó el texto visible de mantenimiento para no exponer nombres ni rutas de archivos `.json`.
   * Endpoints REST: `GET /rest/signaling/nodes`, `POST /rest/signaling/mapping`, y campos de señalización en `GET /rest/cavas` y WebSockets.
   * Aprovisionamiento local WiFi/MQTT con `data/config/wifiSettings.json` y `data/config/mqttSettings.json`, excluidos de Git y derivados de plantillas sin credenciales. En ESP32, se migran a NVS en el primer arranque; NVS prevalece después de cargas nuevas de LittleFS. Los formularios WiFi y MQTT permiten importar/exportar cada JSON y guardar cambios al equipo.
 
@@ -86,7 +92,7 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
   * **Puerto 2 (RS-422 / 4 hilos / Full-Duplex):**
     * Pines: GPIO 4 (TX), GPIO 5 (RX) tomados del cabezal de expansión H1 (Pin 13 GND, Pin 14 IO05/RX, Pin 15 IO04/TX).
     * Cadena de Conversión: ESP32 (3.3V TTL) $\rightarrow$ Módulo MAX3232 (RS-232) $\rightarrow$ Convertidor Aislado **AutomationDirect FA-ISOCON** $\rightarrow$ Bornera RS-422 (TX+, TX-, RX+, RX-).
-    * Asignación: Exclusiva para controladores de refrigeración de cavas KIDE (KP-100, Secmatic-970, IDs ..99$).
+    * Asignación: Exclusiva para controladores KIDE que supervisan los FanCoils de las cavas de agua helada (KP-100, Secmatic-970, IDs ..99$).
 * **Validación Eléctrica y Funcional en Banco:**
   * **Comportamiento de LEDs en FA-ISOCON:**
     * *Línea abierta (sin carga):* LED TX titila por sondeo activo del ESP32; LED RX queda encendido fijo por entradas diferenciales flotantes sin carga.
@@ -131,12 +137,14 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 | :---: | :--- | :--- |
 | **Oct 2026** | **Análisis de Red** | Desacoplamiento de LonWorks y especificación de registros Modbus RTU para KIDE KP-100 y Secmatic-970. |
 | **Oct 2026** | **Señalización Andon** | Homologación de torretas articuladas 12-24V con buzzer y lógica de prioridades (Verde / Amarillo / Rojo). |
-| **Oct 2026** | **Alarm Management** | Integración del estándar ISA-18.2 con pulsador físico de ACK en sitio y re-alarma de 10 min. |
+| **Oct 2026** | **Alarm Management** | Integración de la gestión de alarmas ISA-18.2 con ACK físico local, señalización autónoma y reconocimiento mantenido hasta normalizar la causa. |
 | **Oct 2026** | **FridgeIO Firmware** | Creación y flasheo de firmware esclavo Modbus RTU en placa ES32D26 física (`COM20`). |
 | **Oct 2026** | **Hardware Maestro** | Homologación del Waveshare Industrial ESP32-S3 Relay 6CH con RS-485 aislado (`COM24`). |
 | **Oct 2026** | **Supervisión de Nodos** | Implementación en `ModbusEngine` del ciclo de sondeo de satélites `FridgeIO` y máquina de estados de torretas. |
 | **Oct 2026** | **Topología Híbrida** | Especificación del puente de capa física (2 hilos a 4 hilos) con auto-switchover y driver ADM489 para compatibilidad con controladores KIDE. |
 | **Oct 2026** | **Flasheo Total Maestro** | **Grabación exitosa de Firmware y Filesystem (LittleFS) en el Waveshare ESP32-S3 (`COM24`)**. |
+| **25 Oct 2026** | **Alarmas autónomas y sondas auxiliares** | FridgeIO ejecuta señalización/ACK localmente, publica readback de salidas y diagnósticos DS18B20; Maestro consulta estados de relés y temperaturas. |
+| **25 Oct 2026** | **Actualización de interfaz** | Se retiraron estados no aplicables de desescarche/vapor, se ocultaron referencias a archivos en pantallas y el usuario confirmó la actualización tras cargar el firmware Maestro integrado. |
 
 ---
 

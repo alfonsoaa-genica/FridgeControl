@@ -102,4 +102,8 @@ export interface SignalingNodeData {
   buzzer_b: boolean;
 
   quality_percent: number;
+  enable_1wire: boolean;
+  onewire_device_count: number;
+  temp_backup_a: number;
+  temp_backup_b: number;
 }

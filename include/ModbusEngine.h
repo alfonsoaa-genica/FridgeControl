@@ -49,7 +49,8 @@ public:
     // =========================================================================
     // Cola 1: Auxiliares / FridgeIO (Puerto 1 / RS-485 Nativo)
     bool queueFridgeIOWriteCoil(uint8_t slaveId, uint16_t coilIndex, bool value);
-    bool queueFridgeIOWriteCoilsMask(uint8_t slaveId, uint16_t coilMask, uint16_t numCoils);
+    bool queueFridgeIOWriteCoilsMask(uint8_t slaveId, uint16_t coilMask,
+                                     uint16_t numCoils, uint16_t startAddress = 0);
     bool queueFridgeIOWriteRegister(uint8_t slaveId, uint16_t regAddress, uint16_t value);
 
     // Aliases para compatibilidad con llamadas existentes
@@ -158,6 +159,7 @@ private:
     void processFridgeIOWriteQueue();
     void processKideWriteQueue();
     void processTrendSampling();
+    void updateAlarmAndSignalingOutputs();
     void performScanStep();
 };
 

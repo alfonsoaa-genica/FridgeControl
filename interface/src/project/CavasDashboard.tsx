@@ -32,8 +32,6 @@ import {
 import {
   AcUnit as CoolIcon,
   Air as FanIcon,
-  Whatshot as DefrostIcon,
-  WaterDrop as HumidIcon,
   Fullscreen as FocusIcon,
   Close as CloseIcon,
   Edit as EditIcon,
@@ -533,28 +531,6 @@ export const CavasDashboard: React.FC = () => {
                           sx={{ fontSize: '0.7rem' }}
                         />
                       </Tooltip>
-                      <Tooltip title={`${t('cavas.defrost')}: ${cava.defrost_active ? t('cavas.active') : t('cavas.inactive')}`}>
-                        <Chip
-                          icon={<DefrostIcon />}
-                          label={t('cavas.defrost')}
-                          size="small"
-                          color={cava.defrost_active ? 'warning' : 'default'}
-                          variant={cava.defrost_active ? 'filled' : 'outlined'}
-                          sx={{ fontSize: '0.7rem' }}
-                        />
-                      </Tooltip>
-                      {cava.has_humidity && (
-                        <Tooltip title={`${t('cavas.steam')}: ${cava.humid_active ? t('cavas.active') : t('cavas.inactive')}`}>
-                          <Chip
-                            icon={<HumidIcon />}
-                            label={t('cavas.steam')}
-                            size="small"
-                            color={cava.humid_active ? 'secondary' : 'default'}
-                            variant={cava.humid_active ? 'filled' : 'outlined'}
-                            sx={{ fontSize: '0.7rem' }}
-                          />
-                        </Tooltip>
-                      )}
                     </Stack>
 
                     {/* Footer Diagnóstico Rápido */}

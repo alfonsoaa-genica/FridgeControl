@@ -552,21 +552,22 @@ void FridgeSettingsService::registerEndpoints() {
             obj["kide_alarm_b"]  = n.kide_alarm_b;
 
             // Salidas Canal A
-            obj["green_a"]  = n.green_a;
-            obj["yellow_a"] = n.yellow_a;
-            obj["red_a"]    = n.red_a;
-            obj["buzzer_a"] = n.buzzer_a;
+            obj["green_a"]  = n.green_a.outputState(millis());
+            obj["yellow_a"] = n.yellow_a.outputState(millis());
+            obj["red_a"]    = n.red_a.outputState(millis());
+            obj["buzzer_a"] = n.buzzer_a.outputState(millis());
 
             // Salidas Canal B
-            obj["green_b"]  = n.green_b;
-            obj["yellow_b"] = n.yellow_b;
-            obj["red_b"]    = n.red_b;
-            obj["buzzer_b"] = n.buzzer_b;
+            obj["green_b"]  = n.green_b.outputState(millis());
+            obj["yellow_b"] = n.yellow_b.outputState(millis());
+            obj["red_b"]    = n.red_b.outputState(millis());
+            obj["buzzer_b"] = n.buzzer_b.outputState(millis());
 
             // Respaldo 1-Wire DS18B20
             obj["enable_1wire"]   = n.enable_1wire;
-            obj["temp_backup_a"]  = serialized(String(n.temp_backup_a, 1));
-            obj["temp_backup_b"]  = serialized(String(n.temp_backup_b, 1));
+            obj["onewire_device_count"] = n.onewire_device_count;
+            obj["temp_backup_a"]  = serialized(String(n.temp_backup_a, 2));
+            obj["temp_backup_b"]  = serialized(String(n.temp_backup_b, 2));
 
             obj["quality_percent"] = serialized(String(n.diag.quality_percent, 1));
         }
@@ -594,6 +595,34 @@ void FridgeSettingsService::registerEndpoints() {
         } else {
             request->send(404, "application/json", "{\"error\":\"Nodo no encontrado\"}");
         }
+    });
+
+    _server->on("/rest/signaling/1wire", HTTP_POST, [this](AsyncWebServerRequest* request) {
+        if (!request->hasParam("node_id", true) || !request->hasParam("enabled", true)) {
+            request->send(400, "application/json", "{\"error\":\"Faltan node_id o enabled\"}");
+            return;
+        }
+
+        const uint8_t nodeId = request->getParam("node_id", true)->value().toInt();
+        const String enabledValue = request->getParam("enabled", true)->value();
+        if (enabledValue != "true" && enabledValue != "false" &&
+            enabledValue != "1" && enabledValue != "0") {
+            request->send(400, "application/json", "{\"error\":\"enabled debe ser true o false\"}");
+            return;
+        }
+
+        SignalingNode* node = getSignalingNodeById(nodeId);
+        if (!node) {
+            request->send(404, "application/json", "{\"error\":\"Nodo no encontrado\"}");
+            return;
+        }
+
+        const bool enabled = enabledValue == "true" || enabledValue == "1";
+        if (!modbusEngine.queueWriteCoil(nodeId, 8, enabled)) {
+            request->send(503, "application/json", "{\"error\":\"No se pudo encolar el comando Modbus\"}");
+            return;
+        }
+        request->send(200, "application/json", "{\"status\":\"queued\"}");
     });
 
     // POST /rest/signaling/commission (Comisionar satélite ID 100 y asignarle nuevo ID y cavas)
@@ -635,20 +664,39 @@ void FridgeSettingsService::registerEndpoints() {
         String mode = request->hasParam("mode", true) ? request->getParam("mode", true)->value() : "lamp_test";
 
         if (mode == "lamp_test") {
+            n->clearRelayTests();
             // Disparar prueba de lámparas autónoma en hardware del esclavo vía Coil 9 (5s en hardware)
             modbusEngine.queueWriteCoil(nodeId, 9, true);
         } else if (mode == "all_off" || mode == "stop_test") {
+            n->clearRelayTests();
             // Cancelar prueba en el esclavo vía Coil 10 y restablecer a modo normal
             modbusEngine.queueWriteCoil(nodeId, 10, true);
         } else if (mode == "toggle_bit" && request->hasParam("bit_index", true)) {
-            uint8_t bitIdx = (uint8_t)request->getParam("bit_index", true)->value().toInt();
-            // Disparar pulso individual al esclavo: el esclavo arranca su cronómetro de 5s para este relé
-            modbusEngine.queueWriteCoil(nodeId, bitIdx, true);
+            const String bitIndexValue = request->getParam("bit_index", true)->value();
+            for (size_t i = 0; i < bitIndexValue.length(); i++) {
+                if (bitIndexValue[i] < '0' || bitIndexValue[i] > '9') {
+                    request->send(400, "application/json", "{\"error\":\"bit_index debe estar entre 0 y 7\"}");
+                    return;
+                }
+            }
+            const long relayIndex = bitIndexValue.toInt();
+            if (relayIndex < 0 || relayIndex >= 8) {
+                request->send(400, "application/json", "{\"error\":\"bit_index debe estar entre 0 y 7\"}");
+                return;
+            }
+            if (!modbusEngine.queueWriteCoil(
+                    nodeId, FRIDGEIO_COIL_TEST_RELAY_BASE + (uint16_t)relayIndex, true)) {
+                request->send(503, "application/json", "{\"error\":\"No se pudo encolar la prueba del relé\"}");
+                return;
+            }
         } else if (mode == "custom" && request->hasParam("coils_byte", true)) {
             uint8_t coilsByte = (uint8_t)(request->getParam("coils_byte", true)->value().toInt() & 0xFF);
-            uint16_t coilMask = (uint16_t)coilsByte;
-            if (n->enable_1wire) coilMask |= (1 << 8);
-            modbusEngine.queueWriteCoilsMask(nodeId, coilMask, 9);
+            for (uint8_t relayIndex = 0; relayIndex < 8; relayIndex++) {
+                if (coilsByte & (1U << relayIndex)) {
+                    modbusEngine.queueWriteCoil(
+                        nodeId, FRIDGEIO_COIL_TEST_RELAY_BASE + relayIndex, true);
+                }
+            }
         }
 
         request->send(200, "application/json", "{\"status\":\"ok\",\"node_id\":" + String(nodeId) + ",\"mode\":\"" + mode + "\",\"duration_sec\":" + String(durationSec) + "}");
@@ -699,6 +747,8 @@ bool FridgeSettingsService::addOrUpdateSignalingNode(uint8_t modbus_id) {
     memset(&n, 0, sizeof(SignalingNode));
     n.modbus_id = modbus_id;
     n.online = true;
+    n.temp_backup_a = -999.0f;
+    n.temp_backup_b = -999.0f;
 
     // Asignación por defecto sugerida (ej. 100 -> C1 y C2, 102 -> C3 y C4...)
     if (modbus_id == 100) {
@@ -746,7 +796,10 @@ bool FridgeSettingsService::loadSignalingSettings() {
     size_t idx = 0;
     for (JsonObject obj : arr) {
         if (idx >= MAX_SIGNALING_NODES) break;
+        memset(&_signalingNodes[idx], 0, sizeof(SignalingNode));
         _signalingNodes[idx].modbus_id = obj["modbus_id"] | (100 + (idx * 2));
+        _signalingNodes[idx].temp_backup_a = -999.0f;
+        _signalingNodes[idx].temp_backup_b = -999.0f;
         const char* ca = obj["cava_a"];
         const char* cb = obj["cava_b"];
         if (ca) strncpy(_signalingNodes[idx].cava_a_id, ca, sizeof(_signalingNodes[idx].cava_a_id) - 1);
@@ -879,4 +932,3 @@ void FridgeSettingsService::loadTrendsFromFiles() {
         loadCavaTrends(_cavas[i]);
     }
 }
-

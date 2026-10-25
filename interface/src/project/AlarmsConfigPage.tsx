@@ -45,7 +45,6 @@ export const AlarmsConfigPage: React.FC = () => {
     [cavaId: string]: {
       door_grace_sec: number;
       door_buzzer_sec: number;
-      ack_grace_sec: number;
       temp_alarm_delta: number;
       temp_alarm_delay_sec: number;
     };
@@ -62,7 +61,6 @@ export const AlarmsConfigPage: React.FC = () => {
         initialForm[c.id] = {
           door_grace_sec: c.door_grace_sec ?? 90,
           door_buzzer_sec: c.door_buzzer_sec ?? 180,
-          ack_grace_sec: c.ack_grace_sec ?? 600,
           temp_alarm_delta: c.temp_alarm_delta ?? 2.5,
           temp_alarm_delay_sec: c.temp_alarm_delay_sec ?? 300,
         };
@@ -166,8 +164,8 @@ export const AlarmsConfigPage: React.FC = () => {
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Box sx={{ p: 1.2, bgcolor: 'background.paper', borderRadius: 1.5, border: '1px solid', borderColor: 'divider' }}>
               <Typography variant="caption" fontWeight="bold" color="warning.main">3. ACUSE (ACK / SILENCIO)</Typography>
-              <Typography variant="body2" fontWeight="600">Por defecto: 10 minutos (600s)</Typography>
-              <Typography variant="caption" color="text.secondary">Silencia la sirena temporalmente mientras el operador despeja la puerta.</Typography>
+              <Typography variant="body2" fontWeight="600">Hasta normalizar la causa</Typography>
+              <Typography variant="caption" color="text.secondary">Silencia el buzzer y fija la luz de alarma; el reconocimiento se libera al desaparecer la causa.</Typography>
             </Box>
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -318,41 +316,15 @@ export const AlarmsConfigPage: React.FC = () => {
                     </Paper>
                   </Grid>
 
-                  {/* Bloque Operador ACK y Silencios */}
+                  {/* Comportamiento de ACK */}
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={0} sx={{ p: 2.5, bgcolor: 'background.default', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
                       <Typography variant="subtitle1" fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                        <AckIcon color="info" /> Silencio por Pulsador ACK (Operador)
+                        <AckIcon color="info" /> Reconocimiento por pulsador ACK
                       </Typography>
-
-                      <Box sx={{ mb: 3 }}>
-                        <Stack direction="row" justifyContent="space-between" alignItems="center">
-                          <Typography variant="body2" fontWeight="600">
-                            Tiempo de Silencio de Sirena tras ACK
-                          </Typography>
-                          <Typography variant="h6" color="info.main" fontWeight="bold">
-                            {Math.round(currentValues.ack_grace_sec / 60)} min ({currentValues.ack_grace_sec} s)
-                          </Typography>
-                        </Stack>
-                        <Typography variant="caption" color="text.secondary" display="block" mb={1}>
-                          Minutos que la sirena permanecerá silenciada al pulsar el botón físico de acuse en la puerta (Normal: 10 min). Si la puerta sigue abierta tras este tiempo, la sirena vuelve a sonar.
-                        </Typography>
-                        <Slider
-                          value={currentValues.ack_grace_sec}
-                          min={60}
-                          max={1800}
-                          step={60}
-                          marks={[
-                            { value: 300, label: '5m' },
-                            { value: 600, label: '10m' },
-                            { value: 900, label: '15m' },
-                            { value: 1800, label: '30m' },
-                          ]}
-                          valueLabelDisplay="auto"
-                          valueLabelFormat={(val) => `${Math.round(val / 60)} min`}
-                          onChange={(_, val) => handleFieldChange('ack_grace_sec', val as number)}
-                        />
-                      </Box>
+                      <Typography variant="body2" color="text.secondary">
+                        ACK reconoce solo la cava asociada al pulsador. Mientras la causa siga activa, silencia el buzzer y mantiene fija la luz de alarma. El reconocimiento se borra cuando el Maestro informa que la condición se normalizó.
+                      </Typography>
                     </Paper>
                   </Grid>
 

@@ -3,6 +3,7 @@
 #include <ModbusRTUSlave.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <math.h>
 #include "Config.h"
 
 // ============================================================================
@@ -21,18 +22,25 @@ bool activeEnable1Wire = false;
 unsigned long last1WireCycleTime = 0;
 unsigned long last1WireConversionTime = 0;
 bool conversionInProgress = false;
+bool acknowledgedDoor[2] = {false, false};
+bool acknowledgedProcess[2] = {false, false};
+bool acknowledgedComm[2] = {false, false};
+bool previousAckInput[2] = {false, false};
+bool doorStateInitialized[2] = {false, false};
+uint32_t doorOpenSince[2] = {0, 0};
+bool relayTestActive[8] = {false};
+uint32_t relayTestEndTime[8] = {0};
+uint16_t relayOutputMask = 0;
 
 // Variables de Temporizador Autónomo No Bloqueante en Hardware
 uint32_t lampTestEndTime = 0;
 bool lampTestActive = false;
-uint32_t relayPulseEndTime[8] = {0};
-bool lastCoilsState[8] = {false};
 
 // Vectores Modbus
-bool coils[16] = {false};            // 0..7: Relés físicos | 8: 1-Wire | 9: Start Test | 10: Stop Test
+bool coils[23] = {false};            // Physical outputs, alarm states, and test commands
 bool discreteInputs[8] = {false};    // 8 Entradas digitales (Switches, ACK, Alarmas Kide)
-uint16_t holdingRegisters[8] = {0};  // Parámetros administrativos (ID, Baudrate, Timeout)
-uint16_t inputRegisters[8] = {0};    // Registros de diagnóstico (Uptime, Polls, Latencia, Temp Respaldo A/B)
+uint16_t holdingRegisters[10] = {0}; // Administración y temporizadores de puerta por canal
+uint16_t inputRegisters[10] = {0};   // Registros de diagnóstico, temperaturas y estado 1-Wire
 
 // Instancia del esclavo Modbus RTU sobre Serial (UART0) con pin DE en GPIO 21
 ModbusRTUSlave modbus(Serial, PIN_RS485_DE);
@@ -41,6 +49,10 @@ ModbusRTUSlave modbus(Serial, PIN_RS485_DE);
 uint8_t activeSlaveId = DEFAULT_SLAVE_ID;
 uint32_t activeBaudrate = DEFAULT_BAUDRATE;
 uint16_t activeTimeoutSec = 15;
+uint16_t persistedDoorSettings[4] = {
+    DEFAULT_DOOR_GRACE_SEC, DEFAULT_DOOR_CRITICAL_SEC,
+    DEFAULT_DOOR_GRACE_SEC, DEFAULT_DOOR_CRITICAL_SEC
+};
 
 // Variables de diagnóstico y watchdog
 uint32_t totalPollCount = 0;
@@ -107,6 +119,10 @@ void loadConfigFromNVS() {
         uint8_t bCode = prefs.getUChar("baud_code", 0);
         activeTimeoutSec = prefs.getUShort("timeout_sec", 15);
         activeEnable1Wire = prefs.getBool("en_1wire", false);
+        persistedDoorSettings[0] = prefs.getUShort("door_grace_a", DEFAULT_DOOR_GRACE_SEC);
+        persistedDoorSettings[1] = prefs.getUShort("door_crit_a", DEFAULT_DOOR_CRITICAL_SEC);
+        persistedDoorSettings[2] = prefs.getUShort("door_grace_b", DEFAULT_DOOR_GRACE_SEC);
+        persistedDoorSettings[3] = prefs.getUShort("door_crit_b", DEFAULT_DOOR_CRITICAL_SEC);
         prefs.end();
 
         if (activeSlaveId < 1 || activeSlaveId > 247) activeSlaveId = DEFAULT_SLAVE_ID;
@@ -125,6 +141,7 @@ void loadConfigFromNVS() {
     if (activeEnable1Wire) {
         sensors.begin();
         sensors.setWaitForConversion(false);
+        inputRegisters[REG_DIAG_1WIRE_DEVICE_COUNT] = sensors.getDeviceCount();
     }
 
     // Inicializar registros de holding con los valores cargados
@@ -133,6 +150,30 @@ void loadConfigFromNVS() {
     holdingRegisters[REG_ADMIN_COMM_TIMEOUT_SEC] = activeTimeoutSec;
     holdingRegisters[REG_ADMIN_SAVE_EEPROM] = 0;
     holdingRegisters[REG_ADMIN_REBOOT] = 0;
+    for (uint8_t i = 0; i < 4; i++) {
+        holdingRegisters[REG_DOOR_GRACE_A + i] = persistedDoorSettings[i];
+    }
+}
+
+void persistDoorSettingsIfChanged() {
+    bool changed = false;
+    for (uint8_t i = 0; i < 4; i++) {
+        if (holdingRegisters[REG_DOOR_GRACE_A + i] != persistedDoorSettings[i]) {
+            changed = true;
+            break;
+        }
+    }
+    if (!changed) return;
+
+    prefs.begin("fridgeio", false);
+    prefs.putUShort("door_grace_a", holdingRegisters[REG_DOOR_GRACE_A]);
+    prefs.putUShort("door_crit_a", holdingRegisters[REG_DOOR_CRITICAL_A]);
+    prefs.putUShort("door_grace_b", holdingRegisters[REG_DOOR_GRACE_B]);
+    prefs.putUShort("door_crit_b", holdingRegisters[REG_DOOR_CRITICAL_B]);
+    prefs.end();
+    for (uint8_t i = 0; i < 4; i++) {
+        persistedDoorSettings[i] = holdingRegisters[REG_DOOR_GRACE_A + i];
+    }
 }
 
 void checkAdministrativeCommands() {
@@ -186,10 +227,10 @@ void setup() {
     Serial.begin(activeBaudrate, SERIAL_8N1);
 
     // Configurar tablas de registros Modbus RTU
-    modbus.configureCoils(coils, 16); // 0..7 relés físicos | 8 Coil virtual 1-Wire
+    modbus.configureCoils(coils, 23);
     modbus.configureDiscreteInputs(discreteInputs, 8);
-    modbus.configureHoldingRegisters(holdingRegisters, 8);
-    modbus.configureInputRegisters(inputRegisters, 8);
+    modbus.configureHoldingRegisters(holdingRegisters, 10);
+    modbus.configureInputRegisters(inputRegisters, 10);
 
     // Iniciar esclavo Modbus
     modbus.begin(activeSlaveId, activeBaudrate);
@@ -234,6 +275,7 @@ void loop() {
         heartbeatState = !heartbeatState;
         digitalWrite(PIN_CLK_165, heartbeatState);
     }
+    persistDoorSettingsIfChanged();
 
     // 3. Gestión del Coil Virtual 1-Wire persistente (Coil 8)
     if (coils[COIL_ENABLE_1WIRE] != activeEnable1Wire) {
@@ -244,6 +286,32 @@ void loop() {
         if (activeEnable1Wire) {
             sensors.begin();
             sensors.setWaitForConversion(false);
+            inputRegisters[REG_DIAG_1WIRE_DEVICE_COUNT] = sensors.getDeviceCount();
+        } else {
+            inputRegisters[REG_DIAG_1WIRE_DEVICE_COUNT] = 0;
+        }
+    }
+
+    if (coils[COIL_CMD_STOP_TEST]) {
+        coils[COIL_CMD_STOP_TEST] = false;
+        lampTestActive = false;
+        lampTestEndTime = 0;
+        for (uint8_t i = 0; i < 8; i++) {
+            relayTestActive[i] = false;
+            relayTestEndTime[i] = 0;
+            coils[COIL_CMD_TEST_RELAY_1 + i] = false;
+        }
+    }
+
+    for (uint8_t i = 0; i < 8; i++) {
+        const uint8_t commandCoil = COIL_CMD_TEST_RELAY_1 + i;
+        if (coils[commandCoil]) {
+            coils[commandCoil] = false;
+            relayTestActive[i] = true;
+            relayTestEndTime[i] = now + 5000UL;
+        }
+        if (relayTestActive[i] && (int32_t)(now - relayTestEndTime[i]) >= 0) {
+            relayTestActive[i] = false;
         }
     }
 
@@ -258,34 +326,23 @@ void loop() {
             conversionInProgress = false;
             float tA = sensors.getTempCByIndex(0);
             float tB = sensors.getTempCByIndex(1);
+            inputRegisters[REG_DIAG_1WIRE_DEVICE_COUNT] = sensors.getDeviceCount();
 
-            if (tA != DEVICE_DISCONNECTED_C && tA > -55.0f && tA < 125.0f) {
-                inputRegisters[REG_DIAG_TEMP_BACKUP_A] = (int16_t)(tA * 10.0f);
+            if (tA != DEVICE_DISCONNECTED_C && tA >= -55.0f && tA <= 125.0f) {
+                inputRegisters[REG_DIAG_TEMP_BACKUP_A] = (uint16_t)(int16_t)lroundf(tA * 100.0f);
             } else {
-                inputRegisters[REG_DIAG_TEMP_BACKUP_A] = (uint16_t)-999;
+                inputRegisters[REG_DIAG_TEMP_BACKUP_A] = (uint16_t)INT16_MIN;
             }
 
-            if (tB != DEVICE_DISCONNECTED_C && tB > -55.0f && tB < 125.0f) {
-                inputRegisters[REG_DIAG_TEMP_BACKUP_B] = (int16_t)(tB * 10.0f);
+            if (tB != DEVICE_DISCONNECTED_C && tB >= -55.0f && tB <= 125.0f) {
+                inputRegisters[REG_DIAG_TEMP_BACKUP_B] = (uint16_t)(int16_t)lroundf(tB * 100.0f);
             } else {
-                inputRegisters[REG_DIAG_TEMP_BACKUP_B] = (uint16_t)-999;
+                inputRegisters[REG_DIAG_TEMP_BACKUP_B] = (uint16_t)INT16_MIN;
             }
         }
     } else {
-        inputRegisters[REG_DIAG_TEMP_BACKUP_A] = (uint16_t)-999;
-        inputRegisters[REG_DIAG_TEMP_BACKUP_B] = (uint16_t)-999;
-    }
-
-    // 4b. Temporizadores Autónomos de Hardware en el Esclavo (100% control local de retardos)
-    if (coils[COIL_CMD_STOP_TEST]) {
-        coils[COIL_CMD_STOP_TEST] = false;
-        lampTestActive = false;
-        lampTestEndTime = 0;
-        for (int i = 0; i < 8; i++) {
-            coils[i] = false;
-            lastCoilsState[i] = false;
-            relayPulseEndTime[i] = 0;
-        }
+        inputRegisters[REG_DIAG_TEMP_BACKUP_A] = (uint16_t)INT16_MIN;
+        inputRegisters[REG_DIAG_TEMP_BACKUP_B] = (uint16_t)INT16_MIN;
     }
 
     if (coils[COIL_CMD_LAMP_TEST]) {
@@ -301,52 +358,109 @@ void loop() {
         lampTestEndTime = 0;
     }
 
-    // Temporizador autónomo de 5 segundos para cualquier relé individual activado
-    for (int i = 0; i < 8; i++) {
-        if (coils[i] && !lastCoilsState[i]) {
-            // Se activó el relé: arranca el cronómetro de 5 segundos en el esclavo
-            relayPulseEndTime[i] = now + 5000UL;
-        }
-        lastCoilsState[i] = coils[i];
-
-        if (relayPulseEndTime[i] > 0) {
-            if (now >= relayPulseEndTime[i]) {
-                // Al terminar el retardo: el esclavo apaga el relé y limpia el coil internamente
-                coils[i] = false;
-                lastCoilsState[i] = false;
-                relayPulseEndTime[i] = 0;
-            }
-        }
-    }
-
-    // 5. Watchdog de Comunicación del Bus RS-485 (Fail-Safe de Seguridad)
+    // 5. Watchdog de Comunicación del Bus RS-485
     if (activeTimeoutSec > 0) {
         uint32_t elapsedNoComm = now - lastMasterPollTime;
         if (elapsedNoComm > (activeTimeoutSec * 1000UL)) {
             if (!commWatchdogTripped) {
                 commWatchdogTripped = true;
-                // FAIL-SAFE: En caso de corte del bus RS-485, silenciamos los buzzers automáticamente
-                // para evitar contaminación acústica indefinida en planta, manteniendo luces de estado.
-                coils[RELAY_CAVA_A_BUZZER] = false;
-                coils[RELAY_CAVA_B_BUZZER] = false;
             }
         }
     }
 
-    // 6. Escritura de Salidas Físicas a Relé (Hardware)
-    uint8_t relayByte = 0;
-    if (lampTestActive) {
-        relayByte = 0xFF; // Durante Lamp Test todos los 8 relés físicos ON a nivel de hardware local
-    } else {
-        for (int i = 0; i < 8; i++) {
-            if (coils[i]) {
-                relayByte |= (1 << i);
-            }
-        }
-    }
-    writeRelays(relayByte);
+    // 6. FSM local de puertas, alarmas recibidas y ACK por canal.
+    bool green[2] = {false, false};
+    bool yellow[2] = {false, false};
+    bool red[2] = {false, false};
+    bool buzzer[2] = {false, false};
+    const bool doorClosed[2] = {
+        discreteInputs[DI_CAVA_A_REED_DOOR],
+        discreteInputs[DI_CAVA_B_REED_DOOR]
+    };
+    const bool ackInput[2] = {
+        discreteInputs[DI_CAVA_A_ACK_BUTTON],
+        discreteInputs[DI_CAVA_B_ACK_BUTTON]
+    };
+    const bool processAlarm[2] = {
+        coils[COIL_CAVA_A_PROCESS_ALARM] ||
+            (!coils[COIL_CAVA_A_COMM_ALARM] && !discreteInputs[DI_CAVA_A_KIDE_ALARM]),
+        coils[COIL_CAVA_B_PROCESS_ALARM] ||
+            (!coils[COIL_CAVA_B_COMM_ALARM] && !discreteInputs[DI_CAVA_B_KIDE_ALARM])
+    };
+    const bool commAlarm[2] = {
+        coils[COIL_CAVA_A_COMM_ALARM],
+        coils[COIL_CAVA_B_COMM_ALARM]
+    };
+    const uint8_t graceRegister[2] = {REG_DOOR_GRACE_A, REG_DOOR_GRACE_B};
+    const uint8_t criticalRegister[2] = {REG_DOOR_CRITICAL_A, REG_DOOR_CRITICAL_B};
+    const uint8_t outputOffset[2] = {0, 4};
+    const bool blinkOn = ((now / 500U) % 2U) == 0;
 
-    // 7. Actualización de Registros de Diagnóstico (Input Registers)
+    for (uint8_t channel = 0; channel < 2; channel++) {
+        if (!doorStateInitialized[channel]) {
+            doorStateInitialized[channel] = true;
+            doorOpenSince[channel] = doorClosed[channel] ? 0 : now;
+        } else if (doorClosed[channel]) {
+            doorOpenSince[channel] = 0;
+        } else if (doorOpenSince[channel] == 0) {
+            doorOpenSince[channel] = now;
+        }
+
+        const uint16_t graceSec = holdingRegisters[graceRegister[channel]]
+                                      ? holdingRegisters[graceRegister[channel]]
+                                      : DEFAULT_DOOR_GRACE_SEC;
+        const uint16_t criticalSec = holdingRegisters[criticalRegister[channel]]
+                                         ? holdingRegisters[criticalRegister[channel]]
+                                         : DEFAULT_DOOR_CRITICAL_SEC;
+        const uint32_t doorDurationSec = doorClosed[channel]
+                                             ? 0
+                                             : (now - doorOpenSince[channel]) / 1000UL;
+        const bool doorWarning = !doorClosed[channel] && doorDurationSec >= graceSec;
+        const bool doorCritical = !doorClosed[channel] && doorDurationSec >= criticalSec;
+
+        if (ackInput[channel] && !previousAckInput[channel]) {
+            if (doorCritical) acknowledgedDoor[channel] = true;
+            if (processAlarm[channel]) acknowledgedProcess[channel] = true;
+            if (commAlarm[channel]) acknowledgedComm[channel] = true;
+        }
+        previousAckInput[channel] = ackInput[channel];
+
+        if (!doorCritical) acknowledgedDoor[channel] = false;
+        if (!processAlarm[channel]) acknowledgedProcess[channel] = false;
+        if (!commAlarm[channel]) acknowledgedComm[channel] = false;
+
+        const bool unacknowledgedDoor = doorCritical && !acknowledgedDoor[channel];
+        const bool unacknowledgedProcess = processAlarm[channel] && !acknowledgedProcess[channel];
+        const bool unacknowledgedComm = commAlarm[channel] && !acknowledgedComm[channel];
+        const bool redAlarm = processAlarm[channel] || commAlarm[channel];
+
+        if (!doorWarning && !redAlarm) {
+            green[channel] = true;
+        }
+        if (doorWarning) {
+            yellow[channel] = doorCritical ? (!acknowledgedDoor[channel] ? blinkOn : true) : true;
+        }
+        if (redAlarm) {
+            red[channel] = (unacknowledgedProcess || unacknowledgedComm) ? blinkOn : true;
+        }
+        buzzer[channel] = unacknowledgedDoor || unacknowledgedProcess;
+
+        coils[outputOffset[channel]] = green[channel];
+        coils[outputOffset[channel] + 1] = yellow[channel];
+        coils[outputOffset[channel] + 2] = red[channel];
+        coils[outputOffset[channel] + 3] = buzzer[channel];
+    }
+
+    // 7. Escritura local de salidas; los overrides manuales también expiran aquí.
+    relayOutputMask = 0;
+    for (uint8_t i = 0; i < 8; i++) {
+        const bool outputOn = lampTestActive || relayTestActive[i] || coils[i];
+        coils[i] = outputOn;
+        if (outputOn) relayOutputMask |= (1U << i);
+    }
+    writeRelays((uint8_t)relayOutputMask);
+
+    // 8. Actualización de Registros de Diagnóstico (Input Registers)
     uint32_t uptimeSec = now / 1000;
     inputRegisters[REG_DIAG_UPTIME_SEC_HI]    = (uint16_t)(uptimeSec >> 16);
     inputRegisters[REG_DIAG_UPTIME_SEC_LO]    = (uint16_t)(uptimeSec & 0xFFFF);
@@ -354,7 +468,8 @@ void loop() {
     inputRegisters[REG_DIAG_TOTAL_POLLS_LO]   = (uint16_t)(totalPollCount & 0xFFFF);
     inputRegisters[REG_DIAG_LAST_COMM_AGO_MS] = (uint16_t)min((uint32_t)65535, (now - lastMasterPollTime));
     inputRegisters[REG_DIAG_FIRMWARE_VERSION] = 100; // v1.0.0
+    inputRegisters[REG_DIAG_1WIRE_ENABLED] = activeEnable1Wire ? 1 : 0;
 
-    // 8. Atender comandos de gestión administrativa remota (Guardar NVS, Reboot)
+    // 9. Atender comandos de gestión administrativa remota (Guardar NVS, Reboot)
     checkAdministrativeCommands();
 }

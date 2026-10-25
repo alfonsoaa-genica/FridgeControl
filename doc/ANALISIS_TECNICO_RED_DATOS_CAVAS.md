@@ -9,6 +9,8 @@
 
 ## 1. Alcance y Filosofía del Sistema
 
+Todas las cavas de este proyecto son de **agua helada y utilizan FanCoils**; no tienen compresores propios. FridgeControl supervisa la red de datos de los controladores KIDE y las variables asociadas a cada cava/FanCoil. La generación y distribución central de agua helada, así como cualquier sistema de compresión externo, no forman parte del alcance de control de este proyecto.
+
 El objetivo primordial del proyecto **FridgeControl** es la toma de control y monitoreo exclusivo de la **red de datos de las cavas** en la planta DALVI de Génica, desacoplándola totalmente de la antigua pasarela LonWorks del panel de frío secundario.
 
 La arquitectura distribuye las responsabilidades con máxima eficiencia:

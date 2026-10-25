@@ -6,7 +6,7 @@
 
 ## 1. Visión General del Repositorio
 
-Este repositorio contiene el sistema integral de supervisión, telemetría y señalización para las cavas de refrigeración y maduración de la planta DALVI (Génica), compuesto por dos firmwares industriales complementarios:
+Este repositorio contiene el sistema integral de supervisión, telemetría y señalización para las cavas de conservación y maduración de la planta DALVI (Génica). Todas las cavas incluidas en este proyecto utilizan **agua helada y unidades FanCoil**; no tienen compresores propios. El sistema supervisa sus variables y alarmas a través de los controladores KIDE, sin controlar una planta de compresión. La solución está compuesta por dos firmwares industriales complementarios:
 
 1. **`FridgeControl` (Raíz del Repositorio):**  
    Gateway IoT y Maestro Modbus sobre **Waveshare Industrial ESP32-S3 WiFi Relay 6CH** (Flash 8 MB). Implementa una **arquitectura de doble puerto serial independiente y aislado galvánicamente**:
@@ -68,6 +68,8 @@ Este repositorio contiene el sistema integral de supervisión, telemetría y se�
   Diagrama esquemático de fábrica con el pinout del cabezal H1 y el circuito de aislamiento del RS-485 nativo.
 * 📄 **[Diseño de Señalización Luminosa y Puertas (Andon & ISA-18.2)](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/doc/DISENO_SENALIZACION_LUMINOSA_Y_PUERTAS.md):**  
   Especificación de torretas articuladas 12-24V con buzzer, cableado en bus de 2 hilos, botón físico de ACK y filosofía de re-alarma.
+* 📄 **[Resumen de Alarmas ISA-18.2](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/doc/RESUMEN_ALARMAS_ISA18_2.md):**
+  Síntesis de umbrales, prioridades, reconocimiento local y puntos de atención identificados para las pruebas del sistema.
 * 📄 **[Análisis Técnico y Red de Datos de Cavas](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/doc/ANALISIS_TECNICO_RED_DATOS_CAVAS.md):**  
   Desacoplamiento de LonWorks, escáner de autodescubrimiento Modbus RTU, métricas de calidad ($Q\%$), tendencias de 24h en RAM y perfiles KIDE.
 * 📄 **[Manual Técnico de FridgeIO](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/FridgeIO/README.md):**  
@@ -97,6 +99,8 @@ pio run -e waveshare_esp32s3_relay_6ch -t upload --upload-port COM24
 pio run -e waveshare_esp32s3_relay_6ch -t uploadfs --upload-port COM24
 ```
 
+En el entorno Waveshare, la SPA se sirve desde `WWWData.h` integrado en el firmware (`PROGMEM_WWW=1`). Por eso, para actualizar la interfaz hay que compilar y cargar `firmware.bin`; cargar solo `littlefs.bin` no cambia las pantallas. La página inicial se sirve con cabeceras que impiden reutilizarla desde caché. LittleFS sigue alojando la configuración y los datos locales del sistema.
+
 ### Para compilar y subir el Esclavo Satélite `FridgeIO` (eletechsup ES32D26):
 ```powershell
 pio run -d FridgeIO -t upload --upload-port COM20
@@ -118,15 +122,18 @@ Las pantallas **WiFi** y **MQTT** permiten importar y exportar sus ajustes JSON.
 
 Después del primer arranque, NVS prevalece sobre los JSON del filesystem. Por ello, subir un filesystem nuevo no reemplaza las credenciales guardadas; los cambios posteriores se realizan desde las pantallas WiFi/MQTT y se guardan también en NVS. Si el equipo ya arrancó antes de copiar los JSON locales, importa cada archivo en su pantalla y presiona **Guardar**. Los JSON de ejemplo no contienen credenciales.
 
-### Última compilación validada (25 de octubre de 2026)
-Se generaron los dos binarios para `waveshare_esp32s3_relay_6ch`:
-* Firmware: `.pio/build/waveshare_esp32s3_relay_6ch/firmware.bin` (compilado a las 08:30).
-* LittleFS: `.pio/build/waveshare_esp32s3_relay_6ch/littlefs.bin` (generado a las 08:20; incluye la SPA actualizada).
+### Última validación (25 de octubre de 2026)
+La interfaz React compiló correctamente y se generaron los recursos de producción. Para el Waveshare, el firmware `waveshare_esp32s3_relay_6ch/firmware.bin` con la SPA integrada en `WWWData.h` se cargó mediante la web y el usuario confirmó que la interfaz actualizada aparece correctamente. Después se cambió el nombre visible de 1-Wire a **Bus de sensores de respaldo**; el firmware actual se recompiló con ese último texto y queda pendiente cargarlo.
 
-La compilación del firmware y la generación de LittleFS terminaron correctamente. **Estos binarios no se cargaron a la placa** durante esta compilación; compilar no equivale a grabar.
+La imagen `littlefs.bin` también se generó correctamente, pero no es la imagen que actualiza la SPA de esta placa. La compilación de LittleFS no equivale a una carga ni sustituye la actualización del firmware integrado.
+
+Cambios de interfaz confirmados:
+* **Cavas en Vivo:** retirados los estados de desescarche y vapor; se conservan los indicadores pertinentes de frío y ventilador.
+* **Mantenimiento de Cavas, WiFi y MQTT:** eliminadas de las pantallas las menciones a nombres y rutas de archivos `.json`.
+* La pantalla inicial del firmware integrado evita la caché para que el navegador solicite la versión vigente de la SPA.
 
 ### Mantenimiento de Equipos Auxiliares de Cava (FridgeIO)
-Desde **Proyecto → Equipos Auxiliares**, cada satélite FridgeIO tiene una ficha propia con asociación de canales **A** y **B**, estado de campo, pruebas de salidas y métricas RS-485. Las asociaciones se guardan de forma persistente en `/config/signaling.json` vía `POST /rest/signaling/mapping`. La pantalla **Diagnóstico Modbus** queda para escaneo, ping, métricas KIDE y consola HEX.
+Desde **Proyecto → Equipos Auxiliares**, cada satélite FridgeIO tiene una ficha propia con asociación de canales **A** y **B**, estado de campo, pruebas de salidas y métricas RS-485. Incluye habilitación y diagnóstico del bus de sensores de respaldo DS18B20, cantidad de sondas detectadas y temperatura de respaldo por canal en °C con dos decimales. Las asociaciones se guardan de forma persistente vía `POST /rest/signaling/mapping`. La pantalla **Diagnóstico Modbus** queda para escaneo, ping, métricas KIDE y consola HEX.
 
 Flujo recomendado en planta:
 1. Crear/validar primero las cavas en `cavas.json`.
