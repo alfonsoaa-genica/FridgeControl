@@ -14,6 +14,7 @@ public:
     AsyncWebSocket* getWebSocket() { return &_ws; }
     size_t getWsClientCount() const { return _ws.count(); }
     void broadcastCavasState();
+    void broadcastModbusTrace(const char* bus, const char* direction, const uint8_t* frame, size_t length, bool overflow);
     void cleanupClients();
 
 private:
@@ -21,7 +22,9 @@ private:
     SecurityManager* _securityManager;
     FridgeSettingsService* _settingsService;
     AsyncWebSocket _ws;
+    AsyncWebSocket _traceWs;
 
     void registerEndpoints();
     void registerWebSocket();
+    void registerTraceWebSocket();
 };

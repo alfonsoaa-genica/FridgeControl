@@ -6,6 +6,10 @@
 #include <FSPersistence.h>
 #include <espMqttClient.h>
 #include <SettingValue.h>
+#ifdef ESP32
+#include <JsonUtils.h>
+#include <Preferences.h>
+#endif
 
 #ifndef FACTORY_MQTT_ENABLED
 #define FACTORY_MQTT_ENABLED false
@@ -117,6 +121,10 @@ class MqttSettingsService : public StatefulService<MqttSettings> {
  private:
   HttpEndpoint<MqttSettings> _httpEndpoint;
   FSPersistence<MqttSettings> _fsPersistence;
+#ifdef ESP32
+  bool loadSettingsFromNVS();
+  void saveSettingsToNVS();
+#endif
 
   // Pointers to hold retained copies of the mqtt client connection strings.
   // This is required as espMqttClient holds references to the supplied connection strings.

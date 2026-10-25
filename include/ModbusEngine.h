@@ -3,6 +3,7 @@
 #include <ModbusMaster.h>
 #include <functional>
 #include "AppConfig.h"
+#include "ModbusTraceStream.h"
 
 struct PingResult {
     uint8_t id;
@@ -26,6 +27,7 @@ public:
     ModbusEngine();
     void begin();
     void update();
+    void setTraceCallback(const ModbusTraceStream::FrameCallback& callback);
 
     // Gestión de Cavas (Puerto 2 / RS-422 KIDE)
     void setCavas(CavaState* cavasArray, size_t count);
@@ -112,9 +114,11 @@ public:
 
 private:
     HardwareSerial _serialFridgeIO; // Puerto 1: RS-485 Half-Duplex (Auxiliares FridgeIO)
+    ModbusTraceStream _traceFridgeIO;
     ModbusMaster _nodeFridgeIO;
 
     HardwareSerial _serialKide;     // Puerto 2: RS-422 4-Hilos (Cavas KIDE vía MAX3232 -> FA-ISOCON)
+    ModbusTraceStream _traceKide;
     ModbusMaster _nodeKide;
 
     CavaState* _cavas;

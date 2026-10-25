@@ -195,6 +195,11 @@
     "dns_ip_1": "Servidor DNS 1",
     "dns_ip_2": "Servidor DNS 2",
     "manual_config": "Configuración Manual",
+    "import_json": "Importar JSON",
+    "export_json": "Exportar JSON",
+    "json_help": "Guarda el JSON exportado en data/config/wifiSettings.json para aprovisionar un equipo nuevo.",
+    "json_invalid": "El archivo no contiene una configuración WiFi válida.",
+    "json_imported": "Configuración importada. Presiona Guardar para aplicarla.",
     "forget_network": "Olvidar esta Red",
     "forget_title": "¿Olvidar red Wi-Fi actual?",
     "forget_confirm": "El módulo se desconectará de la red Wi-Fi y eliminará las credenciales guardadas (SSID: {{ssid}}). Podrás escanear y conectarte a un punto de acceso diferente.",
@@ -286,6 +291,11 @@
       "clean_session": "¿Sesión Limpia?",
       "max_topic_length": "Longitud Máxima de Tópico"
     },
+    "import_json": "Importar JSON",
+    "export_json": "Exportar JSON",
+    "json_help": "Guarda el JSON exportado en data/config/mqttSettings.json para aprovisionar un equipo nuevo.",
+    "json_invalid": "El archivo no contiene una configuración MQTT válida.",
+    "json_imported": "Configuración importada. Presiona Guardar para aplicarla.",
     "status_list": {
       "connected": "Conectado",
       "disconnected": "Desconectado",
@@ -461,6 +471,7 @@
     "title": "Supervisión de Cavas Frigoríficas",
     "subtitle": "Supervisión de Cavas • Monitoreo Modbus RTU en Tiempo Real",
     "liveView": "Cavas en Vivo",
+    "auxiliaryTitle": "Equipos Auxiliares",
     "alarmsTitle": "Alarmas ISA-18.2",
     "diagnostic": "Diagnóstico Modbus",
     "normal": "Normal",
@@ -521,7 +532,7 @@
     }
   },
   "diagnostic": {
-    "title": "Diagnóstico y Descubrimiento Modbus RS-485",
+    "title": "Diagnóstico y Descubrimiento de Controladores",
     "subtitle": "Herramientas de sondeo, calidad de enlace físico y detección de controladores en el bus de cavas.",
     "scanTitle": "Barrido de Red (Auto-Discovery)",
     "scanDesc": "Explora el rango de direcciones Modbus configurado para detectar automáticamente nuevos controladores KIDE KP-100 y KIDEMATIC-970.",
@@ -560,6 +571,19 @@
     "metricsTitleAux": "Métricas de Calidad de Enlace RS-485 (Auxiliares FridgeIO)",
     "noActiveAux": "No hay módulos auxiliares activos en el bus RS-485 aún.",
     "colAuxNode": "Módulo Auxiliar",
-    "colMappedCavas": "Cavas Asociadas"
+    "colMappedCavas": "Cavas Asociadas",
+    "traceTitle": "Monitor de tramas Modbus",
+    "traceSubtitle": "Tráfico serial en vivo, mostrado exclusivamente en hexadecimal.",
+    "traceConnected": "WebSocket conectado",
+    "traceConnecting": "Conectando...",
+    "traceDisconnected": "WebSocket desconectado",
+    "tracePaused": "Monitoreo pausado",
+    "traceAllBuses": "Ambos buses",
+    "traceAllDirections": "TX y RX",
+    "tracePauseMonitoring": "Pausar monitoreo",
+    "traceResumeMonitoring": "Reanudar monitoreo",
+    "traceClear": "Limpiar",
+    "traceEmpty": "Esperando tramas Modbus...",
+    "traceEntryCount": "{{count}} tramas en memoria"
   }
 }

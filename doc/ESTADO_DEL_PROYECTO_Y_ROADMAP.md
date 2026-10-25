@@ -49,15 +49,19 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 ### 2.1. Maestro Gateway: `FridgeControl`
 * **Hardware Físico:** **Waveshare Industrial ESP32-S3 WiFi Relay 6CH** (`COM24`).
 * **Puerto RS-485:** Aislamiento galvánico on-board con control automático de dirección (`GPIO 17` TX, `GPIO 18` RX). Jumper de terminación 120R y LEDs de tráfico TX/RX.
-* **Estado:** **FIRMWARE Y FILESYSTEM FLASHEADOS CON ÉXITO EN BANCO**.
-  * **Firmware:** Subido vía esptool por USB-Serial nativo en `COM24`.
-  * **Filesystem (LittleFS):** Web SPA React comprimida, fuentes, manifiestos y configuraciones subidas al 100% (`uploadfs`).
+* **Estado de banco:** Firmware y filesystem habían sido flasheados en validaciones previas. **Los últimos binarios, generados el 25 de octubre de 2026, solo fueron compilados; no se han cargado a la placa.**
+  * **Últimos binarios compilados:** `.pio/build/waveshare_esp32s3_relay_6ch/firmware.bin` (08:30) y `.pio/build/waveshare_esp32s3_relay_6ch/littlefs.bin` (08:20).
+  * **Filesystem:** La imagen LittleFS generada incluye la SPA actualizada, y tanto su generación como la compilación final del firmware terminaron correctamente.
 * **Nuevas Funcionalidades Integradas:**
   * Supervisión continua de nodos de señalización `FridgeIO` (lectura de Discrete Inputs 10001..10008 cada 500 ms).
   * Máquina de estados **ISA-18.2** (tiempos de puerta abierta, alertas acústicas por buzzer, temporizador de 10 min de silencio tras botón físico de ACK).
   * Auto-descubrimiento en bus: identifica controladores KIDE (KP-100 / Secmatic-970) y satélites `FRIDGE_IO` en rango 100d.
   * Mapeo dinámico y persistente de cavas asociadas a los canales A y B de cada satélite (`/config/signaling.json`).
+  * Consola web de trazas Modbus en hexadecimal (TX/RX) sobre WebSocket en tiempo real.
+  * Pausa de monitoreo mediante cierre de la conexión WebSocket dedicada a trazas; reanudar abre una nueva conexión. La consola limita el histórico a 500 tramas en memoria.
+  * Mantenimiento de auxiliares separado en **Proyecto → Equipos Auxiliares**: permite asociar los canales A y B a cavas existentes, revisar estados de campo, probar salidas y consultar métricas RS-485. **Diagnóstico Modbus** se reserva para escaneo, ping, métricas KIDE y consola HEX.
   * Endpoints REST: `GET /rest/signaling/nodes`, `POST /rest/signaling/mapping`, y campos de señalización en `GET /rest/cavas` y WebSockets.
+  * Aprovisionamiento local WiFi/MQTT con `data/config/wifiSettings.json` y `data/config/mqttSettings.json`, excluidos de Git y derivados de plantillas sin credenciales. En ESP32, se migran a NVS en el primer arranque; NVS prevalece después de cargas nuevas de LittleFS. Los formularios WiFi y MQTT permiten importar/exportar cada JSON y guardar cambios al equipo.
 
 ---
 

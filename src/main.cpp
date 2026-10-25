@@ -1,12 +1,13 @@
 /*
   ========================================================================
-  FridgeControl - Maestro Modbus RTU & Gateway IoT para Cavas Industriales
+  FridgeControl - Maestro Modbus RTU y gateway IoT para cavas industriales
   Cliente:     Génica - Planta DALVI
-  Autor:       Ing. Alfonso Aguirre
-  Plataforma:  ESP32-WROOM-32D (4MB Flash, esp32doit-devkit-v1)
-  Protocolo:   Modbus RTU sobre RS-485 diferencial (UART2: GPIO 16 / 17)
-  Supervisión: FUXA SCADA + InfluxDB en Servidor Nexus
-  Framework:   ESP8266React (AsyncWebServer, WebSocket, Security, NTP, MQTT)
+  Hardware:    Waveshare Industrial ESP32-S3 WiFi Relay 6CH (objetivo principal)
+  Buses:       RS-485 half-duplex para FridgeIO (UART1: RX 18 / TX 17)
+               RS-422 full-duplex para controladores KIDE
+               (UART2: RX 5 / TX 4, vía MAX3232 y FA-ISOCON)
+  Supervisión: Interfaz web, API REST/WebSocket y MQTT
+  Framework:   Arduino + ESP8266React
   ========================================================================
 */
 

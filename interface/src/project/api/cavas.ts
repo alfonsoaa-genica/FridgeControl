@@ -175,4 +175,3 @@ export const initCavasTemplate = async (count: number) => {
   const res = await axios.post('/rest/cavas/init_template', params);
   return res.data;
 };
-

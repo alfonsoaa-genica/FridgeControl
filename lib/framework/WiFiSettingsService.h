@@ -14,6 +14,9 @@
 #include <FSPersistence.h>
 #include <HttpEndpoint.h>
 #include <JsonUtils.h>
+#ifdef ESP32
+#include <Preferences.h>
+#endif
 
 #ifndef FACTORY_WIFI_SSID
 #define FACTORY_WIFI_SSID ""
@@ -103,6 +106,10 @@ class WiFiSettingsService : public StatefulService<WiFiSettings> {
   HttpEndpoint<WiFiSettings> _httpEndpoint;
   FSPersistence<WiFiSettings> _fsPersistence;
   unsigned long _lastConnectionAttempt;
+#ifdef ESP32
+  bool loadSettingsFromNVS();
+  void saveSettingsToNVS();
+#endif
 
 #ifdef ESP32
   bool _stopping;

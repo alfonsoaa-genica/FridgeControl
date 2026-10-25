@@ -1,0 +1,11 @@
+{
+  "ssid": "",
+  "password": "",
+  "hostname": "#{platform}-#{unique_id}",
+  "static_ip_config": false,
+  "local_ip": "",
+  "gateway_ip": "",
+  "subnet_mask": "",
+  "dns_ip_1": "",
+  "dns_ip_2": ""
+}

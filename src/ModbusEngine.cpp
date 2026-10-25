@@ -4,7 +4,9 @@
 ModbusEngine modbusEngine;
 
 ModbusEngine::ModbusEngine() 
-    : _serialFridgeIO(1), _serialKide(2), _cavas(nullptr), _cavaCount(0), _currentCavaIdx(0),
+    : _serialFridgeIO(1), _traceFridgeIO(_serialFridgeIO, "P1 FridgeIO RS-485"),
+      _serialKide(2), _traceKide(_serialKide, "P2 Cavas KIDE RS-422"),
+      _cavas(nullptr), _cavaCount(0), _currentCavaIdx(0),
       _signalingNodes(nullptr), _signalingNodeCount(0), _currentSignalingIdx(0),
       _lastPollTime(0), _lastSignalingPollTime(0), _lastTrendSampleTime(0),
       _queueFridgeIO(nullptr), _queueKide(nullptr),
@@ -12,6 +14,11 @@ ModbusEngine::ModbusEngine()
       _scanResults("[]"), _onSlaveDiscovered(nullptr), _onScanCompleted(nullptr) {
     memset(&_kideBusDiag, 0, sizeof(ModbusDiagnostics));
     memset(&_fridgeIOBusDiag, 0, sizeof(ModbusDiagnostics));
+}
+
+void ModbusEngine::setTraceCallback(const ModbusTraceStream::FrameCallback& callback) {
+    _traceFridgeIO.setFrameCallback(callback);
+    _traceKide.setFrameCallback(callback);
 }
 
 void ModbusEngine::begin() {
@@ -29,17 +36,19 @@ void ModbusEngine::begin() {
         delayMicroseconds(80);
         digitalWrite(RS485_DE_RE_PIN, LOW);
     });
-    log_i("[RS485] Control de dirección DE/RE activo en GPIO %d", RS485_DE_RE_PIN);
+    log_i("[RS485] Control de dirección DE/RE activo");
 #endif
 
     _serialFridgeIO.setTimeout(350);
-    _nodeFridgeIO.begin(100, _serialFridgeIO);
+    _traceFridgeIO.setTimeout(350);
+    _nodeFridgeIO.begin(100, _traceFridgeIO);
     log_i("[RS485] Puerto 1 inicializado en TX:%d, RX:%d a %d bps (Auxiliares FridgeIO)", RS485_TX_PIN, RS485_RX_PIN, RS485_BAUD_DEFAULT);
 
     // 2. Inicializar Puerto 2: Bus RS-422 (4 Hilos) vía MAX3232 + FA-ISOCON para Cavas KIDE
     _serialKide.begin(KIDE_RS422_BAUD_DEFAULT, SERIAL_8N1, KIDE_RS422_RX_PIN, KIDE_RS422_TX_PIN);
     _serialKide.setTimeout(350);
-    _nodeKide.begin(1, _serialKide);
+    _traceKide.setTimeout(350);
+    _nodeKide.begin(1, _traceKide);
     log_i("[RS422] Puerto 2 inicializado en TX:%d, RX:%d a %d bps (Cavas KIDE)", KIDE_RS422_TX_PIN, KIDE_RS422_RX_PIN, KIDE_RS422_BAUD_DEFAULT);
 
     // 3. Crear colas de comandos asíncronas independientes por bus físico
@@ -197,18 +206,24 @@ void ModbusEngine::processFridgeIOWriteQueue() {
     if (!_queueFridgeIO) return;
     ModbusWriteCommand cmd;
     while (xQueueReceive(_queueFridgeIO, &cmd, 0) == pdPASS) {
-        _nodeFridgeIO.begin(cmd.modbus_id, _serialFridgeIO);
+        _nodeFridgeIO.begin(cmd.modbus_id, _traceFridgeIO);
         _fridgeIOBusDiag.recordTx();
 
         uint8_t result = 0;
         if (cmd.is_multiple_coils) {
             _nodeFridgeIO.setTransmitBuffer(0, (uint16_t)cmd.raw_value);
-            result = _nodeFridgeIO.writeMultipleCoils(cmd.register_address, cmd.count);
+            result = _traceFridgeIO.execute([&]() {
+                return _nodeFridgeIO.writeMultipleCoils(cmd.register_address, cmd.count);
+            });
         } else if (cmd.is_coil) {
-            result = _nodeFridgeIO.writeSingleCoil(cmd.register_address, cmd.raw_value != 0);
+            result = _traceFridgeIO.execute([&]() {
+                return _nodeFridgeIO.writeSingleCoil(cmd.register_address, cmd.raw_value != 0);
+            });
         } else {
             _nodeFridgeIO.setTransmitBuffer(0, (uint16_t)cmd.raw_value);
-            result = _nodeFridgeIO.writeSingleRegister(cmd.register_address, (uint16_t)cmd.raw_value);
+            result = _traceFridgeIO.execute([&]() {
+                return _nodeFridgeIO.writeSingleRegister(cmd.register_address, (uint16_t)cmd.raw_value);
+            });
         }
 
         if (result == _nodeFridgeIO.ku8MBSuccess) {
@@ -226,11 +241,13 @@ void ModbusEngine::processKideWriteQueue() {
     if (!_queueKide) return;
     ModbusWriteCommand cmd;
     while (xQueueReceive(_queueKide, &cmd, 0) == pdPASS) {
-        _nodeKide.begin(cmd.modbus_id, _serialKide);
+        _nodeKide.begin(cmd.modbus_id, _traceKide);
         _kideBusDiag.recordTx();
 
         _nodeKide.setTransmitBuffer(0, (uint16_t)cmd.raw_value);
-        uint8_t result = _nodeKide.writeSingleRegister(cmd.register_address, (uint16_t)cmd.raw_value);
+        uint8_t result = _traceKide.execute([&]() {
+            return _nodeKide.writeSingleRegister(cmd.register_address, (uint16_t)cmd.raw_value);
+        });
 
         if (result == _nodeKide.ku8MBSuccess) {
             _kideBusDiag.recordSuccess(15);
@@ -247,7 +264,7 @@ void ModbusEngine::pollCurrentCava() {
     if (_cavaCount == 0 || !_cavas) return;
 
     CavaState& cava = _cavas[_currentCavaIdx];
-    _nodeKide.begin(cava.modbus_id, _serialKide);
+    _nodeKide.begin(cava.modbus_id, _traceKide);
 
     // Selección de lectura según el modelo de controlador configurado
     if (cava.controller_model == KIDEMATIC_970) {
@@ -263,14 +280,16 @@ void ModbusEngine::pollSignalingNodes() {
     if (_signalingNodeCount == 0 || !_signalingNodes) return;
 
     SignalingNode& node = _signalingNodes[_currentSignalingIdx];
-    _nodeFridgeIO.begin(node.modbus_id, _serialFridgeIO);
+    _nodeFridgeIO.begin(node.modbus_id, _traceFridgeIO);
 
     unsigned long startMs = millis();
     node.diag.recordTx();
     _fridgeIOBusDiag.recordTx();
 
     // 1. Lectura de Entradas Digitales (Discrete Inputs 10001..10008, offset 0x0000, 8 entradas)
-    uint8_t resDI = _nodeFridgeIO.readDiscreteInputs(0x0000, 8);
+    uint8_t resDI = _traceFridgeIO.execute([&]() {
+        return _nodeFridgeIO.readDiscreteInputs(0x0000, 8);
+    });
     uint16_t rtt = (uint16_t)(millis() - startMs);
 
     if (resDI == _nodeFridgeIO.ku8MBSuccess) {
@@ -338,7 +357,9 @@ void ModbusEngine::readKideKP100(CavaState& cava) {
     _kideBusDiag.recordTx();
 
     // KP-100: Input Registers 30001 (Temp Cámara), 30002 (Temp Evap)
-    uint8_t result = _nodeKide.readInputRegisters(0x0000, 2);
+    uint8_t result = _traceKide.execute([&]() {
+        return _nodeKide.readInputRegisters(0x0000, 2);
+    });
     uint16_t rtt = (uint16_t)(millis() - startMs);
 
     if (result == _nodeKide.ku8MBSuccess) {
@@ -365,7 +386,9 @@ void ModbusEngine::readKideKP100(CavaState& cava) {
 
     // Leer Setpoint de Temperatura (Holding Register 40101, offset 0x0064)
     if (cava.comm_online) {
-        uint8_t resSP = _nodeKide.readHoldingRegisters(0x0064, 1);
+        uint8_t resSP = _traceKide.execute([&]() {
+            return _nodeKide.readHoldingRegisters(0x0064, 1);
+        });
         if (resSP == _nodeKide.ku8MBSuccess) {
             cava.temp_sp = ((int16_t)_nodeKide.getResponseBuffer(0)) / 10.0f;
         }
@@ -378,7 +401,9 @@ void ModbusEngine::readKidematic970(CavaState& cava) {
     _kideBusDiag.recordTx();
 
     // KIDEMATIC 970: Input Registers 30001 (Temp), 30002 (Humedad), 30003 (Evap)
-    uint8_t result = _nodeKide.readInputRegisters(0x0000, 3);
+    uint8_t result = _traceKide.execute([&]() {
+        return _nodeKide.readInputRegisters(0x0000, 3);
+    });
     uint16_t rtt = (uint16_t)(millis() - startMs);
 
     if (result == _nodeKide.ku8MBSuccess) {
@@ -408,7 +433,9 @@ void ModbusEngine::readKidematic970(CavaState& cava) {
 
     // Leer Setpoints 40101 (Temp SP) y 40102 (HR SP)
     if (cava.comm_online) {
-        uint8_t resSP = _nodeKide.readHoldingRegisters(0x0064, 2);
+        uint8_t resSP = _traceKide.execute([&]() {
+            return _nodeKide.readHoldingRegisters(0x0064, 2);
+        });
         if (resSP == _nodeKide.ku8MBSuccess) {
             cava.temp_sp = ((int16_t)_nodeKide.getResponseBuffer(0)) / 10.0f;
             cava.hr_sp   = _nodeKide.getResponseBuffer(1) / 10.0f;
@@ -443,8 +470,10 @@ PingResult ModbusEngine::pingKide(uint8_t id) {
     pr.hr_pv = 0.0f;
 
     unsigned long startMs = millis();
-    _nodeKide.begin(id, _serialKide);
-    uint8_t res = _nodeKide.readInputRegisters(0x0000, 2);
+    _nodeKide.begin(id, _traceKide);
+    uint8_t res = _traceKide.execute([&]() {
+        return _nodeKide.readInputRegisters(0x0000, 2);
+    });
     pr.rtt_ms = (uint16_t)(millis() - startMs);
 
     if (res == _nodeKide.ku8MBSuccess) {
@@ -471,8 +500,10 @@ PingResult ModbusEngine::pingFridgeIO(uint8_t id) {
     pr.hr_pv = 0.0f;
 
     unsigned long startMs = millis();
-    _nodeFridgeIO.begin(id, _serialFridgeIO);
-    uint8_t res = _nodeFridgeIO.readHoldingRegisters(0x0000, 1);
+    _nodeFridgeIO.begin(id, _traceFridgeIO);
+    uint8_t res = _traceFridgeIO.execute([&]() {
+        return _nodeFridgeIO.readHoldingRegisters(0x0000, 1);
+    });
     pr.rtt_ms = (uint16_t)(millis() - startMs);
 
     if (res == _nodeFridgeIO.ku8MBSuccess) {
@@ -579,10 +610,12 @@ String ModbusEngine::getScanResultsJson() {
 bool ModbusEngine::commissionSignalingSlave(uint8_t currentId, uint8_t newId) {
     if (newId < 1 || newId > 247) return false;
 
-    _nodeFridgeIO.begin(currentId, _serialFridgeIO);
+    _nodeFridgeIO.begin(currentId, _traceFridgeIO);
 
     // 1. Escribir el nuevo ID en el registro de retención 40001 (offset 0)
-    uint8_t res1 = _nodeFridgeIO.writeSingleRegister(0x0000, newId);
+    uint8_t res1 = _traceFridgeIO.execute([&]() {
+        return _nodeFridgeIO.writeSingleRegister(0x0000, newId);
+    });
     delay(50);
     if (res1 != _nodeFridgeIO.ku8MBSuccess) {
         log_e("[COMMISSION] Error escribiendo nuevo ID %u en esclavo %u (err: 0x%02X)", newId, currentId, res1);
@@ -590,11 +623,15 @@ bool ModbusEngine::commissionSignalingSlave(uint8_t currentId, uint8_t newId) {
     }
 
     // 2. Enviar comando de guardar en Flash NVS (0x55AA = 21930) en registro 40004 (offset 3)
-    uint8_t res2 = _nodeFridgeIO.writeSingleRegister(0x0003, 0x55AA);
+    uint8_t res2 = _traceFridgeIO.execute([&]() {
+        return _nodeFridgeIO.writeSingleRegister(0x0003, 0x55AA);
+    });
     delay(50);
 
     // 3. Reiniciar satélite auxiliar vía registro 40005 (0x0001 = Reboot)
-    _nodeFridgeIO.writeSingleRegister(0x0004, 0x0001);
+    _traceFridgeIO.execute([&]() {
+        return _nodeFridgeIO.writeSingleRegister(0x0004, 0x0001);
+    });
 
     log_i("[COMMISSION] Auxiliar %u reprogramado a nuevo ID %u con éxito.", currentId, newId);
     return true;

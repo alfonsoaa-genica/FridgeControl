@@ -5,6 +5,9 @@ WiFiSettingsService::WiFiSettingsService(AsyncWebServer* server, FS* fs, Securit
     _fsPersistence(WiFiSettings::read, WiFiSettings::update, this, fs, WIFI_SETTINGS_FILE),
     _lastConnectionAttempt(0) {
   addUpdateHandler([&](const String& originId) { reconfigureWiFiConnection(); }, false);
+#ifdef ESP32
+  addUpdateHandler([this](const String&) { saveSettingsToNVS(); }, false);
+#endif
 }
 
 void WiFiSettingsService::begin() {
@@ -33,9 +36,64 @@ void WiFiSettingsService::begin() {
 #endif
 
   _fsPersistence.readFromFS();
+#ifdef ESP32
+  if (!loadSettingsFromNVS()) {
+    saveSettingsToNVS();
+  }
+#endif
 
   reconfigureWiFiConnection();
 }
+
+#ifdef ESP32
+bool WiFiSettingsService::loadSettingsFromNVS() {
+  Preferences preferences;
+  if (!preferences.begin("wifi-settings", true)) {
+    log_e("No se pudo abrir NVS para leer la configuración WiFi.");
+    return false;
+  }
+
+  const String json = preferences.getString("settings", "");
+  preferences.end();
+  if (json.isEmpty()) return false;
+
+  JsonDocument document;
+  const DeserializationError error = deserializeJson(document, json);
+  if (error || !document.is<JsonObject>()) {
+    log_e("La configuración WiFi almacenada en NVS no es JSON válido.");
+    return false;
+  }
+
+  JsonObject settings = document.as<JsonObject>();
+  const StateUpdateResult result = updateWithoutPropagation(settings, WiFiSettings::update);
+  if (result == StateUpdateResult::ERROR) {
+    log_e("No se pudo aplicar la configuración WiFi almacenada en NVS.");
+    return false;
+  }
+  return true;
+}
+
+void WiFiSettingsService::saveSettingsToNVS() {
+  JsonDocument document;
+  JsonObject settings = document.to<JsonObject>();
+  read(settings, WiFiSettings::read);
+
+  String json;
+  serializeJson(document, json);
+
+  Preferences preferences;
+  if (!preferences.begin("wifi-settings", false)) {
+    log_e("No se pudo abrir NVS para guardar la configuración WiFi.");
+    return;
+  }
+
+  const size_t written = preferences.putString("settings", json);
+  preferences.end();
+  if (written != json.length()) {
+    log_e("No se pudo persistir la configuración WiFi completa en NVS.");
+  }
+}
+#endif
 
 void WiFiSettingsService::reconfigureWiFiConnection() {
   // reset last connection attempt to force loop to reconnect immediately

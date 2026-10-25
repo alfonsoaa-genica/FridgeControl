@@ -6,16 +6,22 @@
 #include "AuditService.h"
 
 FridgeApiService::FridgeApiService(AsyncWebServer* server, SecurityManager* securityManager, FridgeSettingsService* settingsService)
-    : _server(server), _securityManager(securityManager), _settingsService(settingsService), _ws("/ws") {
+    : _server(server), _securityManager(securityManager), _settingsService(settingsService),
+      _ws("/ws"), _traceWs("/ws/modbus-trace") {
 }
 
 void FridgeApiService::begin() {
+    modbusEngine.setTraceCallback([this](const char* bus, const char* direction, const uint8_t* frame, size_t length, bool overflow) {
+        broadcastModbusTrace(bus, direction, frame, length, overflow);
+    });
     registerEndpoints();
     registerWebSocket();
+    registerTraceWebSocket();
 }
 
 void FridgeApiService::cleanupClients() {
     _ws.cleanupClients();
+    _traceWs.cleanupClients();
 }
 
 void FridgeApiService::registerEndpoints() {
@@ -173,64 +179,6 @@ void FridgeApiService::registerEndpoints() {
     });
     _server->addHandler(setpointHandler);
 
-        // MÓDULO DE DIAGNÓSTICO: Estadísticas de Salud de Bus (TX, RX, CRC, RTT, Q%)
-    _server->on("/rest/diagnostic/stats", HTTP_GET, [this](AsyncWebServerRequest* request) {
-        JsonDocument doc;
-
-        // 1. Estadísticas Globales Bus KIDE (Puerto 2 / RS-422)
-        JsonObject kideBus = doc["bus_kide"].to<JsonObject>();
-        const ModbusDiagnostics& kb = modbusEngine.getKideBusDiagnostics();
-        kideBus["port"] = 2;
-        kideBus["mode"] = "RS-422 Full-Duplex (KIDE Cavas)";
-        kideBus["gpio_tx"] = KIDE_RS422_TX_PIN;
-        kideBus["gpio_rx"] = KIDE_RS422_RX_PIN;
-        kideBus["baud"] = KIDE_RS422_BAUD_DEFAULT;
-        kideBus["tx_frames"] = kb.tx_frames;
-        kideBus["rx_success"] = kb.rx_success;
-        kideBus["timeouts"] = kb.timeouts;
-        kideBus["crc_errors"] = kb.crc_errors;
-        kideBus["last_rtt_ms"] = kb.last_rtt_ms;
-        kideBus["quality_percent"] = serialized(String(kb.quality_percent, 1));
-
-        // 2. Estadísticas Globales Bus Auxiliares FridgeIO (Puerto 1 / RS-485)
-        JsonObject fioBus = doc["bus_fridge_io"].to<JsonObject>();
-        const ModbusDiagnostics& fb = modbusEngine.getFridgeIOBusDiagnostics();
-        fioBus["port"] = 1;
-        fioBus["mode"] = "RS-485 Half-Duplex (Auxiliares FridgeIO)";
-        fioBus["gpio_tx"] = RS485_TX_PIN;
-        fioBus["gpio_rx"] = RS485_RX_PIN;
-        fioBus["baud"] = RS485_BAUD_DEFAULT;
-        fioBus["tx_frames"] = fb.tx_frames;
-        fioBus["rx_success"] = fb.rx_success;
-        fioBus["timeouts"] = fb.timeouts;
-        fioBus["crc_errors"] = fb.crc_errors;
-        fioBus["last_rtt_ms"] = fb.last_rtt_ms;
-        fioBus["quality_percent"] = serialized(String(fb.quality_percent, 1));
-
-        JsonArray arr = doc["stats"].to<JsonArray>();
-
-        size_t count = _settingsService->getCavaCount();
-        for (size_t i = 0; i < count; i++) {
-            CavaState* c = _settingsService->getCavaById(_settingsService->getCavas()[i].id);
-            if (!c) continue;
-
-            JsonObject obj = arr.add<JsonObject>();
-            obj["cava"] = c->id;
-            obj["modbus_id"] = c->modbus_id;
-            obj["tx_frames"] = c->diag.tx_frames;
-            obj["rx_success"] = c->diag.rx_success;
-            obj["timeouts"] = c->diag.timeouts;
-            obj["crc_errors"] = c->diag.crc_errors;
-            obj["last_rtt_ms"] = c->diag.last_rtt_ms;
-            obj["quality_percent"] = serialized(String(c->diag.quality_percent, 1));
-            obj["online"] = c->comm_online;
-        }
-
-        String res;
-        serializeJson(doc, res);
-        request->send(200, "application/json", res);
-    });
-
     // 5. MÓDULO DE DIAGNÓSTICO: Auto-Descubrimiento (Escaneo de Red Dinámico con Abort)
     _server->on("/rest/diagnostic/scan", HTTP_POST, [this](AsyncWebServerRequest* request) {
         if (request->hasParam("abort", true) && request->getParam("abort", true)->value() == "true") {
@@ -279,8 +227,6 @@ void FridgeApiService::registerEndpoints() {
         const ModbusDiagnostics& kb = modbusEngine.getKideBusDiagnostics();
         kideBus["port"] = 2;
         kideBus["mode"] = "RS-422 Full-Duplex (KIDE Cavas)";
-        kideBus["gpio_tx"] = KIDE_RS422_TX_PIN;
-        kideBus["gpio_rx"] = KIDE_RS422_RX_PIN;
         kideBus["baud"] = KIDE_RS422_BAUD_DEFAULT;
         kideBus["tx_frames"] = kb.tx_frames;
         kideBus["rx_success"] = kb.rx_success;
@@ -294,8 +240,6 @@ void FridgeApiService::registerEndpoints() {
         const ModbusDiagnostics& fb = modbusEngine.getFridgeIOBusDiagnostics();
         fioBus["port"] = 1;
         fioBus["mode"] = "RS-485 Half-Duplex (Auxiliares FridgeIO)";
-        fioBus["gpio_tx"] = RS485_TX_PIN;
-        fioBus["gpio_rx"] = RS485_RX_PIN;
         fioBus["baud"] = RS485_BAUD_DEFAULT;
         fioBus["tx_frames"] = fb.tx_frames;
         fioBus["rx_success"] = fb.rx_success;
@@ -447,6 +391,31 @@ void FridgeApiService::broadcastCavasState() {
     _ws.textAll(output);
 }
 
+void FridgeApiService::broadcastModbusTrace(const char* bus, const char* direction, const uint8_t* frame, size_t length, bool overflow) {
+    if (_traceWs.count() == 0) return;
+
+    char hex[3 * 256 + 1];
+    size_t offset = 0;
+    for (size_t i = 0; i < length && offset + 3 <= sizeof(hex); ++i) {
+        const int written = snprintf(hex + offset, sizeof(hex) - offset, i == 0 ? "%02X" : " %02X", frame[i]);
+        if (written <= 0) return;
+        offset += static_cast<size_t>(written);
+    }
+
+    JsonDocument doc;
+    doc["type"] = "MODBUS_TRACE";
+    doc["bus"] = bus;
+    doc["direction"] = direction;
+    doc["uptime_ms"] = millis();
+    doc["length"] = length;
+    doc["hex"] = hex;
+    doc["overflow"] = overflow;
+
+    String output;
+    serializeJson(doc, output);
+    _traceWs.textAll(output);
+}
+
 void FridgeApiService::registerWebSocket() {
     _ws.onEvent([this](AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
         if (type == WS_EVT_CONNECT) {
@@ -457,4 +426,15 @@ void FridgeApiService::registerWebSocket() {
         }
     });
     _server->addHandler(&_ws);
+}
+
+void FridgeApiService::registerTraceWebSocket() {
+    _traceWs.onEvent([](AsyncWebSocket*, AsyncWebSocketClient* client, AwsEventType type, void*, uint8_t*, size_t) {
+        if (type == WS_EVT_CONNECT) {
+            log_i("Consola de trazas Modbus conectada, id: %u", client->id());
+        } else if (type == WS_EVT_DISCONNECT) {
+            log_i("Consola de trazas Modbus desconectada, id: %u", client->id());
+        }
+    });
+    _server->addHandler(&_traceWs);
 }

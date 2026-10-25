@@ -1,11 +1,25 @@
 import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { ValidateFieldsError } from 'async-validator';
 
-import { Avatar, Button, Checkbox, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@mui/material';
+import {
+  Alert,
+  Avatar,
+  Button,
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import LockIcon from '@mui/icons-material/Lock';
+import DownloadIcon from '@mui/icons-material/Download';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 import * as WiFiApi from "../../api/wifi";
 import { WiFiSettings } from '../../types';
@@ -22,7 +36,9 @@ const WiFiSettingsForm: FC = () => {
   const { selectedNetwork, deselectNetwork } = useContext(WiFiConnectionContext);
 
   const initalizedRef = useRef(false);
+  const importFileRef = useRef<HTMLInputElement>(null);
   const [fieldErrors, setFieldErrors] = useState<ValidateFieldsError>();
+  const [jsonMessage, setJsonMessage] = useState<{ severity: 'success' | 'error'; text: string } | null>(null);
 
   const {
     loadData, saving, data, setData, saveData, errorMessage
@@ -45,6 +61,60 @@ const WiFiSettingsForm: FC = () => {
   const updateFormValue = updateValue(setData);
 
   useEffect(() => deselectNetwork, [deselectNetwork]);
+
+  const exportSettings = () => {
+    if (!data) {
+      return;
+    }
+    const file = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'wifiSettings.json';
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  };
+
+  const importSettings = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) {
+      return;
+    }
+
+    try {
+      const imported: unknown = JSON.parse(await file.text());
+      if (
+        !imported ||
+        typeof imported !== 'object' ||
+        !('ssid' in imported) ||
+        !('password' in imported) ||
+        !('hostname' in imported) ||
+        !('static_ip_config' in imported) ||
+        typeof imported.ssid !== 'string' ||
+        typeof imported.password !== 'string' ||
+        typeof imported.hostname !== 'string' ||
+        typeof imported.static_ip_config !== 'boolean'
+      ) {
+        throw new Error(t('wifi.json_invalid'));
+      }
+
+      const settings = imported as WiFiSettings;
+      const optionalFields: (keyof WiFiSettings)[] = ['local_ip', 'gateway_ip', 'subnet_mask', 'dns_ip_1', 'dns_ip_2'];
+      if (optionalFields.some((key) => settings[key] !== undefined && typeof settings[key] !== 'string')) {
+        throw new Error(t('wifi.json_invalid'));
+      }
+
+      setData(settings);
+      setJsonMessage({ severity: 'success', text: t('wifi.json_imported') });
+      setFieldErrors(undefined);
+    } catch (error) {
+      setJsonMessage({
+        severity: 'error',
+        text: error instanceof Error ? error.message : t('wifi.json_invalid'),
+      });
+    }
+  };
 
   const content = () => {
     if (!data) {
@@ -186,11 +256,40 @@ const WiFiSettingsForm: FC = () => {
             />
           </>
         }
+        {jsonMessage && (
+          <Alert severity={jsonMessage.severity} onClose={() => setJsonMessage(null)} sx={{ mt: 1 }}>
+            {jsonMessage.text}
+          </Alert>
+        )}
+        <input
+          ref={importFileRef}
+          type="file"
+          accept="application/json,.json"
+          hidden
+          onChange={importSettings}
+        />
         <ButtonRow mt={1}>
+          <Button
+            startIcon={<UploadFileIcon />}
+            variant="outlined"
+            onClick={() => importFileRef.current?.click()}
+          >
+            {t('wifi.import_json')}
+          </Button>
+          <Button
+            startIcon={<DownloadIcon />}
+            variant="outlined"
+            onClick={exportSettings}
+          >
+            {t('wifi.export_json')}
+          </Button>
           <Button startIcon={<SaveIcon />} disabled={saving} variant="contained" color="primary" type="submit" onClick={validateAndSubmit}>
             {t('common.SAVE')} {/* 8. Botón Guardar */}
           </Button>
         </ButtonRow>
+        <Typography variant="caption" color="text.secondary">
+          {t('wifi.json_help')}
+        </Typography>
       </>
     );
   };

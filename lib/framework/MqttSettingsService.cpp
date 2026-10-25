@@ -32,6 +32,9 @@ MqttSettingsService::MqttSettingsService(AsyncWebServer* server, FS* fs, Securit
     _disconnectReason(espMqttClientTypes::DisconnectReason::TCP_DISCONNECTED),
     _mqttClient() {
 #ifdef ESP32
+  addUpdateHandler([this](const String&) { saveSettingsToNVS(); }, false);
+#endif
+#ifdef ESP32
   WiFi.onEvent(
       std::bind(&MqttSettingsService::onStationModeDisconnected, this, std::placeholders::_1, std::placeholders::_2),
       WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
@@ -53,7 +56,63 @@ MqttSettingsService::~MqttSettingsService() {
 
 void MqttSettingsService::begin() {
   _fsPersistence.readFromFS();
+#ifdef ESP32
+  if (!loadSettingsFromNVS()) {
+    saveSettingsToNVS();
+  }
+#endif
+  onConfigUpdated();
 }
+
+#ifdef ESP32
+bool MqttSettingsService::loadSettingsFromNVS() {
+  Preferences preferences;
+  if (!preferences.begin("mqtt-settings", true)) {
+    log_e("No se pudo abrir NVS para leer la configuración MQTT.");
+    return false;
+  }
+
+  const String json = preferences.getString("settings", "");
+  preferences.end();
+  if (json.isEmpty()) return false;
+
+  JsonDocument document;
+  const DeserializationError error = deserializeJson(document, json);
+  if (error || !document.is<JsonObject>()) {
+    log_e("La configuración MQTT almacenada en NVS no es JSON válido.");
+    return false;
+  }
+
+  JsonObject settings = document.as<JsonObject>();
+  const StateUpdateResult result = updateWithoutPropagation(settings, MqttSettings::update);
+  if (result == StateUpdateResult::ERROR) {
+    log_e("No se pudo aplicar la configuración MQTT almacenada en NVS.");
+    return false;
+  }
+  return true;
+}
+
+void MqttSettingsService::saveSettingsToNVS() {
+  JsonDocument document;
+  JsonObject settings = document.to<JsonObject>();
+  read(settings, MqttSettings::read);
+
+  String json;
+  serializeJson(document, json);
+
+  Preferences preferences;
+  if (!preferences.begin("mqtt-settings", false)) {
+    log_e("No se pudo abrir NVS para guardar la configuración MQTT.");
+    return;
+  }
+
+  const size_t written = preferences.putString("settings", json);
+  preferences.end();
+  if (written != json.length()) {
+    log_e("No se pudo persistir la configuración MQTT completa en NVS.");
+  }
+}
+#endif
 
 void MqttSettingsService::loop() {
   if (_reconfigureMqtt || (_disconnectedAt && (unsigned long)(millis() - _disconnectedAt) >= MQTT_RECONNECTION_DELAY)) {

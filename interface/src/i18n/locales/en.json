@@ -190,6 +190,11 @@
     "dns_ip_1": "DNS Server 1",
     "dns_ip_2": "DNS Server 2",
     "manual_config": "Manual Configuration",
+    "import_json": "Import JSON",
+    "export_json": "Export JSON",
+    "json_help": "Save the exported JSON as data/config/wifiSettings.json to provision a new device.",
+    "json_invalid": "The file does not contain valid WiFi settings.",
+    "json_imported": "Settings imported. Press Save to apply them.",
     "forget_network": "Forget this Network",
     "forget_title": "Forget current Wi-Fi network?",
     "forget_confirm": "The device will disconnect from Wi-Fi and remove stored credentials (SSID: {{ssid}}). You can scan and connect to a different access point.",
@@ -281,6 +286,11 @@
       "clean_session": "Clean Session?",
       "max_topic_length": "Max Topic Length"
     },
+    "import_json": "Import JSON",
+    "export_json": "Export JSON",
+    "json_help": "Save the exported JSON as data/config/mqttSettings.json to provision a new device.",
+    "json_invalid": "The file does not contain valid MQTT settings.",
+    "json_imported": "Settings imported. Press Save to apply them.",
     "status_list": {
       "connected": "Connected",
       "disconnected": "Disconnected",
@@ -461,6 +471,7 @@
     "title": "Cold Rooms Supervision",
     "subtitle": "Cold Rooms Supervision • Real-Time Modbus RTU Monitoring",
     "liveView": "Live Cold Rooms",
+    "auxiliaryTitle": "Auxiliary Equipment",
     "alarmsTitle": "ISA-18.2 Alarms",
     "diagnostic": "Modbus Diagnostics",
     "normal": "Normal",
@@ -521,7 +532,7 @@
     }
   },
   "diagnostic": {
-    "title": "Modbus RS-485 Diagnostics & Discovery",
+    "title": "Controller Diagnostics & Discovery",
     "subtitle": "Polling tools, physical link quality and controller detection on the cold rooms bus.",
     "scanTitle": "Network Scan (Auto-Discovery)",
     "scanDesc": "Scans configured Modbus address range to automatically detect new KIDE KP-100 and KIDEMATIC-970 controllers.",
@@ -560,6 +571,19 @@
     "metricsTitleAux": "RS-485 Link Quality Metrics (FridgeIO Auxiliaries)",
     "noActiveAux": "No active auxiliary modules on RS-485 bus yet.",
     "colAuxNode": "Auxiliary Module",
-    "colMappedCavas": "Mapped Cavas"
+    "colMappedCavas": "Mapped Cavas",
+    "traceTitle": "Modbus Frame Monitor",
+    "traceSubtitle": "Live serial traffic, displayed exclusively in hexadecimal.",
+    "traceConnected": "WebSocket connected",
+    "traceConnecting": "Connecting...",
+    "traceDisconnected": "WebSocket disconnected",
+    "tracePaused": "Monitoring paused",
+    "traceAllBuses": "Both buses",
+    "traceAllDirections": "TX and RX",
+    "tracePauseMonitoring": "Pause monitoring",
+    "traceResumeMonitoring": "Resume monitoring",
+    "traceClear": "Clear",
+    "traceEmpty": "Waiting for Modbus frames...",
+    "traceEntryCount": "{{count}} frames in memory"
   }
 }

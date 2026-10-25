@@ -5,6 +5,7 @@ import { ModbusDiagnostic } from './ModbusDiagnostic';
 import { AlarmsConfigPage } from './AlarmsConfigPage';
 import { CavasConfigPage } from './CavasConfigPage';
 import { AuditLogPage } from './AuditLogPage';
+import { AuxiliaryEquipmentPage } from './AuxiliaryEquipmentPage';
 
 const ProjectRouting: FC = () => {
   return (
@@ -12,6 +13,7 @@ const ProjectRouting: FC = () => {
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard/*" element={<CavasDashboard />} />
       <Route path="cavas-setup/*" element={<CavasConfigPage />} />
+      <Route path="auxiliary-equipment/*" element={<AuxiliaryEquipmentPage />} />
       <Route path="alarms/*" element={<AlarmsConfigPage />} />
       <Route path="audit/*" element={<AuditLogPage />} />
       <Route path="diagnostic/*" element={<ModbusDiagnostic />} />

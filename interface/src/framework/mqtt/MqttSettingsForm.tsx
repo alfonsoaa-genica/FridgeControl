@@ -1,9 +1,11 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { ValidateFieldsError } from 'async-validator';
 import { useTranslation } from "react-i18next";
 
-import { Button, Checkbox } from '@mui/material';
+import { Alert, Button, Checkbox } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
+import DownloadIcon from '@mui/icons-material/Download';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 import * as MqttApi from "../../api/mqtt";
 import { MqttSettings } from '../../types';
@@ -11,9 +13,28 @@ import { BlockFormControlLabel, ButtonRow, FormLoader, SectionContent, Validated
 import { MQTT_SETTINGS_VALIDATOR, validate } from '../../validators';
 import { numberValue, updateValue, useRest } from '../../utils';
 
+const isMqttSettings = (value: unknown): value is MqttSettings => {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const settings = value as Record<string, unknown>;
+  return typeof settings.enabled === 'boolean' &&
+    typeof settings.host === 'string' &&
+    typeof settings.port === 'number' &&
+    typeof settings.username === 'string' &&
+    typeof settings.password === 'string' &&
+    typeof settings.client_id === 'string' &&
+    (settings.base_topic === undefined || typeof settings.base_topic === 'string') &&
+    typeof settings.keep_alive === 'number' &&
+    typeof settings.clean_session === 'boolean' &&
+    typeof settings.max_topic_length === 'number';
+};
+
 const MqttSettingsForm: FC = () => {
   const { t } = useTranslation();
+  const importFileRef = useRef<HTMLInputElement>(null);
   const [fieldErrors, setFieldErrors] = useState<ValidateFieldsError>();
+  const [jsonMessage, setJsonMessage] = useState<{ severity: 'success' | 'error'; text: string } | null>(null);
   const {
     loadData, saving, data, setData, saveData, errorMessage
   } = useRest<MqttSettings>({
@@ -21,6 +42,43 @@ const MqttSettingsForm: FC = () => {
     update: MqttApi.updateMqttSettings
   });
   const updateFormValue = updateValue(setData);
+
+  const exportSettings = () => {
+    if (!data) {
+      return;
+    }
+    const file = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'mqttSettings.json';
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  };
+
+  const importSettings = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) {
+      return;
+    }
+
+    try {
+      const imported: unknown = JSON.parse(await file.text());
+      if (!isMqttSettings(imported)) {
+        throw new Error(t('mqtt.json_invalid'));
+      }
+      setData(imported);
+      setJsonMessage({ severity: 'success', text: t('mqtt.json_imported') });
+      setFieldErrors(undefined);
+    } catch (error) {
+      setJsonMessage({
+        severity: 'error',
+        text: error instanceof Error ? error.message : t('mqtt.json_invalid'),
+      });
+    }
+  };
+
   const content = () => {
     if (!data) {
       return (<FormLoader onRetry={loadData} errorMessage={errorMessage} />);
@@ -151,7 +209,33 @@ const MqttSettingsForm: FC = () => {
           onChange={updateFormValue}
           margin="normal"
         />
+        {jsonMessage && (
+          <Alert severity={jsonMessage.severity} onClose={() => setJsonMessage(null)} sx={{ mt: 1 }}>
+            {jsonMessage.text}
+          </Alert>
+        )}
+        <input
+          ref={importFileRef}
+          type="file"
+          accept="application/json,.json"
+          hidden
+          onChange={importSettings}
+        />
         <ButtonRow mt={1}>
+          <Button
+            startIcon={<UploadFileIcon />}
+            variant="outlined"
+            onClick={() => importFileRef.current?.click()}
+          >
+            {t('mqtt.import_json')}
+          </Button>
+          <Button
+            startIcon={<DownloadIcon />}
+            variant="outlined"
+            onClick={exportSettings}
+          >
+            {t('mqtt.export_json')}
+          </Button>
           <Button
             startIcon={<SaveIcon />}
             disabled={saving}

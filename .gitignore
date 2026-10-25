@@ -2,6 +2,8 @@
 .vscode/
 interface/node_modules/
 interface/dist/
+data/config/wifiSettings.json
+data/config/mqttSettings.json
 *.tmp
 .DS_Store
 Thumbs.db

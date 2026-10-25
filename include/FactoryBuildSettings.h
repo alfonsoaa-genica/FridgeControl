@@ -1,0 +1,107 @@
+#pragma once
+
+#ifndef FACTORY_WIFI_SSID
+#define FACTORY_WIFI_SSID ""
+#endif
+#ifndef FACTORY_WIFI_PASSWORD
+#define FACTORY_WIFI_PASSWORD ""
+#endif
+#ifndef FACTORY_WIFI_HOSTNAME
+#define FACTORY_WIFI_HOSTNAME "fridgecontrol-#{unique_id}"
+#endif
+
+#ifndef FACTORY_AP_PROVISION_MODE
+#define FACTORY_AP_PROVISION_MODE AP_MODE_ALWAYS
+#endif
+#ifndef FACTORY_AP_SSID
+#define FACTORY_AP_SSID "FridgeControl-#{unique_id}"
+#endif
+#ifndef FACTORY_AP_PASSWORD
+#define FACTORY_AP_PASSWORD "genica2026"
+#endif
+#ifndef FACTORY_AP_CHANNEL
+#define FACTORY_AP_CHANNEL 1
+#endif
+#ifndef FACTORY_AP_SSID_HIDDEN
+#define FACTORY_AP_SSID_HIDDEN false
+#endif
+#ifndef FACTORY_AP_MAX_CLIENTS
+#define FACTORY_AP_MAX_CLIENTS 4
+#endif
+#ifndef FACTORY_AP_LOCAL_IP
+#define FACTORY_AP_LOCAL_IP "192.168.40.1"
+#endif
+#ifndef FACTORY_AP_GATEWAY_IP
+#define FACTORY_AP_GATEWAY_IP "192.168.40.1"
+#endif
+#ifndef FACTORY_AP_SUBNET_MASK
+#define FACTORY_AP_SUBNET_MASK "255.255.255.0"
+#endif
+
+#ifndef FACTORY_ADMIN_USERNAME
+#define FACTORY_ADMIN_USERNAME "admin"
+#endif
+#ifndef FACTORY_ADMIN_PASSWORD
+#define FACTORY_ADMIN_PASSWORD "admin"
+#endif
+#ifndef FACTORY_GUEST_USERNAME
+#define FACTORY_GUEST_USERNAME "guest"
+#endif
+#ifndef FACTORY_GUEST_PASSWORD
+#define FACTORY_GUEST_PASSWORD "guest"
+#endif
+
+#ifndef FACTORY_NTP_ENABLED
+#define FACTORY_NTP_ENABLED true
+#endif
+#ifndef FACTORY_NTP_TIME_ZONE_LABEL
+#define FACTORY_NTP_TIME_ZONE_LABEL "America/Caracas"
+#endif
+#ifndef FACTORY_NTP_TIME_ZONE_FORMAT
+#define FACTORY_NTP_TIME_ZONE_FORMAT "UNK4"
+#endif
+#ifndef FACTORY_NTP_SERVER
+#define FACTORY_NTP_SERVER "pool.ntp.org"
+#endif
+
+#ifndef FACTORY_OTA_PORT
+#define FACTORY_OTA_PORT 8266
+#endif
+#ifndef FACTORY_OTA_PASSWORD
+#define FACTORY_OTA_PASSWORD "fridgecontrol"
+#endif
+#ifndef FACTORY_OTA_ENABLED
+#define FACTORY_OTA_ENABLED true
+#endif
+
+#ifndef FACTORY_MQTT_ENABLED
+#define FACTORY_MQTT_ENABLED true
+#endif
+#ifndef FACTORY_MQTT_HOST
+#define FACTORY_MQTT_HOST "192.168.1.100"
+#endif
+#ifndef FACTORY_MQTT_PORT
+#define FACTORY_MQTT_PORT 1883
+#endif
+#ifndef FACTORY_MQTT_USERNAME
+#define FACTORY_MQTT_USERNAME ""
+#endif
+#ifndef FACTORY_MQTT_PASSWORD
+#define FACTORY_MQTT_PASSWORD ""
+#endif
+#ifndef FACTORY_MQTT_CLIENT_ID
+#define FACTORY_MQTT_CLIENT_ID "fridgecontrol-#{unique_id}"
+#endif
+#ifndef FACTORY_MQTT_KEEP_ALIVE
+#define FACTORY_MQTT_KEEP_ALIVE 60
+#endif
+#ifndef FACTORY_MQTT_CLEAN_SESSION
+#define FACTORY_MQTT_CLEAN_SESSION true
+#endif
+#ifndef FACTORY_MQTT_MAX_TOPIC_LENGTH
+#define FACTORY_MQTT_MAX_TOPIC_LENGTH 128
+#endif
+
+#ifndef FACTORY_JWT_SECRET
+#define FACTORY_JWT_SECRET "#{random}-#{random}"
+#endif

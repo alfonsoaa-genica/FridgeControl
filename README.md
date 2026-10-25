@@ -10,8 +10,8 @@ Este repositorio contiene el sistema integral de supervisión, telemetría y se�
 
 1. **`FridgeControl` (Raíz del Repositorio):**  
    Gateway IoT y Maestro Modbus sobre **Waveshare Industrial ESP32-S3 WiFi Relay 6CH** (Flash 8 MB). Implementa una **arquitectura de doble puerto serial independiente y aislado galvánicamente**:
-   * **Puerto 1 (RS-485 Nativo / Half-Duplex):** Pines `GPIO 17` (TX) y `GPIO 18` (RX), dedicado exclusivamente a la red de satélites auxiliares `FridgeIO` (IDs $100..247$).
-   * **Puerto 2 (RS-422 4-Hilos / Full-Duplex):** Pines `GPIO 4` (TX) y `GPIO 5` (RX) en conector H1, convertidor de niveles MAX3232 (DCE) y transceptor aislado **AutomationDirect FA-ISOCON**, dedicado exclusivamente a los controladores de Cavas KIDE (**KP-100** y **KIDEMATIC 970**, IDs $1..99$).
+   * **Puerto 1 (RS-485 Nativo / Half-Duplex):** Dedicado exclusivamente a la red de satélites auxiliares `FridgeIO` (IDs $100..247$).
+   * **Puerto 2 (RS-422 4-Hilos / Full-Duplex):** Conectado mediante el convertidor de niveles MAX3232 (DCE) y el transceptor aislado **AutomationDirect FA-ISOCON**, dedicado exclusivamente a los controladores de Cavas KIDE (**KP-100** y **KIDEMATIC 970**, IDs $1..99$).
    * Aloja un servidor web con SPA en **React** (embebida en PROGMEM), WebSockets de telemetría en tiempo real, buffer circular de tendencias de 24h en memoria RAM, dos sistemas independientes de escaneo/autodescubrimiento (*Auto-Discovery*), dos paneles de métricas de calidad de enlace ($Q\%$) y cliente MQTT conectado a la red corporativa.
 
 2. **`FridgeIO` ([`FridgeControl/FridgeIO/`](file:///c:/Users/aguir/Documents/PlatformIO/Projects/FridgeControl/FridgeIO)):**  
@@ -30,7 +30,7 @@ Este repositorio contiene el sistema integral de supervisión, telemetría y se�
          ┌───────────────────────────────┴───────────────────────────────┐
          ▼ (Puerto 2: RS-422 4-Hilos Full-Duplex)                        ▼ (Puerto 1: RS-485 2-Hilos Half-Duplex)
    RED DE CAVAS (KIDE)                                           RED DE AUXILIARES (FRIDGEIO)
-   • Hardware: UART2 (GPIO 4 TX / GPIO 5 RX)                     • Hardware: UART1 (GPIO 17 TX / GPIO 18 RX)
+   • Hardware: UART2                                               • Hardware: UART1
    • Aislamiento: MAX3232 + AutomationDirect FA-ISOCON           • Aislamiento: Transceptor Nativo Aislado
    • Dispositivos: IDs 1..99                                     • Dispositivos: IDs 100..247
    • Cola de Comandos: _queueKide (Setpoints Temp y HR)          • Cola de Comandos: _queueFridgeIO (Relés, Torretas)
@@ -44,12 +44,6 @@ Este repositorio contiene el sistema integral de supervisión, telemetría y se�
                                               ASOCIACIÓN POR SOFTWARE
                                             (Persistente en LittleFS)
 ```
-
-### Pines de Expansión en Cabezal H1 (Waveshare ESP32-S3):
-* **Pin 13:** `GND` (Referencia común con módulo MAX3232)
-* **Pin 14:** `GPIO 5` (`IO05` $\rightarrow$ RXD de UART2 desde TXD del MAX3232)
-* **Pin 15:** `GPIO 4` (`IO04` $\rightarrow$ TXD de UART2 hacia RXD del MAX3232)
-* **Pin 4 / 5:** `3.3V` (Alimentación lógica VCC)
 
 ---
 
@@ -83,21 +77,62 @@ Este repositorio contiene el sistema integral de supervisión, telemetría y se�
 
 ## 5. Instrucciones de Compilación y Grabación
 
-### Para compilar y subir el Maestro `FridgeControl` (Waveshare ESP32-S3 Relay 6CH):
+### Compilar el Maestro `FridgeControl` (Waveshare ESP32-S3 Relay 6CH)
 ```powershell
-# 1. Compilar Frontend React (SPA integrada en memoria Flash mediante WWWData.h)
+# Compilar Frontend React (SPA integrada en memoria Flash mediante WWWData.h)
 cd interface
 npm run build
 cd ..
 
-# 2. Compilar y flashear Firmware ESP32-S3 por USB (COM24)
+# Compilar firmware y generar .pio/build/waveshare_esp32s3_relay_6ch/firmware.bin
+pio run -e waveshare_esp32s3_relay_6ch
+
+# Generar .pio/build/waveshare_esp32s3_relay_6ch/littlefs.bin
+pio run -e waveshare_esp32s3_relay_6ch -t buildfs
+```
+
+El hook de PlatformIO sincroniza y comprime `interface/build` en `data/www` durante `buildfs` y `uploadfs`. Para grabar en la placa, ejecutar explícitamente:
+```powershell
 pio run -e waveshare_esp32s3_relay_6ch -t upload --upload-port COM24
+pio run -e waveshare_esp32s3_relay_6ch -t uploadfs --upload-port COM24
 ```
 
 ### Para compilar y subir el Esclavo Satélite `FridgeIO` (eletechsup ES32D26):
 ```powershell
 pio run -d FridgeIO -t upload --upload-port COM20
 ```
+
+### Consola de diagnóstico Modbus
+Conecta el monitor serie USB del Maestro Waveshare en `COM24` a `115200` baudios. La consola muestra cada trama transmitida (`TX`), recibida (`RX`) y el resultado de la transacción en hexadecimal:
+* `P1 FridgeIO RS-485`: auxiliares FridgeIO.
+* `P2 Cavas KIDE RS-422`: controladores de cavas.
+
+La traza se activa para el entorno Waveshare mediante `FT_MODBUS_SERIAL_TRACE` y no depende del colector de datos Nexus.
+El botón **Pausar monitoreo** cierra la conexión WebSocket dedicada a las trazas, por lo que el navegador deja de recibirlas hasta reanudar. La consola conserva un máximo de 500 tramas en memoria; el resto de la supervisión web continúa funcionando.
+
+### Configuración local de WiFi y MQTT
+Las pantallas **WiFi** y **MQTT** permiten importar y exportar sus ajustes JSON. Para aprovisionar un equipo nuevo desde el proyecto:
+1. Copia `data/config/wifiSettings.example.json` como `data/config/wifiSettings.json` y `data/config/mqttSettings.example.json` como `data/config/mqttSettings.json`.
+2. Completa localmente SSID, contraseñas y parámetros del broker. Los archivos reales están excluidos de Git.
+3. Compila y sube el filesystem. En el primer arranque, el firmware importa esos archivos y guarda la configuración en NVS.
+
+Después del primer arranque, NVS prevalece sobre los JSON del filesystem. Por ello, subir un filesystem nuevo no reemplaza las credenciales guardadas; los cambios posteriores se realizan desde las pantallas WiFi/MQTT y se guardan también en NVS. Si el equipo ya arrancó antes de copiar los JSON locales, importa cada archivo en su pantalla y presiona **Guardar**. Los JSON de ejemplo no contienen credenciales.
+
+### Última compilación validada (25 de octubre de 2026)
+Se generaron los dos binarios para `waveshare_esp32s3_relay_6ch`:
+* Firmware: `.pio/build/waveshare_esp32s3_relay_6ch/firmware.bin` (compilado a las 08:30).
+* LittleFS: `.pio/build/waveshare_esp32s3_relay_6ch/littlefs.bin` (generado a las 08:20; incluye la SPA actualizada).
+
+La compilación del firmware y la generación de LittleFS terminaron correctamente. **Estos binarios no se cargaron a la placa** durante esta compilación; compilar no equivale a grabar.
+
+### Mantenimiento de Equipos Auxiliares de Cava (FridgeIO)
+Desde **Proyecto → Equipos Auxiliares**, cada satélite FridgeIO tiene una ficha propia con asociación de canales **A** y **B**, estado de campo, pruebas de salidas y métricas RS-485. Las asociaciones se guardan de forma persistente en `/config/signaling.json` vía `POST /rest/signaling/mapping`. La pantalla **Diagnóstico Modbus** queda para escaneo, ping, métricas KIDE y consola HEX.
+
+Flujo recomendado en planta:
+1. Crear/validar primero las cavas en `cavas.json`.
+2. Capturar el satélite nuevo con el escáner RS-485.
+3. En **Equipos Auxiliares**, seleccionar las cavas de Canal A y Canal B y guardar la asociación.
+4. Verificar las asignaciones, estado, pruebas de campo y métricas RS-485 en esa pantalla.
 
 ---
 
