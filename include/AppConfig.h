@@ -7,12 +7,19 @@
 // Autor y Arquitecto del Sistema: Ing. Alfonso Aguirre
 // ============================================================================
 
-// Hardware de la Placa y Puerto RS-485
+// Hardware de la Placa y Puertos Seriales Industriales
 #if defined(BOARD_WAVESHARE_ESP32S3_RELAY_6CH)
 // Placa Industrial Maestro: Waveshare Industrial ESP32-S3 WiFi Relay 6CH con RS-485 Aislado
+// Puerto 1: Bus RS-485 Nativo Aislado Half-Duplex (Dedicado a Satélites FridgeIO en 2 hilos)
 #define RS485_RX_PIN 18
 #define RS485_TX_PIN 17
 #define RS485_DE_RE_PIN -1 // Aislamiento galvánico con auto-dirección por hardware
+
+// Puerto 2: Bus RS-422 (4 Hilos) vía MAX3232 DCE y convertidor FA-ISOCON (Dedicado a Cavas KIDE)
+#define KIDE_RS422_RX_PIN 5  // Pin 14 de Header H1 (IO05)
+#define KIDE_RS422_TX_PIN 4  // Pin 15 de Header H1 (IO04)
+#define KIDE_RS422_DE_RE_PIN -1 // Bus 4 hilos Full-Duplex (no requiere pin DE/RE)
+
 #define BOARD_NAME "Waveshare ESP32-S3 Relay 6CH"
 #define BOARD_ONBOARD_BUZZER_PIN 21
 #define BOARD_RGB_LED_PIN 38
@@ -29,6 +36,9 @@
 #define RS485_RX_PIN 16
 #define RS485_TX_PIN 17
 #define RS485_DE_RE_PIN 21
+#define KIDE_RS422_RX_PIN 5
+#define KIDE_RS422_TX_PIN 4
+#define KIDE_RS422_DE_RE_PIN -1
 #define BOARD_NAME "eletechsup ES32D26"
 
 #else
@@ -36,9 +46,13 @@
 #define RS485_RX_PIN 16
 #define RS485_TX_PIN 17
 #define RS485_DE_RE_PIN -1
+#define KIDE_RS422_RX_PIN 5
+#define KIDE_RS422_TX_PIN 4
+#define KIDE_RS422_DE_RE_PIN -1
 #define BOARD_NAME "ESP32 DevKit V1"
 #endif
 #define RS485_BAUD_DEFAULT 9600
+#define KIDE_RS422_BAUD_DEFAULT 9600
 
 // Configuración de Tiempo (NTP / VET UTC-4)
 #define TIMEZONE_OFFSET_SEC -14400 // -4 horas (Venezuela)

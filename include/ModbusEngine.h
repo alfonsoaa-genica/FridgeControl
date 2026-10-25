@@ -71,8 +71,11 @@ public:
     CavaDiagnosticPing pingCavaAndCompanion(const char* cavaId);
 
 private:
-    HardwareSerial _serial;
-    ModbusMaster _node;
+    HardwareSerial _serialFridgeIO; // Puerto 1: RS-485 Half-Duplex (Satélites FridgeIO)
+    ModbusMaster _nodeFridgeIO;
+
+    HardwareSerial _serialKide;     // Puerto 2: RS-422 4-Hilos (Cavas KIDE vía MAX3232 -> FA-ISOCON)
+    ModbusMaster _nodeKide;
     CavaState* _cavas;
     size_t _cavaCount;
     size_t _currentCavaIdx;

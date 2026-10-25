@@ -19,24 +19,27 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
                     ▲
                     │ WiFi / Ethernet
    ═════════════════╪═════════════════════════════════════════════════════════════════════
-   NIVEL CAMPO / OT │ BUS RS-485 INDUSTRIAL (Par Trenzado Blindado / 9600 bps / 8N1)
+   NIVEL CAMPO / OT │ ARQUITECTURA DE DOBLE PUERTO SERIAL DEDICADO E INDEPENDIENTE
                     ▼
          [ FRIDGECONTROL (MAESTRO INDUSTRIAL) ]
          Waveshare Industrial ESP32-S3 Relay 6CH (COM24)
-         • RS-485 Aislado Galvánicamente (TX: GPIO 17, RX: GPIO 18, Auto-Dirección)
-         • WebServer React SPA (LittleFS) | Auto-Discovery | Buffer 24h RAM
+         • Puerto 1 (RS-485 Nativo / Half-Duplex): TX: GPIO 17, RX: GPIO 18, Auto-Dirección
+         • Puerto 2 (RS-422 4-Hilos / Full-Duplex): TX: GPIO 4, RX: GPIO 5 vía MAX3232 -> FA-ISOCON
+         • WebServer React SPA (Flash WWWData) | Auto-Discovery | Buffer 24h RAM
                     │
-         ┌──────────┴─────────────────────────┬─────────────────────────┐
-         ▼                                    ▼                         ▼
-   [ KIDE KP-100 ]                     [ ES32D26 (I/O) ]         [ KIDEMATIC-970 ]
-    ID 1..10 (Frío)                     ID 100..108 (Satélite)    ID 2.. (Maduración)
-    B5: Modbus RTU                      2 Cavas por Módulo        Serial: Modbus RTU
-    Borna 7: Contacto OK                4 DO + 4 DI por Cava      Salida 01: Relé Alarma
-                                              │
-                              ┌───────────────┴───────────────┐
-                              ▼                               ▼
-                      Torretas Andon                 Reed Switches Puerta
-                      12-24V Articuladas             + Botón Físico ACK (ISA-18.2)
+         ┌──────────┴───────────────────────────────────────────────────┐
+         ▼ (Puerto 2: RS-422 a 4 Hilos)                                 ▼ (Puerto 1: RS-485 Half-Duplex)
+   BUS KIDE (CAVAS)                                             BUS SATÉLITES FRIDGEIO
+   ┌──────────────────────┬──────────────────────┐              ┌──────────────────────────────┐
+   ▼                      ▼                      ▼              ▼                              ▼
+[ KIDE KP-100 ]     [ KIDEMATIC-970 ]     [ OTRAS CAVAS ] [ ES32D26 (I/O) ]             [ ES32D26 (I/O) ]
+ ID 1..10 (Frío)     ID 2.. (Maduración)   ID 3..          ID 100 (Cavas 1-2)            ID 102 (Cavas 3-4)
+ B5: Modbus RTU      Serial: Modbus RTU                    4 DO + 4 DI por Cava          4 DO + 4 DI por Cava
+ Borna 7: Alarma     Salida 01: Relé                                      │
+                                                          ┌───────────────┴───────────────┐
+                                                          ▼                               ▼
+                                                  Torretas Andon                 Reed Switches Puerta
+                                                  12-24V Articuladas             + Botón Físico ACK (ISA-18.2)
 ```
 
 ---
@@ -67,6 +70,24 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
   * Control de 8 salidas a relé de 10A (Luz Verde, Amarilla, Roja y Buzzer para Cava A y Cava B).
   * Lectura de 8 entradas optoacopladas NPN con filtro antirrebote de 15 ms.
   * Gestión administrativa 100% remota sobre RS-485 (Holding Registers 40001 a 40005: cambio de ID, watchdog y reboot).
+
+---
+
+### 2.3. Doble Puerto Serial y Validación en Banco (Octubre 2026)
+* **Arquitectura de Puertos Independientes:**
+  * **Puerto 1 (RS-485 / 2 hilos / Half-Duplex):**
+    * Pines: GPIO 17 (TX), GPIO 18 (RX).
+    * Transceptor: Integrado en placa Waveshare, con aislamiento galvánico y control automático de flujo/dirección.
+    * Asignación: Exclusiva para la red de satélites FridgeIO (módulos eletechsup ES32D26 / ES32A08, IDs $\ge 100$).
+  * **Puerto 2 (RS-422 / 4 hilos / Full-Duplex):**
+    * Pines: GPIO 4 (TX), GPIO 5 (RX) tomados del cabezal de expansión H1 (Pin 13 GND, Pin 14 IO05/RX, Pin 15 IO04/TX).
+    * Cadena de Conversión: ESP32 (3.3V TTL) $\rightarrow$ Módulo MAX3232 (RS-232) $\rightarrow$ Convertidor Aislado **AutomationDirect FA-ISOCON** $\rightarrow$ Bornera RS-422 (TX+, TX-, RX+, RX-).
+    * Asignación: Exclusiva para controladores de refrigeración de cavas KIDE (KP-100, Secmatic-970, IDs ..99$).
+* **Validación Eléctrica y Funcional en Banco:**
+  * **Comportamiento de LEDs en FA-ISOCON:**
+    * *Línea abierta (sin carga):* LED TX titila por sondeo activo del ESP32; LED RX queda encendido fijo por entradas diferenciales flotantes sin carga.
+    * *Prueba de Loopback:* Al puentear TX+ con RX+ y TX- con RX-, la polarización del transmisor apaga el LED RX en reposo (Mark state) y ambos LEDs (TX/RX) destellan simultáneamente con cada trama Modbus enviada por el ESP32.
+  * **Confirmación:** Cadena física y lógica 100% operativa sin contención de bus ni colisiones entre satélites y cavas.
 
 ---
 
