@@ -91,6 +91,23 @@ El ecosistema desacopla el monitoreo de frío de la antigua pasarela LonWorks y 
 
 ---
 
+### 2.4. Proyecto Piloto: Cavas 3 y 4 con KIDEMATIC 970 y Asociación a Satélite FridgeIO
+* **Cavas del Piloto (Puerto 2 / RS-422 vía MAX3232 + FA-ISOCON):**
+  * **Cava 3:** Modbus ID 3, Controlador **KIDEMATIC 970** (Maduración: Temp + Humedad Relativa activa).
+  * **Cava 4:** Modbus ID 4, Controlador **KIDEMATIC 970** (Maduración: Temp + Humedad Relativa activa).
+  * **Parámetros Térmicos:** Setpoint Temp $12.0^\circ\text{C}$, Setpoint Humedad $85\%$, alarmas ISA-18.2 activas.
+* **Módulo Auxiliar Asociado por Software (Puerto 1 / RS-485 Nativo Waveshare):**
+  * **Satélite `FridgeIO` (ID 100 / eletechsup ES32D26):**
+    * **Canal A $\rightarrow$ Cava 3:** DO 1..4 (Verde, Amarillo, Rojo, Buzzer 3), DI 1 (Puerta 3), DI 3 (Botón ACK 3).
+    * **Canal B $\rightarrow$ Cava 4:** DO 5..8 (Verde, Amarillo, Rojo, Buzzer 4), DI 2 (Puerta 4), DI 4 (Botón ACK 4).
+  * **Configuración Dinámica:** Asociación 100% persistente en Flash (`/config/signaling.json`) y reconfigurable vía REST (`POST /rest/signaling/mapping`).
+* **Sistemas Separados en Firmware:**
+  * **Dos Colas Asíncronas:** `_queueFridgeIO` y `_queueKide` (sin contención ni bloqueo mutuo).
+  * **Dos Sistemas de Auto-Descubrimiento:** `startKideScan()` (IDs 1..99 en RS-422) y `startFridgeIOScan()` (IDs 100..247 en RS-485).
+  * **Dos Paneles de Diagnóstico:** Métricas completas de salud de bus en `/rest/diagnostic/stats` (`bus_kide` y `bus_fridge_io`).
+
+---
+
 ## 3. Bitácora de Hitos Completados
 
 | Fecha | Componente | Hito Alcanzado |
