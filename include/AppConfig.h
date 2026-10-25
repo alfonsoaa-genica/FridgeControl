@@ -201,6 +201,12 @@ struct SignalingNode {
   }
 };
 
+// Modelo de Controlador KIDE en Cava
+enum KideControllerModel {
+  KIDE_KP100 = 0,        // Modelo KP-100 (Solo Frío / Conservación)
+  KIDEMATIC_970 = 1      // Modelo Kidematic 970 (Frío + Humedad / Maduración)
+};
+
 // Enumeración de Tipo de Cava
 enum CavaType {
   CAVA_CONSERVACION = 0, // KIDE KP-100 (Solo Temperatura)
@@ -213,6 +219,7 @@ struct CavaState {
   char descripcion[64]; // "Cava 1 - Conservación"
   uint8_t modbus_id;    // 1, 6, 16, 2, etc.
   CavaType tipo;        // Conservación o Maduración
+  KideControllerModel controller_model; // KIDE_KP100 o KIDEMATIC_970
   bool has_humidity;    // true para C2, false para C1, C6A, C8, C9
 
   // Variables Analógicas (Proceso y Consignas)

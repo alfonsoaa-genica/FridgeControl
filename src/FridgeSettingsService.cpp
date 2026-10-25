@@ -87,37 +87,45 @@ CavaState* FridgeSettingsService::getCavaById(const char* id) {
 void FridgeSettingsService::initDefaultCavas() {
     _cavaCount = 0;
 
-    // Cava 1 - Conservación (Modbus ID 1)
-    CavaState& c1 = _cavas[_cavaCount++];
-    memset(&c1, 0, sizeof(CavaState));
-    strncpy(c1.id, "C1", sizeof(c1.id) - 1);
-    strncpy(c1.descripcion, "Cava 1 - Conservación", sizeof(c1.descripcion) - 1);
-    c1.modbus_id = 1;
-    c1.tipo = CAVA_CONSERVACION;
-    c1.has_humidity = false;
-    c1.temp_sp = 4.0f;
-    c1.temp_alarm_delta = 2.5f;
-    c1.temp_alarm_delay_sec = 300;
-    c1.door_grace_sec = 90;
-    c1.door_buzzer_sec = 180;
-    c1.ack_grace_sec = 600;
-    c1.comm_online = true;
+    // Cava 3 - Maduración (KIDEMATIC 970 / Modbus ID 3)
+    CavaState& c3 = _cavas[_cavaCount++];
+    memset(&c3, 0, sizeof(CavaState));
+    strncpy(c3.id, "C3", sizeof(c3.id) - 1);
+    strncpy(c3.descripcion, "Cava 3 - Maduración (KIDEMATIC 970)", sizeof(c3.descripcion) - 1);
+    c3.modbus_id = 3;
+    c3.tipo = CAVA_MADURACION;
+    c3.controller_model = KIDEMATIC_970;
+    c3.has_humidity = true;
+    c3.temp_sp = 12.0f;
+    c3.temp_alarm_delta = 2.5f;
+    c3.temp_alarm_delay_sec = 300;
+    c3.door_grace_sec = 90;
+    c3.door_buzzer_sec = 180;
+    c3.ack_grace_sec = 600;
+    c3.hr_sp = 85.0f;
+    c3.hr_alarm_low = 80.0f;
+    c3.hr_alarm_high = 90.0f;
+    c3.comm_online = true;
 
-    // Cava 2 - Conservación (Modbus ID 2)
-    CavaState& c2 = _cavas[_cavaCount++];
-    memset(&c2, 0, sizeof(CavaState));
-    strncpy(c2.id, "C2", sizeof(c2.id) - 1);
-    strncpy(c2.descripcion, "Cava 2 - Conservación", sizeof(c2.descripcion) - 1);
-    c2.modbus_id = 2;
-    c2.tipo = CAVA_CONSERVACION;
-    c2.has_humidity = false;
-    c2.temp_sp = 4.0f;
-    c2.temp_alarm_delta = 2.5f;
-    c2.temp_alarm_delay_sec = 300;
-    c2.door_grace_sec = 90;
-    c2.door_buzzer_sec = 180;
-    c2.ack_grace_sec = 600;
-    c2.comm_online = true;
+    // Cava 4 - Maduración (KIDEMATIC 970 / Modbus ID 4)
+    CavaState& c4 = _cavas[_cavaCount++];
+    memset(&c4, 0, sizeof(CavaState));
+    strncpy(c4.id, "C4", sizeof(c4.id) - 1);
+    strncpy(c4.descripcion, "Cava 4 - Maduración (KIDEMATIC 970)", sizeof(c4.descripcion) - 1);
+    c4.modbus_id = 4;
+    c4.tipo = CAVA_MADURACION;
+    c4.controller_model = KIDEMATIC_970;
+    c4.has_humidity = true;
+    c4.temp_sp = 12.0f;
+    c4.temp_alarm_delta = 2.5f;
+    c4.temp_alarm_delay_sec = 300;
+    c4.door_grace_sec = 90;
+    c4.door_buzzer_sec = 180;
+    c4.ack_grace_sec = 600;
+    c4.hr_sp = 85.0f;
+    c4.hr_alarm_low = 80.0f;
+    c4.hr_alarm_high = 90.0f;
+    c4.comm_online = true;
 
     saveSettings();
 }
@@ -235,6 +243,13 @@ bool FridgeSettingsService::loadSettings() {
         _cavas[idx].modbus_id = obj["modbus_id"] | (idx + 1);
         _cavas[idx].tipo = (obj["tipo"] == "maduracion") ? CAVA_MADURACION : CAVA_CONSERVACION;
         _cavas[idx].has_humidity = obj["has_humidity"] | (_cavas[idx].tipo == CAVA_MADURACION);
+        String cm = obj["controller_model"] | "";
+        if (cm.indexOf("970") >= 0 || cm.indexOf("maduracion") >= 0) {
+            _cavas[idx].controller_model = KIDEMATIC_970;
+            _cavas[idx].has_humidity = true;
+        } else {
+            _cavas[idx].controller_model = KIDE_KP100;
+        }
         _cavas[idx].temp_sp = obj["temp_sp"] | (_cavas[idx].has_humidity ? 12.0f : 5.0f);
         _cavas[idx].temp_alarm_delta = obj["temp_alarm_delta"] | 2.5f;
         _cavas[idx].temp_alarm_delay_sec = obj["temp_alarm_delay_sec"] | 300;
@@ -265,6 +280,8 @@ bool FridgeSettingsService::saveSettings() {
         obj["modbus_id"] = _cavas[i].modbus_id;
         obj["tipo"] = (_cavas[i].tipo == CAVA_CONSERVACION) ? "conservacion" : "maduracion";
         obj["has_humidity"] = _cavas[i].has_humidity;
+        obj["controller_model"] = (_cavas[i].controller_model == KIDEMATIC_970) ? "KIDEMATIC_970" : "KIDE_KP100";
+        obj["controller_name"] = (_cavas[i].controller_model == KIDEMATIC_970) ? "Kidematic 970" : "KP-100";
         obj["temp_sp"] = _cavas[i].temp_sp;
         obj["temp_alarm_delta"] = _cavas[i].temp_alarm_delta;
         obj["temp_alarm_delay_sec"] = _cavas[i].temp_alarm_delay_sec;
@@ -295,6 +312,8 @@ void FridgeSettingsService::registerEndpoints() {
             obj["modbus_id"] = _cavas[i].modbus_id;
             obj["tipo"] = (_cavas[i].tipo == CAVA_CONSERVACION) ? "conservacion" : "maduracion";
             obj["has_humidity"] = _cavas[i].has_humidity;
+        obj["controller_model"] = (_cavas[i].controller_model == KIDEMATIC_970) ? "KIDEMATIC_970" : "KIDE_KP100";
+        obj["controller_name"] = (_cavas[i].controller_model == KIDEMATIC_970) ? "Kidematic 970" : "KP-100";
             obj["temp_sp"] = _cavas[i].temp_sp;
             obj["temp_alarm_delta"] = _cavas[i].temp_alarm_delta;
             obj["temp_alarm_delay_sec"] = _cavas[i].temp_alarm_delay_sec;
@@ -441,6 +460,17 @@ void FridgeSettingsService::registerEndpoints() {
         if (request->hasParam("tipo", true)) {
             String tipo = request->getParam("tipo", true)->value();
             c->tipo = (tipo == "maduracion") ? CAVA_MADURACION : CAVA_CONSERVACION;
+        }
+        if (request->hasParam("controller_model", true)) {
+            String cm = request->getParam("controller_model", true)->value();
+            if (cm.indexOf("970") >= 0 || cm.indexOf("maduracion") >= 0) {
+                c->controller_model = KIDEMATIC_970;
+                c->has_humidity = true;
+                c->tipo = CAVA_MADURACION;
+            } else {
+                c->controller_model = KIDE_KP100;
+                c->tipo = CAVA_CONSERVACION;
+            }
         }
         if (request->hasParam("has_humidity", true)) {
             String hh = request->getParam("has_humidity", true)->value();
@@ -671,9 +701,14 @@ bool FridgeSettingsService::addOrUpdateSignalingNode(uint8_t modbus_id) {
     n.online = true;
 
     // Asignación por defecto sugerida (ej. 100 -> C1 y C2, 102 -> C3 y C4...)
-    uint8_t baseCavaNum = (modbus_id >= 100) ? ((modbus_id - 100) + 1) : 1;
-    snprintf(n.cava_a_id, sizeof(n.cava_a_id), "C%u", baseCavaNum);
-    snprintf(n.cava_b_id, sizeof(n.cava_b_id), "C%u", baseCavaNum + 1);
+    if (modbus_id == 100) {
+        strncpy(n.cava_a_id, "C3", sizeof(n.cava_a_id) - 1);
+        strncpy(n.cava_b_id, "C4", sizeof(n.cava_b_id) - 1);
+    } else {
+        uint8_t baseCavaNum = (modbus_id >= 100) ? ((modbus_id - 100) + 1) : 1;
+        snprintf(n.cava_a_id, sizeof(n.cava_a_id), "C%u", baseCavaNum);
+        snprintf(n.cava_b_id, sizeof(n.cava_b_id), "C%u", baseCavaNum + 1);
+    }
 
     _signalingNodeCount++;
     saveSignalingSettings();

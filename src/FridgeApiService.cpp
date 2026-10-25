@@ -35,6 +35,8 @@ void FridgeApiService::registerEndpoints() {
             obj["modbus_id"] = c.modbus_id;
             obj["tipo"] = (c.tipo == CAVA_CONSERVACION) ? "conservacion" : "maduracion";
             obj["has_humidity"] = c.has_humidity;
+            obj["controller_model"] = (c.controller_model == KIDEMATIC_970) ? "KIDEMATIC_970" : "KIDE_KP100";
+            obj["controller_name"] = (c.controller_model == KIDEMATIC_970) ? "Kidematic 970" : "KP-100";
 
             obj["temp_pv"] = serialized(String(c.temp_pv, 1));
             obj["temp_sp"] = serialized(String(c.temp_sp, 1));
@@ -171,9 +173,40 @@ void FridgeApiService::registerEndpoints() {
     });
     _server->addHandler(setpointHandler);
 
-    // 4. MÓDULO DE DIAGNÓSTICO: Estadísticas de Calidad de Enlace RS-485
+        // MÓDULO DE DIAGNÓSTICO: Estadísticas de Salud de Bus (TX, RX, CRC, RTT, Q%)
     _server->on("/rest/diagnostic/stats", HTTP_GET, [this](AsyncWebServerRequest* request) {
         JsonDocument doc;
+
+        // 1. Estadísticas Globales Bus KIDE (Puerto 2 / RS-422)
+        JsonObject kideBus = doc["bus_kide"].to<JsonObject>();
+        const ModbusDiagnostics& kb = modbusEngine.getKideBusDiagnostics();
+        kideBus["port"] = 2;
+        kideBus["mode"] = "RS-422 Full-Duplex (KIDE Cavas)";
+        kideBus["gpio_tx"] = KIDE_RS422_TX_PIN;
+        kideBus["gpio_rx"] = KIDE_RS422_RX_PIN;
+        kideBus["baud"] = KIDE_RS422_BAUD_DEFAULT;
+        kideBus["tx_frames"] = kb.tx_frames;
+        kideBus["rx_success"] = kb.rx_success;
+        kideBus["timeouts"] = kb.timeouts;
+        kideBus["crc_errors"] = kb.crc_errors;
+        kideBus["last_rtt_ms"] = kb.last_rtt_ms;
+        kideBus["quality_percent"] = serialized(String(kb.quality_percent, 1));
+
+        // 2. Estadísticas Globales Bus Auxiliares FridgeIO (Puerto 1 / RS-485)
+        JsonObject fioBus = doc["bus_fridge_io"].to<JsonObject>();
+        const ModbusDiagnostics& fb = modbusEngine.getFridgeIOBusDiagnostics();
+        fioBus["port"] = 1;
+        fioBus["mode"] = "RS-485 Half-Duplex (Auxiliares FridgeIO)";
+        fioBus["gpio_tx"] = RS485_TX_PIN;
+        fioBus["gpio_rx"] = RS485_RX_PIN;
+        fioBus["baud"] = RS485_BAUD_DEFAULT;
+        fioBus["tx_frames"] = fb.tx_frames;
+        fioBus["rx_success"] = fb.rx_success;
+        fioBus["timeouts"] = fb.timeouts;
+        fioBus["crc_errors"] = fb.crc_errors;
+        fioBus["last_rtt_ms"] = fb.last_rtt_ms;
+        fioBus["quality_percent"] = serialized(String(fb.quality_percent, 1));
+
         JsonArray arr = doc["stats"].to<JsonArray>();
 
         size_t count = _settingsService->getCavaCount();
@@ -216,8 +249,15 @@ void FridgeApiService::registerEndpoints() {
             modbusEngine.setCavas(_settingsService->getCavas(), 0);
         }
 
-        modbusEngine.startBusScan(startId, endId);
-        request->send(200, "application/json", "{\"status\":\"scanning_started\",\"start\":" + String(startId) + ",\"end\":" + String(endId) + "}");
+        String targetStr = request->hasParam("target", true) ? request->getParam("target", true)->value() : "all";
+        if (targetStr == "kide") {
+            modbusEngine.startKideScan(startId, endId);
+        } else if (targetStr == "fridge_io" || targetStr == "auxiliares") {
+            modbusEngine.startFridgeIOScan(startId, endId);
+        } else {
+            modbusEngine.startBusScan(startId, endId);
+        }
+        request->send(200, "application/json", "{\"status\":\"scanning_started\",\"target\":\"" + targetStr + "\",\"start\":" + String(startId) + ",\"end\":" + String(endId) + "}");
     });
 
     _server->on("/rest/diagnostic/scan/abort", HTTP_POST, [](AsyncWebServerRequest* request) {
@@ -230,9 +270,40 @@ void FridgeApiService::registerEndpoints() {
         request->send(200, "application/json", scanResults);
     });
 
-    // MÓDULO DE DIAGNÓSTICO: Estadísticas de Salud de Bus (TX, RX, CRC, RTT, Q%)
+        // MÓDULO DE DIAGNÓSTICO: Estadísticas de Salud de Bus (TX, RX, CRC, RTT, Q%)
     _server->on("/rest/diagnostic/stats", HTTP_GET, [this](AsyncWebServerRequest* request) {
         JsonDocument doc;
+
+        // 1. Estadísticas Globales Bus KIDE (Puerto 2 / RS-422)
+        JsonObject kideBus = doc["bus_kide"].to<JsonObject>();
+        const ModbusDiagnostics& kb = modbusEngine.getKideBusDiagnostics();
+        kideBus["port"] = 2;
+        kideBus["mode"] = "RS-422 Full-Duplex (KIDE Cavas)";
+        kideBus["gpio_tx"] = KIDE_RS422_TX_PIN;
+        kideBus["gpio_rx"] = KIDE_RS422_RX_PIN;
+        kideBus["baud"] = KIDE_RS422_BAUD_DEFAULT;
+        kideBus["tx_frames"] = kb.tx_frames;
+        kideBus["rx_success"] = kb.rx_success;
+        kideBus["timeouts"] = kb.timeouts;
+        kideBus["crc_errors"] = kb.crc_errors;
+        kideBus["last_rtt_ms"] = kb.last_rtt_ms;
+        kideBus["quality_percent"] = serialized(String(kb.quality_percent, 1));
+
+        // 2. Estadísticas Globales Bus Auxiliares FridgeIO (Puerto 1 / RS-485)
+        JsonObject fioBus = doc["bus_fridge_io"].to<JsonObject>();
+        const ModbusDiagnostics& fb = modbusEngine.getFridgeIOBusDiagnostics();
+        fioBus["port"] = 1;
+        fioBus["mode"] = "RS-485 Half-Duplex (Auxiliares FridgeIO)";
+        fioBus["gpio_tx"] = RS485_TX_PIN;
+        fioBus["gpio_rx"] = RS485_RX_PIN;
+        fioBus["baud"] = RS485_BAUD_DEFAULT;
+        fioBus["tx_frames"] = fb.tx_frames;
+        fioBus["rx_success"] = fb.rx_success;
+        fioBus["timeouts"] = fb.timeouts;
+        fioBus["crc_errors"] = fb.crc_errors;
+        fioBus["last_rtt_ms"] = fb.last_rtt_ms;
+        fioBus["quality_percent"] = serialized(String(fb.quality_percent, 1));
+
         JsonArray arr = doc["stats"].to<JsonArray>();
 
         size_t cavaCount = _settingsService->getCavaCount();
